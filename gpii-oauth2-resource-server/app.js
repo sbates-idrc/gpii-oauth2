@@ -21,7 +21,7 @@ var app = express();
 app.use(morgan(':method :url', { immediate: true }));
 app.use(passport.initialize());
 
-app.get('/secured',
+app.get('/preferences',
     passport.authenticate('bearer', { session: false }),
     function (req, res) {
         res.send('hello world');

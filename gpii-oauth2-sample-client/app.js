@@ -4,6 +4,7 @@ var http = require('http');
 var morgan = require('morgan');
 var querystring = require('querystring');
 var url = require('url');
+var util = require('util');
 var config = require('../config');
 
 var clientId = 'client_id_1';
@@ -12,13 +13,13 @@ var clientSecret = 'client_secret_1';
 var requestedScope = 'scope_1';
 var state = 'RANDOM-STRING';
 
-var authorizeCallbackUri = 'http://localhost:3002/authorize_callback';
+var authorizeCallbackUri = util.format('http://localhost:%d/authorize_callback', config.clientPort);
 
 function buildAuthorizeUrl (redirectUri) {
     return url.format({
         protocol: 'http',
         hostname: 'localhost',
-        port: 3000,
+        port: config.authorizationServerPort,
         pathname: '/authorize',
         query: {
             client_id: clientId,
@@ -33,7 +34,7 @@ function buildAuthorizeUrl (redirectUri) {
 function getAccessToken (code, callback) {
     var options = {
         hostname: 'localhost',
-        port: 3000,
+        port: config.authorizationServerPort,
         path: '/access_token',
         method: 'POST',
         headers: {
@@ -65,11 +66,11 @@ function getAccessToken (code, callback) {
     req.end();
 }
 
-function getSecured (accessToken, callback) {
+function getPreferences (accessToken, callback) {
     var options = {
         hostname: 'localhost',
-        port: 3001,
-        path: '/secured',
+        port: config.resourceServerPort,
+        path: '/preferences',
         headers: {
             'Authorization': 'Bearer ' + accessToken
         }
@@ -104,8 +105,8 @@ app.get('/', function (req, res) {
 
 app.get('/authorize_callback', function (req, res) {
     getAccessToken(req.param('code'), function (accessTokenData) {
-        getSecured(accessTokenData.access_token, function (responseData) {
-            res.render('secured', {
+        getPreferences(accessTokenData.access_token, function (responseData) {
+            res.render('preferences', {
                 accessToken: accessTokenData.access_token,
                 grantedScope: accessTokenData.scope,
                 tokenType: accessTokenData.token_type,

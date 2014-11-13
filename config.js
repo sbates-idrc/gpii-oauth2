@@ -1,7 +1,7 @@
-var config = {};
-
-config.authorizationServerPort = 3000;
-config.resourceServerPort = 3001;
-config.clientPort = 3002;
+var config = {
+    authorizationServerPort: 3000,
+    resourceServerPort: 3001,
+    clientPort: 3002
+};
 
 module.exports = config;
