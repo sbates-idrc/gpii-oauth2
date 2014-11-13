@@ -58,7 +58,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // OAuth2orize requires session support
 app.use(session({secret: 'some secret'}));
 app.use(passport.initialize());
-app.engine('handlebars', exphbs());
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 app.get('/authorize',

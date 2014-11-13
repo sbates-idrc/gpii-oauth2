@@ -93,7 +93,7 @@ function getSecured (accessToken, callback) {
 
 var app = express();
 app.use(morgan(':method :url', { immediate: true }));
-app.engine('handlebars', exphbs());
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 app.get('/', function (req, res) {
