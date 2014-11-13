@@ -11,7 +11,7 @@ function getUser () {
 // Used to check the accessToken on protected APIs
 passport.use(new BearerStrategy(
     function (accessToken, done) {
-        // here we would check the accessToken and find the associated user
+        // TODO check the accessToken and find the associated user
         console.log('access_token=' + accessToken);
         return done(null, getUser());
     }

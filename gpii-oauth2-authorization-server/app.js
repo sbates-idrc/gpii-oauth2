@@ -27,14 +27,14 @@ server.deserializeClient(function (id, done) {
 });
 
 server.grant(oauth2orize.grant.code(function (client, redirectUri, user, ares, done) {
-    // here we would generate a code and record it
+    // TODO generate a code and record it
     var code = 'code_1';
     done(null, code);
 }));
 
 server.exchange(oauth2orize.exchange.code(function (client, code, redirectUri, done) {
     console.log('client=' + JSON.stringify(client));
-    // here we would generate an access token and record it
+    // TODO generate an access token and record it
     var accessToken = 'access_token_1';
     done(null, accessToken);
 }));
@@ -44,7 +44,7 @@ server.exchange(oauth2orize.exchange.code(function (client, code, redirectUri, d
 // the request body. Can also use a BasicStrategy for HTTP Basic authentication.
 passport.use(new ClientPasswordStrategy(
     function (clientId, clientSecret, done) {
-        // here we would verify that the clientSecret matches what we have
+        // TODO verify that the clientSecret matches what we have
         // registered for the clientId
         console.log('client_id=' + clientId);
         console.log('client_secret=' + clientSecret);
@@ -62,19 +62,19 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 app.get('/authorize',
-    // here we would ask the user to log in if they aren't already
+    // TODO ask the user to log in if they aren't already
     function (req, res, next) {
         console.log('Adding user to request');
         req.user = getUser();
         next();
     },
     server.authorize(function (clientId, redirectUri, done) {
-        // here we would look up the client in our records and check the
+        // TODO look up the client in our records and check the
         // redirectUri against the one registered for that client
         done(null, getClient(), redirectUri);
     }),
     function (req, res) {
-        res.render('askPermission', { transactionID: req.oauth2.transactionID, user: req.user, client: req.oauth2.client });
+        res.render('authorize', { transactionID: req.oauth2.transactionID, user: req.user, client: req.oauth2.client });
     }
 );
 
