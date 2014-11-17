@@ -7,14 +7,8 @@ var oauth2orize = require('oauth2orize');
 var passport = require('passport');
 var ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy;
 var config = require('../config');
-
-function getUser () {
-    return { id: 1, name: 'Some User' };
-}
-
-function getClient () {
-    return { id: '1', name: 'client_1', clientId: 'client_id_1', clientSecret: 'client_secret_1' };
-}
+var users = require('../users');
+var clients = require('../clients');
 
 var server = oauth2orize.createServer();
 
@@ -23,7 +17,7 @@ server.serializeClient(function (client, done) {
 });
 
 server.deserializeClient(function (id, done) {
-    return done(null, getClient());
+    return done(null, clients.getClient());
 });
 
 server.grant(oauth2orize.grant.code(function (client, redirectUri, user, ares, done) {
@@ -48,7 +42,7 @@ passport.use(new ClientPasswordStrategy(
         // registered for the clientId
         console.log('client_id=' + clientId);
         console.log('client_secret=' + clientSecret);
-        return done(null, getClient());
+        return done(null, clients.getClient());
     }
 ));
 
@@ -65,13 +59,13 @@ app.get('/authorize',
     // TODO ask the user to log in if they aren't already
     function (req, res, next) {
         console.log('Adding user to request');
-        req.user = getUser();
+        req.user = users.getUser();
         next();
     },
     server.authorize(function (clientId, redirectUri, done) {
         // TODO look up the client in our records and check the
         // redirectUri against the one registered for that client
-        done(null, getClient(), redirectUri);
+        done(null, clients.getClient(), redirectUri);
     }),
     function (req, res) {
         res.render('authorize', { transactionID: req.oauth2.transactionID, user: req.user, client: req.oauth2.client });

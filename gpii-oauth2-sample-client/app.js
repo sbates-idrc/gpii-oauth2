@@ -16,6 +16,7 @@ var state = 'RANDOM-STRING';
 var authorizeCallbackUri = util.format('http://localhost:%d/authorize_callback', config.clientPort);
 
 function buildAuthorizeUrl (redirectUri) {
+    // TODO generate the state parameter
     return url.format({
         protocol: 'http',
         hostname: 'localhost',
@@ -104,6 +105,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/authorize_callback', function (req, res) {
+    // TODO verify the state parameter
     getAccessToken(req.param('code'), function (accessTokenData) {
         getPreferences(accessTokenData.access_token, function (responseData) {
             res.render('preferences', {

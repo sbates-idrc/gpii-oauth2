@@ -3,17 +3,14 @@ var morgan = require('morgan');
 var passport = require('passport');
 var BearerStrategy = require('passport-http-bearer').Strategy;
 var config = require('../config');
-
-function getUser () {
-    return { id: 1, name: 'Some User' };
-}
+var users = require('../users');
 
 // Used to check the accessToken on protected APIs
 passport.use(new BearerStrategy(
     function (accessToken, done) {
         // TODO check the accessToken and find the associated user
         console.log('access_token=' + accessToken);
-        return done(null, getUser());
+        return done(null, users.getUser());
     }
 ));
 
