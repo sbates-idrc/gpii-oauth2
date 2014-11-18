@@ -2,15 +2,15 @@ var express = require('express');
 var morgan = require('morgan');
 var passport = require('passport');
 var BearerStrategy = require('passport-http-bearer').Strategy;
+var data = require('../gpii-oauth2-datastore');
 var config = require('../config');
-var users = require('../users');
 
 // Used to check the accessToken on protected APIs
 passport.use(new BearerStrategy(
     function (accessToken, done) {
         // TODO check the accessToken and find the associated user
         console.log('access_token=' + accessToken);
-        return done(null, users.getUser());
+        return done(null, data.findUserById(1));
     }
 ));
 

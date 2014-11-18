@@ -8,9 +8,8 @@ var oauth2orize = require('oauth2orize');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy;
+var data = require('../gpii-oauth2-datastore');
 var config = require('../config');
-var users = require('../users');
-var clients = require('../clients');
 
 // OAuth2orize server configuration
 // --------------------------------
@@ -22,7 +21,7 @@ server.serializeClient(function (client, done) {
 });
 
 server.deserializeClient(function (id, done) {
-    return done(null, clients.getClient());
+    return done(null, data.findClientById(id));
 });
 
 server.grant(oauth2orize.grant.code(function (client, redirectUri, user, ares, done) {
@@ -46,14 +45,14 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-    return done(null, users.getUser());
+    return done(null, data.findUserById(id));
 });
 
 // To authenticate users
 passport.use(new LocalStrategy(
     function (username, password, done) {
         // TODO verify (username, password)
-        return done(null, users.getUser());
+        return done(null, data.findUserById(1));
     }
 ));
 
@@ -66,7 +65,7 @@ passport.use(new ClientPasswordStrategy(
         // registered for the clientId
         console.log('client_id=' + clientId);
         console.log('client_secret=' + clientSecret);
-        return done(null, clients.getClient());
+        return done(null, data.findClientById(1));
     }
 ));
 
@@ -98,7 +97,7 @@ app.get('/authorize',
     server.authorize(function (clientId, redirectUri, done) {
         // TODO look up the client in our records and check the
         // redirectUri against the one registered for that client
-        done(null, clients.getClient(), redirectUri);
+        done(null, data.findClientById(1), redirectUri);
     }),
     function (req, res) {
         res.render('authorize', { transactionID: req.oauth2.transactionID, user: req.user, client: req.oauth2.client });
