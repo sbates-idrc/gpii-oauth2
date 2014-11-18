@@ -51,8 +51,15 @@ passport.deserializeUser(function(id, done) {
 // To authenticate users
 passport.use(new LocalStrategy(
     function (username, password, done) {
-        // TODO verify (username, password)
-        return done(null, data.findUserById(1));
+        var user = data.findUserByUsername(username);
+        if (!user) {
+            return done(null, false);
+        }
+        // TODO salt and hash the passwords
+        if (user.password !== password) {
+            return done(null, false);
+        }
+        return done(null, user);
     }
 ));
 
