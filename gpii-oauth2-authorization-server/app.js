@@ -55,7 +55,7 @@ passport.use(new LocalStrategy(
         if (!user) {
             return done(null, false);
         }
-        // TODO salt and hash the passwords
+        // TODO store passwords securely
         if (user.password !== password) {
             return done(null, false);
         }
@@ -84,7 +84,6 @@ passport.use(new ClientPasswordStrategy(
 var app = express();
 app.use(morgan(':method :url', { immediate: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
-// OAuth2orize requires session support
 app.use(session({secret: 'some secret'}));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -106,6 +105,9 @@ app.get('/authorize',
         // redirectUri against the one registered for that client
         done(null, data.findClientById(1), redirectUri);
     }),
+    // TODO what if the user has already authorized this client?
+    // in that case, we shouldn't have to ask them again
+    // and can immediately redirect back with an authorization code
     function (req, res) {
         res.render('authorize', { transactionID: req.oauth2.transactionID, user: req.user, client: req.oauth2.client });
     }
@@ -113,6 +115,8 @@ app.get('/authorize',
 
 app.post('/authorize_decision',
     login.ensureLoggedIn('/login'),
+    // server.decision() sets req.oauth2.res.allow = true
+    // see https://github.com/jaredhanson/oauth2orize/blob/master/lib/middleware/decision.js
     server.decision()
 );
 
