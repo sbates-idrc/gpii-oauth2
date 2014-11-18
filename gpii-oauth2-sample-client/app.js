@@ -32,7 +32,7 @@ function buildAuthorizeUrl (redirectUri) {
     });
 }
 
-function getAccessToken (code, callback) {
+function getAccessToken (code, redirectUri, callback) {
     var options = {
         hostname: 'localhost',
         port: config.authorizationServerPort,
@@ -47,7 +47,8 @@ function getAccessToken (code, callback) {
         client_id: clientId,
         client_secret: clientSecret,
         grant_type: 'authorization_code',
-        code: code
+        code: code,
+        redirect_uri: redirectUri
     });
 
     var req = http.request(options, function (res) {
@@ -106,7 +107,7 @@ app.get('/', function (req, res) {
 
 app.get('/authorize_callback', function (req, res) {
     // TODO verify the state parameter
-    getAccessToken(req.param('code'), function (accessTokenData) {
+    getAccessToken(req.param('code'), authorizeCallbackUri, function (accessTokenData) {
         getPreferences(accessTokenData.access_token, function (responseData) {
             res.render('preferences', {
                 accessToken: accessTokenData.access_token,

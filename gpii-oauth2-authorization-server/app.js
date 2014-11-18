@@ -1,5 +1,6 @@
 var bodyParser = require('body-parser');
 var login = require('connect-ensure-login');
+var crypto = require('crypto');
 var express = require('express');
 var exphbs  = require('express-handlebars');
 var session = require('express-session');
@@ -10,6 +11,13 @@ var LocalStrategy = require('passport-local').Strategy;
 var ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy;
 var data = require('../gpii-oauth2-datastore');
 var config = require('../config');
+
+function generateAuthCode () {
+    // TODO ensure authorization codes cannot be guessed
+    // TODO crypto.randomBytes can fail if there is not enough entropy
+    // see http://nodejs.org/api/crypto.html
+    return crypto.randomBytes(16).toString('hex');
+}
 
 // OAuth2orize server configuration
 // --------------------------------
@@ -25,13 +33,24 @@ server.deserializeClient(function (id, done) {
 });
 
 server.grant(oauth2orize.grant.code(function (client, redirectUri, user, ares, done) {
-    // TODO generate a code and record it
-    var code = 'code_1';
+    var code = generateAuthCode();
+    data.saveAuthCode(code, client.id, redirectUri, user.id);
     done(null, code);
 }));
 
 server.exchange(oauth2orize.exchange.code(function (client, code, redirectUri, done) {
     console.log('client=' + JSON.stringify(client));
+    var authCode = data.findAuthCodeByCode(code);
+    // TODO remove or flag an authCode after it is found to make single use
+    if (!authCode) {
+        return done(null, false);
+    }
+    if (client.id !== authCode.clientId) {
+        return done(null, false);
+    }
+    if (redirectUri !== authCode.redirectUri) {
+        return done(null, false);
+    }
     // TODO generate an access token and record it
     var accessToken = 'access_token_1';
     done(null, accessToken);
