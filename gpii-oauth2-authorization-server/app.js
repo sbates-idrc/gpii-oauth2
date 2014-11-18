@@ -1,14 +1,19 @@
 var bodyParser = require('body-parser');
+var login = require('connect-ensure-login');
 var express = require('express');
 var exphbs  = require('express-handlebars');
 var session = require('express-session');
 var morgan = require('morgan');
 var oauth2orize = require('oauth2orize');
 var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 var ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy;
 var config = require('../config');
 var users = require('../users');
 var clients = require('../clients');
+
+// OAuth2orize server configuration
+// --------------------------------
 
 var server = oauth2orize.createServer();
 
@@ -33,6 +38,25 @@ server.exchange(oauth2orize.exchange.code(function (client, code, redirectUri, d
     done(null, accessToken);
 }));
 
+// Passport configuration
+// ----------------------
+
+passport.serializeUser(function (user, done) {
+    return done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+    return done(null, users.getUser());
+});
+
+// To authenticate users
+passport.use(new LocalStrategy(
+    function (username, password, done) {
+        // TODO verify (username, password)
+        return done(null, users.getUser());
+    }
+));
+
 // Used to verify the (client_id, client_secret) pair.
 // ClientPasswordStrategy reads the client_id and client_secret from
 // the request body. Can also use a BasicStrategy for HTTP Basic authentication.
@@ -46,22 +70,31 @@ passport.use(new ClientPasswordStrategy(
     }
 ));
 
+// Express configuration
+// ---------------------
+
+// TODO in Express 3, what are the semantics of middleware and route ordering?
+
 var app = express();
 app.use(morgan(':method :url', { immediate: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 // OAuth2orize requires session support
 app.use(session({secret: 'some secret'}));
 app.use(passport.initialize());
+app.use(passport.session());
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
+app.get('/login', function(req, res) {
+    res.render('login');
+});
+
+app.post('/login',
+    passport.authenticate('local', { successReturnToOrRedirect: '/', failureRedirect: '/login' })
+);
+
 app.get('/authorize',
-    // TODO ask the user to log in if they aren't already
-    function (req, res, next) {
-        console.log('Adding user to request');
-        req.user = users.getUser();
-        next();
-    },
+    login.ensureLoggedIn('/login'),
     server.authorize(function (clientId, redirectUri, done) {
         // TODO look up the client in our records and check the
         // redirectUri against the one registered for that client
@@ -73,11 +106,12 @@ app.get('/authorize',
 );
 
 app.post('/authorize_decision',
+    login.ensureLoggedIn('/login'),
     server.decision()
 );
 
 app.post('/access_token',
-    passport.authenticate(['oauth2-client-password'], { session: false }),
+    passport.authenticate('oauth2-client-password', { session: false }),
     server.token()
 );
 
