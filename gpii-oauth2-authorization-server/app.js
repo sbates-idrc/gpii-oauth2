@@ -12,11 +12,29 @@ var ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy
 var data = require('../gpii-oauth2-datastore');
 var config = require('../config');
 
-function generateAuthCode () {
-    // TODO ensure authorization codes cannot be guessed
+function generateHandle() {
+    // TODO ensure that handles cannot be guessed
     // TODO crypto.randomBytes can fail if there is not enough entropy
     // see http://nodejs.org/api/crypto.html
     return crypto.randomBytes(16).toString('hex');
+}
+
+function generateAuthCode () {
+    return generateHandle();
+}
+
+function generateAccessToken() {
+    return generateHandle();
+}
+
+function walkMiddleware (middleware, i, req, res, next) {
+    if (i > middleware.length) {
+        return next();
+    } else {
+        return middleware[i](req, res, function () {
+            return walkMiddleware(middleware, i+1, req, res, next);
+        });
+    }
 }
 
 // OAuth2orize server configuration
@@ -33,27 +51,33 @@ server.deserializeClient(function (id, done) {
 });
 
 server.grant(oauth2orize.grant.code(function (client, redirectUri, user, ares, done) {
+    // Record the authorization decision if we haven't already
+    var authDecision = data.findAuthDecision(user.id, client.id, redirectUri);
+    if (!authDecision) {
+        var accessToken = generateAccessToken();
+        authDecision = data.saveAuthDecision(user.id, client.id, redirectUri, accessToken);
+    }
+    // Generate the authorization code and record it
     var code = generateAuthCode();
-    data.saveAuthCode(code, client.id, redirectUri, user.id);
+    data.saveAuthCode(authDecision.id, code);
     done(null, code);
 }));
 
 server.exchange(oauth2orize.exchange.code(function (client, code, redirectUri, done) {
-    console.log('client=' + JSON.stringify(client));
-    var authCode = data.findAuthCodeByCode(code);
+    console.log('EXCHANGE CODE: client=' + JSON.stringify(client));
+    console.log('EXCHANGE CODE: code=' + code);
+    var auth = data.findAuthByCode(code);
     // TODO remove or flag an authCode after it is found to make single use
-    if (!authCode) {
+    if (!auth) {
         return done(null, false);
     }
-    if (client.id !== authCode.clientId) {
+    if (client.id !== auth.clientId) {
         return done(null, false);
     }
-    if (redirectUri !== authCode.redirectUri) {
+    if (redirectUri !== auth.redirectUri) {
         return done(null, false);
     }
-    // TODO generate an access token and record it
-    var accessToken = 'access_token_1';
-    done(null, accessToken);
+    done(null, auth.accessToken);
 }));
 
 // Passport configuration
@@ -89,8 +113,8 @@ passport.use(new ClientPasswordStrategy(
     function (clientId, clientSecret, done) {
         // TODO verify that the clientSecret matches what we have
         // registered for the clientId
-        console.log('client_id=' + clientId);
-        console.log('client_secret=' + clientSecret);
+        console.log('CLIENT PASSWORD STRATEGY: client_id=' + clientId);
+        console.log('CLIENT PASSWORD STRATEGY: client_secret=' + clientSecret);
         return done(null, data.findClientById(1));
     }
 ));
@@ -124,18 +148,27 @@ app.get('/authorize',
         // redirectUri against the one registered for that client
         done(null, data.findClientById(1), redirectUri);
     }),
-    // TODO what if the user has already authorized this client?
-    // in that case, we shouldn't have to ask them again
-    // and can immediately redirect back with an authorization code
-    function (req, res) {
-        res.render('authorize', { transactionID: req.oauth2.transactionID, user: req.user, client: req.oauth2.client });
+    function (req, res, next) {
+        var userId = req.user.id;
+        var clientId = req.oauth2.client.id;
+        var redirectUri = req.oauth2.redirectURI;
+        var authDecision = data.findAuthDecision(userId, clientId, redirectUri);
+        if (authDecision) {
+            // The user has already authorized this request
+            req.query['transaction_id'] = req.oauth2.transactionID;
+            // TODO we can cache the server.decision middleware as it doesn't change for each request
+            // TODO middleware might not be an array
+            var middleware = server.decision();
+            return walkMiddleware(middleware, 0, req, res, next);
+        } else {
+            // Show the authorize page
+            res.render('authorize', { transactionID: req.oauth2.transactionID, user: req.user, client: req.oauth2.client });
+        }
     }
 );
 
 app.post('/authorize_decision',
     login.ensureLoggedIn('/login'),
-    // server.decision() sets req.oauth2.res.allow = true
-    // see https://github.com/jaredhanson/oauth2orize/blob/master/lib/middleware/decision.js
     server.decision()
 );
 
