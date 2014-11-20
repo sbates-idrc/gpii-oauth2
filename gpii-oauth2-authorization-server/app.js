@@ -162,6 +162,22 @@ app.post('/authorize_decision',
     server.decision()
 );
 
+app.get('/privacy',
+    login.ensureLoggedIn('/login'),
+    function (req, res, next) {
+        var userId = req.user.id;
+        var authorizedClients = data.findAuthorizedClientsByUserId(userId);
+        // Build view objects
+        var services = [];
+        authorizedClients.forEach(function (client) {
+            services.push({
+                serviceName: client.clientName
+            });
+        });
+        res.render('privacy', { user: req.user, authorizedServices: services });
+    }
+);
+
 app.post('/access_token',
     passport.authenticate('oauth2-client-password', { session: false }),
     server.token()

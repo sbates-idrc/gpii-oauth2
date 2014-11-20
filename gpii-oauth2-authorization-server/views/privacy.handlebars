@@ -1,0 +1,9 @@
+<p>User: {{user.username}}</p>
+
+<p><strong>Allow the following services to access my preferences:</strong></p>
+
+<ul>
+    {{#each authorizedServices}}
+        <li>{{serviceName}}</li>
+    {{/each}}
+</ul>

@@ -1,8 +1,8 @@
-<p>Hi {{user.username}}</p>
+<p>User: {{user.username}}</p>
 
-<p>{{client.name}} is requesting access to your account.</p>
+<p>In order to personalise your experience, <strong>{{client.name}}</strong> would like to access your GPII preferences.</p>
 
 <form action="/authorize_decision" method="post">
     <input name="transaction_id" type="hidden" value="{{ transactionID }}">
-    <input type="submit" value="Allow" id="allow">
+    <input type="submit" value="allow" id="allow">
 </form>

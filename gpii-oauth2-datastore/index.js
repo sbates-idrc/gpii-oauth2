@@ -6,7 +6,7 @@ var users = [
 ];
 
 var clients = [
-    { id: 1, name: 'client_1', clientId: 'client_id_1', clientSecret: 'client_secret_1' }
+    { id: 1, name: 'Service A', clientId: 'client_id_1', clientSecret: 'client_secret_1' }
 ];
 
 // Users
@@ -23,9 +23,11 @@ exports.findUserByUsername = function (username) {
 // Clients
 // -------
 
-exports.findClientById = function (id) {
+var findClientById = function (id) {
     return _.find(clients, function (client) { return client.id === id });
 };
+
+exports.findClientById = findClientById;
 
 // Authorization Decisions
 // -----------------------
@@ -53,7 +55,7 @@ exports.saveAuthDecision = function (userId, clientId, redirectUri, accessToken)
 
 function findAuthDecisionById (id) {
     return _.find(authDecisions, function (ad) { return ad.id === id });
-};
+}
 
 exports.findAuthDecision = function (userId, clientId, redirectUri) {
     return _.find(authDecisions, function (ad) {
@@ -96,4 +98,22 @@ exports.findAuthByCode = function (code) {
         redirectUri: authDecision.redirectUri,
         accessToken: authDecision.accessToken
     });
+};
+
+// Authorization Decision join Client
+// ----------------------------------
+
+exports.findAuthorizedClientsByUserId = function (userId) {
+    var userAuthDecisions = _.filter(authDecisions, function (ad) { return ad.userId === userId });
+    // TODO when move to CouchDB, do join there, rather than by hand
+    var authorizedClients = [];
+    userAuthDecisions.forEach(function (ad) {
+        var client = findClientById(ad.clientId);
+        if (client) {
+            authorizedClients.push({
+                clientName: client.name
+            });
+        }
+    });
+    return authorizedClients;
 };
