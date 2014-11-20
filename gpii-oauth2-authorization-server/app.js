@@ -164,7 +164,7 @@ app.post('/authorize_decision',
 
 app.get('/privacy',
     login.ensureLoggedIn('/login'),
-    function (req, res, next) {
+    function (req, res) {
         var userId = req.user.id;
         var authorizedClients = data.findAuthorizedClientsByUserId(userId);
         // Build view objects

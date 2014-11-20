@@ -100,6 +100,10 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 app.get('/', function (req, res) {
+    res.render('home');
+});
+
+app.get('/getprefs', function (req, res) {
     var redirectUrl = buildAuthorizeUrl(authorizeCallbackUri);
     console.log('Redirecting to ' + redirectUrl);
     res.redirect(redirectUrl);

@@ -21,7 +21,7 @@ app.use(passport.initialize());
 app.get('/preferences',
     passport.authenticate('bearer', { session: false }),
     function (req, res) {
-        res.send('hello world');
+        res.send('PREFERENCES RESPONSE GOES HERE');
     }
 );
 
