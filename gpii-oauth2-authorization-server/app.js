@@ -11,6 +11,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy;
 var data = require('../gpii-oauth2-datastore');
 var config = require('../config');
+var utils = require('./utils');
 
 function generateHandle() {
     // TODO ensure that handles cannot be guessed
@@ -25,16 +26,6 @@ function generateAuthCode () {
 
 function generateAccessToken() {
     return generateHandle();
-}
-
-function walkMiddleware (middleware, i, req, res, next) {
-    if (i > middleware.length) {
-        return next();
-    } else {
-        return middleware[i](req, res, function () {
-            return walkMiddleware(middleware, i+1, req, res, next);
-        });
-    }
 }
 
 // OAuth2orize server configuration
@@ -157,9 +148,8 @@ app.get('/authorize',
             // The user has already authorized this request
             req.query['transaction_id'] = req.oauth2.transactionID;
             // TODO we can cache the server.decision middleware as it doesn't change for each request
-            // TODO middleware might not be an array
             var middleware = server.decision();
-            return walkMiddleware(middleware, 0, req, res, next);
+            return utils.walkMiddleware(middleware, 0, req, res, next);
         } else {
             // Show the authorize page
             res.render('authorize', { transactionID: req.oauth2.transactionID, user: req.user, client: req.oauth2.client });
