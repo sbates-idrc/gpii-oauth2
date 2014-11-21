@@ -120,8 +120,7 @@ app.post('/authorize_decision',
 app.get('/privacy',
     login.ensureLoggedIn('/login'),
     function (req, res) {
-        var userId = req.user.id;
-        var authorizedClients = data.findAuthorizedClientsByUserId(userId);
+        var authorizedClients = authorizationService.getAuthorizedClientsForUser(req.user.id);
         // Build view objects
         var services = [];
         authorizedClients.forEach(function (client) {
@@ -139,8 +138,7 @@ app.post('/remove_authorization',
     function (req, res) {
         var userId = req.user.id;
         var authDecisionId = parseInt(req.body.remove, 10);
-        console.log("REMOVE AUTHORIZATION: " + authDecisionId);
-        data.removeAuthDecisionId(userId, authDecisionId);
+        authorizationService.removeAuthorization(userId, authDecisionId);
         res.redirect('/privacy');
     }
 );

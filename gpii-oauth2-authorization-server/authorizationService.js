@@ -42,12 +42,22 @@ module.exports = function (data) {
         } else {
             return false;
         }
+    };
+
+    var getAuthorizedClientsForUser = function (userId) {
+        return data.findAuthorizedClientsByUserId(userId);
+    };
+
+    var removeAuthorization = function (userId, authDecisionId) {
+        data.removeAuthDecisionId(userId, authDecisionId);
     }
 
     return {
         grantAuthorizationCode: grantAuthorizationCode,
         userHasAuthorized: userHasAuthorized,
-        exchangeCodeForAccessToken: exchangeCodeForAccessToken
+        exchangeCodeForAccessToken: exchangeCodeForAccessToken,
+        getAuthorizedClientsForUser: getAuthorizedClientsForUser,
+        removeAuthorization: removeAuthorization
     };
     
 };
