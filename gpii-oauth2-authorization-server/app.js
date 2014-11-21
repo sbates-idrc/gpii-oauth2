@@ -171,10 +171,22 @@ app.get('/privacy',
         var services = [];
         authorizedClients.forEach(function (client) {
             services.push({
-                serviceName: client.clientName
+                serviceName: client.clientName,
+                authDecisionId: client.authDecisionId
             });
         });
         res.render('privacy', { user: req.user, authorizedServices: services });
+    }
+);
+
+app.post('/remove_authorization',
+    login.ensureLoggedIn('/login'),
+    function (req, res) {
+        var userId = req.user.id;
+        var authDecisionId = parseInt(req.body.remove, 10);
+        console.log("REMOVE AUTHORIZATION: " + authDecisionId);
+        data.removeAuthDecisionId(userId, authDecisionId);
+        res.redirect('/privacy');
     }
 );
 

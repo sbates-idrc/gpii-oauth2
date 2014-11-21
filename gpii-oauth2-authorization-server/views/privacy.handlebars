@@ -4,8 +4,12 @@
 
 <p><strong>Allow the following services to access my preferences:</strong></p>
 
+<form action="/remove_authorization" method="post">
+
 <ul>
     {{#each authorizedServices}}
-        <li>{{serviceName}}</li>
+        <li>{{serviceName}} <button type="submit" name="remove" value="{{authDecisionId}}">remove</button></li>
     {{/each}}
 </ul>
+
+</form>

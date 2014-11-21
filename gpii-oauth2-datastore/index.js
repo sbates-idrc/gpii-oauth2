@@ -47,22 +47,39 @@ exports.saveAuthDecision = function (userId, clientId, redirectUri, accessToken)
         userId: userId, // foreign key
         clientId: clientId, // foreign key
         redirectUri: redirectUri,
-        accessToken: accessToken
+        accessToken: accessToken,
+        removed: false
     };
     authDecisions.push(authDecision);
+    console.log("SAVE AUTH DECISION: id=" + authDecisionId);
+    console.log(JSON.stringify(authDecisions, null, 4));
     return authDecision;
 };
 
 function findAuthDecisionById (id) {
-    return _.find(authDecisions, function (ad) { return ad.id === id });
+    return _.find(authDecisions, function (ad) {
+        return ad.id === id && ad.removed === false;
+    });
 }
 
 exports.findAuthDecision = function (userId, clientId, redirectUri) {
     return _.find(authDecisions, function (ad) {
         return ad.userId === userId
             && ad.clientId === clientId
-            && ad.redirectUri === redirectUri;
+            && ad.redirectUri === redirectUri
+            && ad.removed === false;
     });
+};
+
+exports.removeAuthDecisionId = function (userId, authDecisionId) {
+    // Only remove the authorization with authDecisionId if it is owned
+    // by userId so that users cannot delete authorizations owned by others
+    var authDecision = findAuthDecisionById(authDecisionId);
+    if (authDecision && authDecision.userId === userId) {
+        authDecision.removed = true;
+    }
+    console.log("REMOVE AUTH DECISION: id=" + authDecisionId);
+    console.log(JSON.stringify(authDecisions, null, 4));
 };
 
 // Authorization Codes
@@ -78,6 +95,8 @@ exports.saveAuthCode = function (authDecisionId, code) {
         authDecisionId: authDecisionId, // foreign key
         code: code
     });
+    console.log("SAVE AUTH CODE: code=" + code);
+    console.log(JSON.stringify(authCodes, null, 4));
 };
 
 // Authorization Decision join Authorization Code
@@ -104,13 +123,16 @@ exports.findAuthByCode = function (code) {
 // ----------------------------------
 
 exports.findAuthorizedClientsByUserId = function (userId) {
-    var userAuthDecisions = _.filter(authDecisions, function (ad) { return ad.userId === userId });
+    var userAuthDecisions = _.filter(authDecisions, function (ad) {
+        return ad.userId === userId && ad.removed === false;
+    });
     // TODO when move to CouchDB, do join there, rather than by hand
     var authorizedClients = [];
     userAuthDecisions.forEach(function (ad) {
         var client = findClientById(ad.clientId);
         if (client) {
             authorizedClients.push({
+                authDecisionId: ad.id,
                 clientName: client.name
             });
         }
