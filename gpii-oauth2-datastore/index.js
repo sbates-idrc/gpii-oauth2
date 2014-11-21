@@ -13,18 +13,18 @@ var clients = [
 // -----
 
 exports.findUserById = function (id) {
-    return _.find(users, function (user) { return user.id === id });
+    return _.find(users, function (user) { return user.id === id; });
 };
 
 exports.findUserByUsername = function (username) {
-    return _.find(users, function (user) { return user.username === username} );
+    return _.find(users, function (user) { return user.username === username; } );
 };
 
 // Clients
 // -------
 
 var findClientById = function (id) {
-    return _.find(clients, function (client) { return client.id === id });
+    return _.find(clients, function (client) { return client.id === id; });
 };
 
 exports.findClientById = findClientById;

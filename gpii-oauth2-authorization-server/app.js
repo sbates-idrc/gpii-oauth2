@@ -74,6 +74,7 @@ passport.use(new ClientPasswordStrategy(
 var app = express();
 app.use(morgan(':method :url', { immediate: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
+// TODO move the secret to configuration
 app.use(session({secret: 'some secret'}));
 app.use(passport.initialize());
 app.use(passport.session());
