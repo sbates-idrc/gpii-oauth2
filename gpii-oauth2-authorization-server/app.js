@@ -53,16 +53,11 @@ passport.use(new LocalStrategy(
     }
 ));
 
-// Used to verify the (client_id, client_secret) pair.
-// ClientPasswordStrategy reads the client_id and client_secret from
-// the request body. Can also use a BasicStrategy for HTTP Basic authentication.
+// ClientPasswordStrategy reads the client_id and client_secret from the
+// request body. Can also use a BasicStrategy for HTTP Basic authentication.
 passport.use(new ClientPasswordStrategy(
-    function (clientId, clientSecret, done) {
-        // TODO verify that the clientSecret matches what we have
-        // registered for the clientId
-        console.log('CLIENT PASSWORD STRATEGY: client_id=' + clientId);
-        console.log('CLIENT PASSWORD STRATEGY: client_secret=' + clientSecret);
-        return done(null, data.findClientById(1));
+    function (oauth2ClientId, oauth2ClientSecret, done) {
+        return done(null, clientService.authenticateClient(oauth2ClientId, oauth2ClientSecret));
     }
 ));
 
@@ -91,10 +86,8 @@ app.post('/login',
 
 app.get('/authorize',
     login.ensureLoggedIn('/login'),
-    server.authorize(function (clientId, redirectUri, done) {
-        // TODO look up the client in our records and check the
-        // redirectUri against the one registered for that client
-        done(null, data.findClientById(1), redirectUri);
+    server.authorize(function (oauth2ClientId, redirectUri, done) {
+        done(null, clientService.checkClientRedirectUri(oauth2ClientId, redirectUri), redirectUri);
     }),
     function (req, res, next) {
         var userId = req.user.id;

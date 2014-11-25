@@ -1,4 +1,6 @@
 var _ = require('lodash');
+var util = require('util');
+var config = require('../config');
 
 var users = [
     { id: 1, username: 'alice', password: 'a' },
@@ -6,7 +8,13 @@ var users = [
 ];
 
 var clients = [
-    { id: 1, name: 'Service A', clientId: 'client_id_1', clientSecret: 'client_secret_1' }
+    {
+        id: 1,
+        name: 'Service A',
+        oauth2ClientId: 'client_id_1',
+        oauth2ClientSecret: 'client_secret_1',
+        redirectUri: util.format('http://localhost:%d/authorize_callback', config.clientPort)
+    }
 ];
 
 // Users
@@ -28,6 +36,10 @@ var findClientById = function (id) {
 };
 
 exports.findClientById = findClientById;
+
+exports.findClientByOauth2ClientId = function (oauth2ClientId) {
+    return _.find(clients, function (client) { return client.oauth2ClientId === oauth2ClientId; });
+};
 
 // Authorization Decisions
 // -----------------------
