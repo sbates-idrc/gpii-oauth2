@@ -72,6 +72,7 @@ passport.use(new ClientPasswordStrategy(
 // TODO in Express 3, what are the semantics of middleware and route ordering?
 
 var app = express();
+app.use(express.static(__dirname + '/public'));
 app.use(morgan(':method :url', { immediate: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({secret: 'some secret'}));
