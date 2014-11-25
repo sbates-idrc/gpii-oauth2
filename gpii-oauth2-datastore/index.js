@@ -1,4 +1,6 @@
 var _ = require('lodash');
+var util = require('util');
+var config = require('../config');
 
 var users = [
     { id: 1, username: 'alice', password: 'a' },
@@ -6,29 +8,45 @@ var users = [
 ];
 
 var clients = [
-    { id: 1, name: 'Service A', clientId: 'client_id_1', clientSecret: 'client_secret_1' },
-    { id: 2, name: 'Service Passport Client', clientId: 'client_id_pp', clientSecret: 'client_secret_pp' }
+    {
+        id: 1,
+        name: 'Service A',
+        oauth2ClientId: 'client_id_1',
+        oauth2ClientSecret: 'client_secret_1',
+        redirectUri: util.format('http://localhost:%d/authorize_callback', config.clientPort)
+    },
+    {
+        id: 2,
+        name: 'Service Passport Client',
+        oauth2ClientId: 'client_id_pp',
+        oauth2ClientSecret: 'client_secret_pp',
+        redirectUri: util.format('http://localhost:%d/authorize_callback', config.passportClientPort)
+    }
 ];
 
 // Users
 // -----
 
 exports.findUserById = function (id) {
-    return _.find(users, function (user) { return user.id === id });
+    return _.find(users, function (user) { return user.id === id; });
 };
 
 exports.findUserByUsername = function (username) {
-    return _.find(users, function (user) { return user.username === username} );
+    return _.find(users, function (user) { return user.username === username; } );
 };
 
 // Clients
 // -------
 
 var findClientById = function (id) {
-    return _.find(clients, function (client) { return client.id === id });
+    return _.find(clients, function (client) { return client.id === id; });
 };
 
 exports.findClientById = findClientById;
+
+exports.findClientByOauth2ClientId = function (oauth2ClientId) {
+    return _.find(clients, function (client) { return client.oauth2ClientId === oauth2ClientId; });
+};
 
 // Authorization Decisions
 // -----------------------
