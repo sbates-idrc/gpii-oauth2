@@ -70,7 +70,7 @@ var app = express();
 app.use(morgan(':method :url', { immediate: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 // TODO move the secret to configuration
-app.use(session({secret: 'some secret'}));
+app.use(session({ name: 'auth_server_connect.sid', secret: 'some secret' }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));

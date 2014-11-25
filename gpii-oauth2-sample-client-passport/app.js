@@ -68,7 +68,8 @@ var app = express();
 app.use(morgan(':method :url', { immediate: true }));
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
-app.use(session({secret: 'some secret'}));
+// TODO move the secret to configuration
+app.use(session({ name: 'client_pp_connect.sid', secret: 'some secret' }));
 app.use(passport.initialize());
 app.use(passport.session());
 
