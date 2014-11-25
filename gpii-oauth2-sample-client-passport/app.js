@@ -46,15 +46,16 @@ function getPreferences (accessToken, callback) {
 }
 
 passport.use('gpii', new OAuth2Strategy({
-    authorizationURL: authorizeUri,
-    tokenURL: authorizeTokenUri,
-    clientID: clientId,
-    clientSecret: clientSecret,
-    callbackURL: authorizeCallbackUri
-},
-function(accessToken, refreshToken, profile, done) {
-    done(null, { accessToken: accessToken });
-}));
+        authorizationURL: authorizeUri,
+        tokenURL: authorizeTokenUri,
+        clientID: clientId,
+        clientSecret: clientSecret,
+        callbackURL: authorizeCallbackUri
+    },
+    function(accessToken, refreshToken, profile, done) {
+        done(null, { accessToken: accessToken });
+    }
+));
 
 passport.serializeUser(function (user, done) {
     return done(null, user);
