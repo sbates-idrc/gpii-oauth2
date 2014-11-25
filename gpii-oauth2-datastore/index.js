@@ -6,7 +6,8 @@ var users = [
 ];
 
 var clients = [
-    { id: 1, name: 'Service A', clientId: 'client_id_1', clientSecret: 'client_secret_1' }
+    { id: 1, name: 'Service A', clientId: 'client_id_1', clientSecret: 'client_secret_1' },
+    { id: 2, name: 'Service Passport Client', clientId: 'client_id_pp', clientSecret: 'client_secret_pp' }
 ];
 
 // Users
