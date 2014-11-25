@@ -14,6 +14,13 @@ var clients = [
         oauth2ClientId: 'client_id_1',
         oauth2ClientSecret: 'client_secret_1',
         redirectUri: util.format('http://localhost:%d/authorize_callback', config.clientPort)
+    },
+    {
+        id: 2,
+        name: 'Service Passport Client',
+        oauth2ClientId: 'client_id_pp',
+        oauth2ClientSecret: 'client_secret_pp',
+        redirectUri: util.format('http://localhost:%d/authorize_callback', config.passportClientPort)
     }
 ];
 
