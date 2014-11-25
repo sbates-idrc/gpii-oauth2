@@ -132,7 +132,7 @@ app.post('/remove_authorization',
     function (req, res) {
         var userId = req.user.id;
         var authDecisionId = parseInt(req.body.remove, 10);
-        authorizationService.removeAuthorization(userId, authDecisionId);
+        authorizationService.revokeAuthorization(userId, authDecisionId);
         res.redirect('/privacy');
     }
 );

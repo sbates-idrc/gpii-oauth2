@@ -67,7 +67,7 @@ exports.saveAuthDecision = function (userId, clientId, redirectUri, accessToken)
         clientId: clientId, // foreign key
         redirectUri: redirectUri,
         accessToken: accessToken,
-        removed: false
+        revoked: false
     };
     authDecisions.push(authDecision);
     console.log("SAVE AUTH DECISION: id=" + authDecisionId);
@@ -77,7 +77,7 @@ exports.saveAuthDecision = function (userId, clientId, redirectUri, accessToken)
 
 function findAuthDecisionById (id) {
     return _.find(authDecisions, function (ad) {
-        return ad.id === id && ad.removed === false;
+        return ad.id === id && ad.revoked === false;
     });
 }
 
@@ -86,18 +86,18 @@ exports.findAuthDecision = function (userId, clientId, redirectUri) {
         return ad.userId === userId
             && ad.clientId === clientId
             && ad.redirectUri === redirectUri
-            && ad.removed === false;
+            && ad.revoked === false;
     });
 };
 
-exports.removeAuthDecisionId = function (userId, authDecisionId) {
-    // Only remove the authorization with authDecisionId if it is owned
-    // by userId so that users cannot delete authorizations owned by others
+exports.revokeAuthDecision = function (userId, authDecisionId) {
+    // Only revoke the authorization with authDecisionId if it is owned
+    // by userId so that users cannot revoke authorizations owned by others
     var authDecision = findAuthDecisionById(authDecisionId);
     if (authDecision && authDecision.userId === userId) {
-        authDecision.removed = true;
+        authDecision.revoked = true;
     }
-    console.log("REMOVE AUTH DECISION: id=" + authDecisionId);
+    console.log("REVOKE AUTH DECISION: id=" + authDecisionId);
     console.log(JSON.stringify(authDecisions, null, 4));
 };
 
@@ -143,7 +143,7 @@ exports.findAuthByCode = function (code) {
 
 exports.findAuthorizedClientsByUserId = function (userId) {
     var userAuthDecisions = _.filter(authDecisions, function (ad) {
-        return ad.userId === userId && ad.removed === false;
+        return ad.userId === userId && ad.revoked === false;
     });
     // TODO when move to CouchDB, do join there, rather than by hand
     var authorizedClients = [];
