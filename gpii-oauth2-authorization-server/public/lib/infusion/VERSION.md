@@ -7,9 +7,9 @@ of the Infusion master branch
 
 using the command line
 
-grunt custom --source=true --include="renderer" --name="renderer"
+grunt custom --source=true --include="renderer, normalize"
 
-The following directories were stripped out of the build since they contain code that is included in the infusion-renderer.js file:
+The following directories were stripped out of the build since they contain code that is included in the infusion-custom.js file:
 
 * README.md
 * ReleaseNotes.md
@@ -21,6 +21,7 @@ The following directories were stripped out of the build since they contain code
 * src/shared/lib/infusion/src/lib/jquery/ui/jQueryUICoreDependencies.json
 * src/shared/lib/infusion/src/lib/jquery/ui/jQueryUIWidgetsDependencies.json
 * src/shared/lib/infusion/src/lib/jquery/ui/js/
+* src/shared/lib/infusion/src/lib/normalize/normalizeDependencies.json
 
 Additionally, the testing framework from Infusion is used (public/tests/lib/infusion) and should be updated to a matching version. This directory is a copy of
 

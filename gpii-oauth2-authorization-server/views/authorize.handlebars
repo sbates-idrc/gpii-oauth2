@@ -1,8 +1,34 @@
-<p>User: {{user.username}}</p>
+{{#section 'head'}}
+    <link rel="stylesheet" type="text/css" href="lib/infusion/src/framework/core/css/fluid.css" />
+    <link rel="stylesheet" type="text/css" href="src/components/css/authorize.css" />
 
-<p>In order to personalise your experience, <strong>{{client.name}}</strong> would like to access your GPII preferences.</p>
+    <script type="text/javascript" src="lib/infusion/infusion-renderer.js"></script>
+    <script type="text/javascript" src="src/components/js/authorize.js"></script>
 
-<form action="/authorize_decision" method="post">
-    <input type="hidden" name="transaction_id" value="{{ transactionID }}">
-    <input type="submit" name="allow" value="allow">
-</form>
+    <title>Authorize Service</title>
+
+{{/section}}
+
+<section class="gpiic-oauth-authorization gpii-oauth-authorization fl-centered">
+    <p class="gpiic-oauth-authorization-user"></p>
+
+    <p class="gpiic-oauth-authorization-description"></p>
+
+    <form action="/authorize_decision" method="post">
+        <input type="hidden" class="gpiic-oauth-authorization-transaction" name="transaction_id" value="">
+        <input type="submit" class="gpiic-oauth-authorization-allow" name="allow" value="">
+        <input type="submit" class="gpiic-oauth-authorization-cancel" name="cancel" value="">
+    </form>
+
+    <p class="gpiic-oauth-authorization-directions"></p>
+</section>
+
+<script>
+    gpii.oauth.authorization(".gpiic-oauth-authorization", {
+        model: {
+            user: "{{user.username}}",
+            service: "{{client.name}}",
+            transactionID: "{{ transactionID }}"
+        }
+    });
+</script>

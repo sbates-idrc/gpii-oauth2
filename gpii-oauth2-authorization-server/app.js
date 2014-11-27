@@ -15,6 +15,24 @@ var userService = require('./userService')(data);
 var utils = require('./utils');
 var config = require('../config');
 
+var hbs = exphbs.create({
+    defaultLayout: 'main',
+    helpers: {
+        // Based on the example from page 79 of:
+        // Web Development with Node and Express by Ethan Brown (O'Reilly).
+        // Copyright 2014 Ethan Brown, 978-1-491-94930-6
+        section: function (name, options) {
+            console.log("name:", name, "options:", options);
+            if(!this._sections) {
+                this._sections = {};
+            }
+            this._sections[name] = options.fn(this);
+            return null;
+        }
+    }
+
+});
+
 // OAuth2orize server configuration
 // --------------------------------
 
@@ -74,7 +92,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({secret: 'some secret'}));
 app.use(passport.initialize());
 app.use(passport.session());
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
 app.get('/login', function(req, res) {
