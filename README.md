@@ -19,3 +19,11 @@ Pages:
 - [http://localhost:3000/privacy](http://localhost:3000/privacy) - Privacy settings
 
 For a list of test users and passwords, see: [the datastore source code](gpii-oauth2-datastore/index.js)
+
+Running the datastore tests
+---------------------------
+
+- `cd gpii-oauth2-datastore`
+- `npm install`
+- `grunt dedupe-infusion`
+- `node test/DatastoreTests.js`
