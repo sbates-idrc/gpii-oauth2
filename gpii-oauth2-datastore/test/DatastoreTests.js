@@ -10,7 +10,7 @@ https://github.com/gpii/universal/LICENSE.txt
 
 var fluid = fluid || require("infusion");
 var jqUnit = fluid.require("jqUnit");
-var datastore = require("../index.js");
+require("../index.js");
 
 (function () {
 
@@ -51,19 +51,19 @@ var datastore = require("../index.js");
     jqUnit.module("GPII OAuth2 data store");
 
     jqUnit.test("findUserById() returns the user for existing id", function () {
-        var data = datastore.createDatastore();
+        var data = gpii.oauth2.datastore.createDatastore();
         var user = data.findUserById(1);
         jqUnit.assertEquals("username is alice", "alice", user.username);
     });
 
     jqUnit.test("findUserById() returns falsey for non-existing id", function () {
-        var data = datastore.createDatastore();
+        var data = gpii.oauth2.datastore.createDatastore();
         var user = data.findUserById(10);
         jqUnit.assertFalse("user is falsey", user);
     });
 
     jqUnit.test("Save an Authorization Decision and retrieve it", function () {
-        var data = datastore.createDatastore();
+        var data = gpii.oauth2.datastore.createDatastore();
         var authDecision1 = gpii.tests.oauth2.datastore.saveAuthDecision1(data);
         gpii.tests.oauth2.datastore.verifyAuthDecision1(authDecision1);
         jqUnit.assertValue("Id has been assigned", authDecision1.id);

@@ -8,7 +8,12 @@ var oauth2orize = require('oauth2orize');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy;
-var data = require('../gpii-oauth2-datastore').createDatastore();
+
+var fluid = fluid || require("infusion");
+require('../gpii-oauth2-datastore');
+var gpii = fluid.registerNamespace("gpii");
+var data = gpii.oauth2.datastore.createDatastore();
+
 var authorizationService = require('./authorizationService')(data);
 var clientService = require('./clientService')(data);
 var userService = require('./userService')(data);

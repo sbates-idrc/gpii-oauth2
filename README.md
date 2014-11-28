@@ -1,15 +1,24 @@
 GPII OAuth2
 ===========
 
+Get Infusion and dedupe:
+
+- `npm install`
+- `grunt dedupe-infusion`
+
 Start servers:
 
 - `cd gpii-oauth2-authorization-server`
+- `npm install`
 - `node app.js`
 - `cd gpii-oauth2-resource-server`
+- `npm install`
 - `node app.js`
 - `cd gpii-oauth2-sample-client`
+- `npm install`
 - `node app.js`
 - `cd gpii-oauth2-sample-client-passport`
+- `npm install`
 - `node app.js`
 
 Pages:
@@ -25,5 +34,4 @@ Running the datastore tests
 
 - `cd gpii-oauth2-datastore`
 - `npm install`
-- `grunt dedupe-infusion`
 - `node test/DatastoreTests.js`

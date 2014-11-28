@@ -1,8 +1,12 @@
+var fluid = fluid || require("infusion");
 var _ = require('lodash');
 var util = require('util');
 var config = require('../config');
 
-exports.createDatastore = function () {
+var gpii = fluid.registerNamespace("gpii");
+fluid.registerNamespace("gpii.oauth2.datastore");
+
+gpii.oauth2.datastore.createDatastore = function () {
 
     var that = {};
 

@@ -3,11 +3,5 @@
   "version": "0.1.0",
   "dependencies": {
     "lodash": "^2.4.1"
-  },
-  "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-gpii": "git://github.com/GPII/grunt-gpii.git#a4aca06cbaf7523eb1af56ed65ce6bd30b8ec325",
-    "infusion": "git://github.com/fluid-project/infusion.git#df5f8cfabf815a4086b778e73125c3c952dda4ec",
-    "jqUnit": "git://github.com/fluid-project/node-jqUnit.git#b7ef53aac1ca365bf23d35d255fae874faa88b70"
   }
 }
