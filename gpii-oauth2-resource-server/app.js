@@ -2,7 +2,7 @@ var express = require('express');
 var morgan = require('morgan');
 var passport = require('passport');
 var BearerStrategy = require('passport-http-bearer').Strategy;
-var data = require('../gpii-oauth2-datastore');
+var data = require('../gpii-oauth2-datastore').createDatastore();
 var config = require('../config');
 
 // Used to check the accessToken on protected APIs

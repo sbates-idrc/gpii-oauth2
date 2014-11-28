@@ -10,7 +10,7 @@ https://github.com/gpii/universal/LICENSE.txt
 
 var fluid = require("infusion");
 var jqUnit = fluid.require("jqUnit");
-var data = require("../index.js");
+var datastore = require("../index.js");
 
 (function () {
 
@@ -26,14 +26,14 @@ var data = require("../index.js");
         accessToken: "access_token_1"
     };
 
-    datastoreTests.saveAuthDecision1 = function () {
+    datastoreTests.saveAuthDecision1 = function (data) {
         return data.saveAuthDecision(testdata.authDecision1.userId,
             testdata.authDecision1.clientId,
             testdata.authDecision1.redirectUri,
             testdata.authDecision1.accessToken);
     };
 
-    datastoreTests.findAuthDecision1 = function () {
+    datastoreTests.findAuthDecision1 = function (data) {
         return data.findAuthDecision(testdata.authDecision1.userId,
             testdata.authDecision1.clientId,
             testdata.authDecision1.redirectUri);
@@ -50,23 +50,23 @@ var data = require("../index.js");
     jqUnit.module("GPII OAuth2 data store");
 
     jqUnit.test("findUserById() returns the user for existing id", function () {
-        // TODO reset data
+        var data = datastore.createDatastore();
         var user = data.findUserById(1);
         jqUnit.assertEquals("username is alice", "alice", user.username);
     });
 
     jqUnit.test("findUserById() returns falsey for non-existing id", function () {
-        // TODO reset data
+        var data = datastore.createDatastore();
         var user = data.findUserById(10);
         jqUnit.assertFalse("user is falsey", user);
     });
 
     jqUnit.test("Save an Authorization Decision and retrieve it", function () {
-        // TODO reset data
-        var authDecision1 = datastoreTests.saveAuthDecision1();
+        var data = datastore.createDatastore();
+        var authDecision1 = datastoreTests.saveAuthDecision1(data);
         datastoreTests.verifyAuthDecision1(authDecision1);
         jqUnit.assertValue("Id has been assigned", authDecision1.id);
-        var retrieved = datastoreTests.findAuthDecision1();
+        var retrieved = datastoreTests.findAuthDecision1(data);
         datastoreTests.verifyAuthDecision1(retrieved);
     });
 
