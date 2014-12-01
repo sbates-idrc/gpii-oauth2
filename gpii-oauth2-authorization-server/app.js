@@ -12,11 +12,13 @@ var ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy
 var fluid = fluid || require("infusion");
 require('../gpii-oauth2-datastore');
 var gpii = fluid.registerNamespace("gpii");
-var data = gpii.oauth2.datastore.createDatastore();
+var data = gpii.oauth2.datastore();
+
+require('./userService');
+var userService = gpii.oauth2.userService();
 
 var authorizationService = require('./authorizationService')(data);
 var clientService = require('./clientService')(data);
-var userService = require('./userService')(data);
 var utils = require('./utils');
 var config = require('../config');
 

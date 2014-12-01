@@ -6,7 +6,7 @@ var BearerStrategy = require('passport-http-bearer').Strategy;
 var fluid = fluid || require("infusion");
 require('../gpii-oauth2-datastore');
 var gpii = fluid.registerNamespace("gpii");
-var data = gpii.oauth2.datastore.createDatastore();
+var data = gpii.oauth2.datastore();
 var config = require('../config');
 
 // Used to check the accessToken on protected APIs

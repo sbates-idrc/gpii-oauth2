@@ -1,22 +1,33 @@
-module.exports = function (data) {
+var fluid = fluid || require("infusion");
 
-    var authenticateUser = function (username, password) {
-        var user = data.findUserByUsername(username);
-        // TODO store passwords securely
-        if (user && user.password === password) {
-            return user;
+var gpii = fluid.registerNamespace("gpii");
+fluid.registerNamespace("gpii.oauth2");
+
+fluid.defaults("gpii.oauth2.userService", {
+    gradeNames: ["fluid.standardRelayComponent","autoInit"],
+    components: {
+        // TODO once we have converted the top level app to a component,
+        // TODO create the datastore instance there and inject it
+        datastore: {
+            type: "gpii.oauth2.datastore"
         }
-        return false;
-    };
+    },
+    invokers: {
+        authenticateUser: {
+            funcName: "gpii.oauth2.userService.authenticateUser",
+            args: ["{datastore}",  "{arguments}.0",  "{arguments}.1"]
+        },
+        getUserById: {
+            func: "{datastore}.findUserById"
+        }
+    }
+});
 
-    var getUserById = function (userId) {
-        return data.findUserById(userId);
-    };
-
-
-    return {
-        authenticateUser: authenticateUser,
-        getUserById: getUserById
-    };
-
+gpii.oauth2.userService.authenticateUser = function (datastore, username, password) {
+    var user = datastore.findUserByUsername(username);
+    // TODO store passwords securely
+    if (user && user.password === password) {
+        return user;
+    }
+    return false;
 };
