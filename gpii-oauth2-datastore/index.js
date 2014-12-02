@@ -8,6 +8,11 @@ fluid.registerNamespace("gpii.oauth2");
 
 fluid.defaults("gpii.oauth2.datastore", {
     gradeNames: ["fluid.standardRelayComponent","autoInit"],
+    // We are using a model but we don't expect to share the model or to
+    // have subscribers to change events.
+    // By using a model we gain the documentation of the mutable state
+    // and the identification of changes to the mutable state through
+    // use of the change applier.
     model: {
         users: [
             { id: 1, username: 'alice', password: 'a' },
@@ -152,8 +157,9 @@ gpii.oauth2.datastore.revokeAuthDecision = function (authDecisions, applier, use
     if (authDecision && authDecision.userId === userId) {
         authDecision.revoked = true;
     }
-    // TODO we are changing one of the authDecision items in the collection but
-    // TODO notifying on the collection -- is there a better way?
+    // We are changing one of the authDecision items in the collection but
+    // notifying on the collection (it's not worth it to extend the query api
+    // to allow a more fine grained update)
     applier.change("authDecisions", authDecisions);
     console.log("REVOKE AUTH DECISION: id=" + authDecisionId);
     console.log(JSON.stringify(authDecisions, null, 4));
