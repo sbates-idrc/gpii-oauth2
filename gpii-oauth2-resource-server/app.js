@@ -22,7 +22,7 @@ var app = express();
 app.use(morgan(':method :url', { immediate: true }));
 app.use(passport.initialize());
 
-app.get('/preferences',
+app.get('/settings',
     passport.authenticate('bearer', { session: false }),
     function (req, res) {
         res.send('PREFERENCES RESPONSE GOES HERE');

@@ -23,8 +23,8 @@ function buildAuthorizeUrl (redirectUri) {
         port: config.authorizationServerPort,
         pathname: '/authorize',
         query: {
-            client_id: clientId,
             response_type: 'code',
+            client_id: clientId,
             redirect_uri: redirectUri,
             scope: requestedScope,
             state: state
@@ -44,11 +44,11 @@ function getAccessToken (code, redirectUri, callback) {
     };
 
     var postData = querystring.stringify({
-        client_id: clientId,
-        client_secret: clientSecret,
         grant_type: 'authorization_code',
         code: code,
-        redirect_uri: redirectUri
+        redirect_uri: redirectUri,
+        client_id: clientId,
+        client_secret: clientSecret
     });
 
     var req = http.request(options, function (res) {
@@ -72,7 +72,7 @@ function getPreferences (accessToken, callback) {
     var options = {
         hostname: 'localhost',
         port: config.resourceServerPort,
-        path: '/preferences',
+        path: '/settings',
         headers: {
             'Authorization': 'Bearer ' + accessToken
         }

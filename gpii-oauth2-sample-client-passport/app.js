@@ -23,7 +23,7 @@ function getPreferences (accessToken, callback) {
     var options = {
         hostname: 'localhost',
         port: config.resourceServerPort,
-        path: '/preferences',
+        path: '/settings',
         headers: {
             'Authorization': 'Bearer ' + accessToken
         }
