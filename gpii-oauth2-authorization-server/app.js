@@ -8,10 +8,17 @@ var oauth2orize = require('oauth2orize');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy;
-var data = require('../gpii-oauth2-datastore');
+
+var fluid = fluid || require("infusion");
+require('../gpii-oauth2-datastore');
+var gpii = fluid.registerNamespace("gpii");
+var data = gpii.oauth2.datastore();
+
+require('./userService');
+var userService = gpii.oauth2.userService();
+
 var authorizationService = require('./authorizationService')(data);
 var clientService = require('./clientService')(data);
-var userService = require('./userService')(data);
 var utils = require('./utils');
 var config = require('../config');
 
@@ -89,7 +96,7 @@ app.use(express.static(__dirname + '/public'));
 app.use(morgan(':method :url', { immediate: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 // TODO move the secret to configuration
-app.use(session({secret: 'some secret'}));
+app.use(session({ name: 'auth_server_connect.sid', secret: 'some secret' }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.engine('handlebars', hbs.engine);
@@ -151,7 +158,7 @@ app.post('/remove_authorization',
     function (req, res) {
         var userId = req.user.id;
         var authDecisionId = parseInt(req.body.remove, 10);
-        authorizationService.removeAuthorization(userId, authDecisionId);
+        authorizationService.revokeAuthorization(userId, authDecisionId);
         res.redirect('/privacy');
     }
 );

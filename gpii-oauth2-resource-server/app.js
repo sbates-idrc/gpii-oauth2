@@ -2,7 +2,11 @@ var express = require('express');
 var morgan = require('morgan');
 var passport = require('passport');
 var BearerStrategy = require('passport-http-bearer').Strategy;
-var data = require('../gpii-oauth2-datastore');
+
+var fluid = fluid || require("infusion");
+require('../gpii-oauth2-datastore');
+var gpii = fluid.registerNamespace("gpii");
+var data = gpii.oauth2.datastore();
 var config = require('../config');
 
 // Used to check the accessToken on protected APIs
@@ -18,7 +22,7 @@ var app = express();
 app.use(morgan(':method :url', { immediate: true }));
 app.use(passport.initialize());
 
-app.get('/preferences',
+app.get('/settings',
     passport.authenticate('bearer', { session: false }),
     function (req, res) {
         res.send('PREFERENCES RESPONSE GOES HERE');

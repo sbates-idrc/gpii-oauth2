@@ -36,7 +36,7 @@ module.exports = function (data) {
 
     var exchangeCodeForAccessToken = function (code, clientId, redirectUri) {
         var auth = data.findAuthByCode(code);
-        // TODO remove or flag an authCode after it is found to make single use
+        // TODO flag an authCode after it is found to make single use
         if (auth && auth.clientId === clientId && auth.redirectUri === redirectUri) {
             return auth.accessToken;
         } else {
@@ -48,8 +48,8 @@ module.exports = function (data) {
         return data.findAuthorizedClientsByUserId(userId);
     };
 
-    var removeAuthorization = function (userId, authDecisionId) {
-        data.removeAuthDecisionId(userId, authDecisionId);
+    var revokeAuthorization = function (userId, authDecisionId) {
+        data.revokeAuthDecision(userId, authDecisionId);
     }
 
     return {
@@ -57,7 +57,7 @@ module.exports = function (data) {
         userHasAuthorized: userHasAuthorized,
         exchangeCodeForAccessToken: exchangeCodeForAccessToken,
         getAuthorizedClientsForUser: getAuthorizedClientsForUser,
-        removeAuthorization: removeAuthorization
+        revokeAuthorization: revokeAuthorization
     };
     
 };

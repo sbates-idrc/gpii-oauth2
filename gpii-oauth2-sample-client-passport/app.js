@@ -23,7 +23,7 @@ function getPreferences (accessToken, callback) {
     var options = {
         hostname: 'localhost',
         port: config.resourceServerPort,
-        path: '/preferences',
+        path: '/settings',
         headers: {
             'Authorization': 'Bearer ' + accessToken
         }
@@ -46,15 +46,16 @@ function getPreferences (accessToken, callback) {
 }
 
 passport.use('gpii', new OAuth2Strategy({
-    authorizationURL: authorizeUri,
-    tokenURL: authorizeTokenUri,
-    clientID: clientId,
-    clientSecret: clientSecret,
-    callbackURL: authorizeCallbackUri
-},
-function(accessToken, refreshToken, profile, done) {
-    done(null, { accessToken: accessToken });
-}));
+        authorizationURL: authorizeUri,
+        tokenURL: authorizeTokenUri,
+        clientID: clientId,
+        clientSecret: clientSecret,
+        callbackURL: authorizeCallbackUri
+    },
+    function(accessToken, refreshToken, profile, done) {
+        done(null, { accessToken: accessToken });
+    }
+));
 
 passport.serializeUser(function (user, done) {
     return done(null, user);
@@ -68,7 +69,8 @@ var app = express();
 app.use(morgan(':method :url', { immediate: true }));
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
-app.use(session({secret: 'some secret'}));
+// TODO move the secret to configuration
+app.use(session({ name: 'client_pp_connect.sid', secret: 'some secret' }));
 app.use(passport.initialize());
 app.use(passport.session());
 
