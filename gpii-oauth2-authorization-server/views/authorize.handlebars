@@ -1,26 +1,47 @@
 {{#section 'head'}}
-    <link rel="stylesheet" type="text/css" href="lib/infusion/src/framework/core/css/fluid.css" />
-    <link rel="stylesheet" type="text/css" href="src/components/css/authorize.css" />
+    <link rel="stylesheet" type="text/css" href="infusion/src/lib/normalize/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="lib/foundation/css/foundation.css" />
+    <link rel="stylesheet" type="text/css" href="src/css/authorize.css" />
 
-    <script type="text/javascript" src="lib/infusion/infusion-renderer.js"></script>
-    <script type="text/javascript" src="src/components/js/authorize.js"></script>
+    <script type="text/javascript" src="infusion/src/lib/jquery/core/js/jquery.js"></script>
+    <script type="text/javascript" src="infusion/src/framework/core/js/Fluid.js"></script>
+    <script type="text/javascript" src="infusion/src/framework/core/js/FluidDocument.js"></script>
+    <script type="text/javascript" src="infusion/src/framework/core/js/FluidIoC.js"></script>
+    <script type="text/javascript" src="infusion/src/framework/core/js/DataBinding.js"></script>
+    <script type="text/javascript" src="infusion/src/framework/core/js/FluidView.js"></script>
+    <script type="text/javascript" src="infusion/src/framework/core/js/FluidDOMUtilities.js"></script>
+    <script type="text/javascript" src="infusion/src/framework/core/js/FluidRequests.js"></script>
+    <script type="text/javascript" src="infusion/src/framework/core/js/JavaProperties.js"></script>
+    <script type="text/javascript" src="infusion/src/lib/fastXmlPull/js/fastXmlPull.js"></script>
+    <script type="text/javascript" src="infusion/src/framework/renderer/js/fluidParser.js"></script>
+    <script type="text/javascript" src="infusion/src/framework/renderer/js/fluidRenderer.js"></script>
+    <script type="text/javascript" src="infusion/src/framework/renderer/js/RendererUtilities.js"></script>
+    <script type="text/javascript" src="src/js/authorize.js"></script>
 
     <title>Authorize Service</title>
 
 {{/section}}
 
-<section class="gpiic-oauth-authorization gpii-oauth-authorization fl-centered">
-    <p class="gpiic-oauth-authorization-user"></p>
+<section class="gpiic-oauth-authorization gpii-oauth-authorization row">
+    <div class="gpii-oauth-authorization-content small-10 large-6 small-centered columns">
+        <div class="gpii-oauth-authorization-currentUser clearfix">
+            <span class="right">
+                <span class="gpii-icon gpii-icon-user"></span>
+                <span class="gpiic-oauth-authorization-user gpii-oauth-authorization-user"></span>
+                <a><strong class="gpiic-oauth-authorization-logout"></strong></a>
+            </span>
+        </div>
 
-    <p class="gpiic-oauth-authorization-description"></p>
+        <p class="gpiic-oauth-authorization-description"></p>
 
-    <form action="/authorize_decision" method="post">
-        <input type="hidden" class="gpiic-oauth-authorization-transaction" name="transaction_id" value="">
-        <input type="submit" class="gpiic-oauth-authorization-allow" name="allow" value="">
-        <input type="submit" class="gpiic-oauth-authorization-cancel" name="cancel" value="">
-    </form>
+        <form action="/authorize_decision" method="post">
+            <input type="hidden" class="gpiic-oauth-authorization-transaction" name="transaction_id" value="">
+            <input type="submit" class="gpiic-oauth-authorization-allow button radius" name="allow" value="">
+            <input type="submit" class="gpiic-oauth-authorization-cancel button radius" name="cancel" value="">
+        </form>
 
-    <p class="gpiic-oauth-authorization-directions"></p>
+        <p class="gpiic-oauth-authorization-directions"></p>
+    </div>
 </section>
 
 <script>

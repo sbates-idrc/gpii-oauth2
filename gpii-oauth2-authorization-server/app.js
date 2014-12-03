@@ -29,7 +29,6 @@ var hbs = exphbs.create({
         // Web Development with Node and Express by Ethan Brown (O'Reilly).
         // Copyright 2014 Ethan Brown, 978-1-491-94930-6
         section: function (name, options) {
-            console.log("name:", name, "options:", options);
             if(!this._sections) {
                 this._sections = {};
             }
@@ -93,6 +92,8 @@ passport.use(new ClientPasswordStrategy(
 
 var app = express();
 app.use(express.static(__dirname + '/public'));
+app.use("/infusion", express.static(fluid.module.modules.infusion.baseDir));
+app.use("/jqUnit", express.static("../node_modules/jqUnit"));
 app.use(morgan(':method :url', { immediate: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 // TODO move the secret to configuration

@@ -1,0 +1,53 @@
+@font-face {
+    font-family: "icons";
+    src:url('../fonts/c4a-all-icons.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/c4a-all-icons.eot'),
+    url('../fonts/c4a-all-icons.ttf');
+}
+
+.gpii-icon {
+    font-family: "icons" !important; /* FLUID-5321: use important to keep learner prefs from changing it. */
+    font-weight: normal !important; /* Keep UIO from changing the weight of icons. Bold icons look poor. */
+    margin-right: -0.25rem;
+}
+
+body {
+    background-color: #51585D;
+}
+
+.gpii-oauth-authorization {
+    padding-top: 100px;
+}
+
+.gpii-icon.gpii-icon-user:before {
+    content: "\e640";
+}
+
+.gpii-oauth-authorization-currentUser {
+    padding-top: 5px;
+    padding-bottom: 1.5rem;
+    color: #3D3F4C;
+}
+
+.gpii-oauth-authorization-user {
+    padding-right: 0.5rem;
+}
+
+.gpii-oauth-authorization-content {
+    background-color: #D2D2D1;
+    padding: 5px 20px;
+    border-radius: 3px;
+}
+
+.gpii-oauth-authorization input[type=submit] {
+    color: #FFFFFF;
+    background-color: #3D3F4C;
+}
+
+/*
+ * Foundation Overrides
+ */
+
+ .gpii-oauth-authorization-currentUser a {
+     color: #3D3F4C;
+ }
