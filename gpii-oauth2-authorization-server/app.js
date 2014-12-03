@@ -145,7 +145,7 @@ fluid.defaults("gpii.oauth2.authServer", {
             type: "gpii.oauth2.passport"
         },
         dataStore: {
-            type: "gpii.oauth2.datastore" // variants here
+            type: "gpii.oauth2.datastoreWithSampleData" // variants here
         },
         authorizationService: {
             type: "gpii.oauth2.authorizationService",
