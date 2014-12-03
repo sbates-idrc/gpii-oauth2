@@ -1,5 +1,4 @@
 var fluid = fluid || require("infusion");
-var _ = require('lodash');
 var util = require('util');
 var config = require('../config');
 
@@ -97,22 +96,22 @@ fluid.defaults("gpii.oauth2.datastore", {
 // -----
 
 gpii.oauth2.datastore.findUserById = function (users, id) {
-    return _.find(users, function (user) { return user.id === id; });
+    return fluid.find_if(users, function (user) { return user.id === id; });
 };
 
 gpii.oauth2.datastore.findUserByUsername = function (users, username) {
-    return _.find(users, function (user) { return user.username === username; } );
+    return fluid.find_if(users, function (user) { return user.username === username; } );
 };
 
 // Clients
 // -------
 
 gpii.oauth2.datastore.findClientById = function (clients, id) {
-    return _.find(clients, function (client) { return client.id === id; });
+    return fluid.find_if(clients, function (client) { return client.id === id; });
 };
 
 gpii.oauth2.datastore.findClientByOauth2ClientId = function (clients, oauth2ClientId) {
-    return _.find(clients, function (client) { return client.oauth2ClientId === oauth2ClientId; });
+    return fluid.find_if(clients, function (client) { return client.oauth2ClientId === oauth2ClientId; });
 };
 
 // Authorization Decisions
@@ -141,13 +140,13 @@ gpii.oauth2.datastore.saveAuthDecision = function (model, applier, userId, clien
 };
 
 gpii.oauth2.datastore.findAuthDecisionById = function (authDecisions, id) {
-    return _.find(authDecisions, function (ad) {
+    return fluid.find_if(authDecisions, function (ad) {
         return ad.id === id && ad.revoked === false;
     });
 };
 
 gpii.oauth2.datastore.findAuthDecision = function (authDecisions, userId, clientId, redirectUri) {
-    return _.find(authDecisions, function (ad) {
+    return fluid.find_if(authDecisions, function (ad) {
         return ad.userId === userId
             && ad.clientId === clientId
             && ad.redirectUri === redirectUri
@@ -190,7 +189,7 @@ gpii.oauth2.datastore.saveAuthCode = function (authCodes, applier, authDecisionI
 // ----------------------------------------------
 
 gpii.oauth2.datastore.findAuthByCode = function (authCodes, authDecisions, code) {
-    var authCode = _.find(authCodes, function (ac) { return ac.code === code });
+    var authCode = fluid.find_if(authCodes, function (ac) { return ac.code === code });
     if (!authCode) {
         return authCode;
     }
@@ -210,8 +209,9 @@ gpii.oauth2.datastore.findAuthByCode = function (authCodes, authDecisions, code)
 // ----------------------------------
 
 gpii.oauth2.datastore.findAuthorizedClientsByUserId = function (authDecisions, clients, userId) {
-    var userAuthDecisions = _.filter(authDecisions, function (ad) {
-        return ad.userId === userId && ad.revoked === false;
+    var userAuthDecisions = fluid.copy(authDecisions);
+    fluid.remove_if(userAuthDecisions, function (ad) {
+        return ad.userId !== userId || ad.revoked !== false;
     });
     // TODO when move to CouchDB, do join there, rather than by hand
     var authorizedClients = [];
