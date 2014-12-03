@@ -33,5 +33,4 @@ Running the datastore tests
 ---------------------------
 
 - `cd gpii-oauth2-datastore`
-- `npm install`
 - `node test/DatastoreTests.js`
