@@ -63,6 +63,20 @@ require("../inMemoryDatastore.js");
         jqUnit.assertEquals("password is b", "b", user.password);
     };
 
+    gpii.tests.oauth2.datastore.verifyClientA = function (client) {
+        jqUnit.assertEquals("name", "Client A", client.name);
+        jqUnit.assertEquals("oauth2ClientId", "client_id_A", client.oauth2ClientId);
+        jqUnit.assertEquals("oauth2ClientSecret", "client_secret_A", client.oauth2ClientSecret);
+        jqUnit.assertEquals("redirectUri", "http://example.com/callback_A", client.redirectUri);
+    };
+
+    gpii.tests.oauth2.datastore.verifyClientB = function (client) {
+        jqUnit.assertEquals("name", "Client B", client.name);
+        jqUnit.assertEquals("oauth2ClientId", "client_id_B", client.oauth2ClientId);
+        jqUnit.assertEquals("oauth2ClientSecret", "client_secret_B", client.oauth2ClientSecret);
+        jqUnit.assertEquals("redirectUri", "http://example.com/callback_B", client.redirectUri);
+    };
+
     gpii.tests.oauth2.datastore.saveAuthDecision1 = function (datastore) {
         return datastore.saveAuthDecision(gpii.tests.oauth2.datastore.testdata.authDecision1.userId,
             gpii.tests.oauth2.datastore.testdata.authDecision1.clientId,
@@ -94,8 +108,7 @@ require("../inMemoryDatastore.js");
 
     jqUnit.test("findUserById() returns falsey for non-existing id", function () {
         var datastore = gpii.tests.oauth2.datastore.datastoreWithTestData();
-        var user = datastore.findUserById(10);
-        jqUnit.assertFalse("user is falsey", user);
+        jqUnit.assertFalse("non-existing user is falsey", datastore.findUserById(10));
     });
 
     jqUnit.test("findUserByUsername() returns the user for existing username", function () {
@@ -106,8 +119,29 @@ require("../inMemoryDatastore.js");
 
     jqUnit.test("findUserByUsername() returns falsey for non-existing username", function () {
         var datastore = gpii.tests.oauth2.datastore.datastoreWithTestData();
-        var user = datastore.findUserByUsername("NON-EXISTING");
-        jqUnit.assertFalse("user is falsey", user);
+        jqUnit.assertFalse("non-existing user is falsey", datastore.findUserByUsername("NON-EXISTING"));
+    });
+
+    jqUnit.test("findClientById() returns the client for existing id", function () {
+        var datastore = gpii.tests.oauth2.datastore.datastoreWithTestData();
+        gpii.tests.oauth2.datastore.verifyClientA(datastore.findClientById(1));
+        gpii.tests.oauth2.datastore.verifyClientB(datastore.findClientById(2));
+    });
+
+    jqUnit.test("findClientById() returns falsey for non-existing id", function () {
+        var datastore = gpii.tests.oauth2.datastore.datastoreWithTestData();
+        jqUnit.assertFalse("non-existing client is falsey", datastore.findClientById(10));
+    });
+
+    jqUnit.test("findClientByOauth2ClientId() returns the client for existing client_id", function () {
+        var datastore = gpii.tests.oauth2.datastore.datastoreWithTestData();
+        gpii.tests.oauth2.datastore.verifyClientA(datastore.findClientByOauth2ClientId("client_id_A"));
+        gpii.tests.oauth2.datastore.verifyClientB(datastore.findClientByOauth2ClientId("client_id_B"));
+    });
+
+    jqUnit.test("findClientByOauth2ClientId() returns falsey for non-existing client_id", function () {
+        var datastore = gpii.tests.oauth2.datastore.datastoreWithTestData();
+        jqUnit.assertFalse("non-existing client is falsey", datastore.findClientByOauth2ClientId("NON-EXISTING"));
     });
 
     jqUnit.test("Save an Authorization Decision and retrieve it", function () {
