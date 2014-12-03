@@ -6,6 +6,11 @@ var config = require('../config');
 var gpii = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.oauth2");
 
+// TODO rename the gpii.oauth2.datastore to gpii.oauth2.inMemooryDataStore
+// and extend gpii.oauth2.datastore -- gpii.oauth2.datastore then
+// will act as an 'abstract' grade which we can't instantiate
+// directly but which is an indicator for places where a datastore is used
+
 fluid.defaults("gpii.oauth2.datastore", {
     gradeNames: ["fluid.standardRelayComponent","autoInit"],
     // We are using a model but we don't expect to share the model or to

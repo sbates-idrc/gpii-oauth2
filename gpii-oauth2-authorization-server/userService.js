@@ -1,4 +1,4 @@
-var fluid = fluid || require("infusion");
+var fluid = require("infusion");
 
 var gpii = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.oauth2");
@@ -6,8 +6,6 @@ fluid.registerNamespace("gpii.oauth2");
 fluid.defaults("gpii.oauth2.userService", {
     gradeNames: ["fluid.eventedComponent","autoInit"],
     components: {
-        // TODO once we have converted the top level app to a component,
-        // TODO create the datastore instance there and inject it
         datastore: {
             type: "gpii.oauth2.datastore"
         }
@@ -15,8 +13,8 @@ fluid.defaults("gpii.oauth2.userService", {
     invokers: {
         authenticateUser: {
             funcName: "gpii.oauth2.userService.authenticateUser",
-            args: ["{datastore}",  "{arguments}.0",  "{arguments}.1"]
-            //                     username, password
+            args: ["{datastore}", "{arguments}.0", "{arguments}.1"]
+            //                    username, password
         },
         getUserById: {
             func: "{datastore}.findUserById"
