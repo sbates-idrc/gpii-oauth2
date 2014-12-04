@@ -41,16 +41,39 @@ require("../inMemoryDatastore.js");
                     oauth2ClientId: "client_id_B",
                     oauth2ClientSecret: "client_secret_B",
                     redirectUri: "http://example.com/callback_B"
+                },
+                {
+                    id: 3,
+                    name: "Client C",
+                    oauth2ClientId: "client_id_C",
+                    oauth2ClientSecret: "client_secret_C",
+                    redirectUri: "http://example.com/callback_C"
                 }
             ]
         }
     });
 
+    gpii.tests.oauth2.datastore.testdata.userId1 = 1;
+
     gpii.tests.oauth2.datastore.testdata.authDecision1 = {
-        userId: 1,
+        userId: gpii.tests.oauth2.datastore.testdata.userId1,
         clientId: 2,
-        redirectUri: "http://example.com/callback",
+        redirectUri: "http://example.com/callback_B",
         accessToken: "access_token_1"
+    };
+
+    gpii.tests.oauth2.datastore.testdata.authDecision2 = {
+        userId: gpii.tests.oauth2.datastore.testdata.userId1,
+        clientId: 3,
+        redirectUri: "http://example.com/callback_C",
+        accessToken: "access_token_2"
+    };
+
+    gpii.tests.oauth2.datastore.testdata.authDecision3 = {
+        userId: gpii.tests.oauth2.datastore.testdata.userId1,
+        clientId: 2,
+        redirectUri: "http://example.com/callback_B",
+        accessToken: "access_token_3"
     };
 
     gpii.tests.oauth2.datastore.verifyAlice = function (user) {
@@ -77,11 +100,24 @@ require("../inMemoryDatastore.js");
         jqUnit.assertEquals("redirectUri", "http://example.com/callback_B", client.redirectUri);
     };
 
+    gpii.tests.oauth2.datastore.saveAuthDecision = function (datastore, authDecision) {
+        return datastore.saveAuthDecision(authDecision.userId, authDecision.clientId,
+            authDecision.redirectUri, authDecision.accessToken);
+    };
+
     gpii.tests.oauth2.datastore.saveAuthDecision1 = function (datastore) {
-        return datastore.saveAuthDecision(gpii.tests.oauth2.datastore.testdata.authDecision1.userId,
-            gpii.tests.oauth2.datastore.testdata.authDecision1.clientId,
-            gpii.tests.oauth2.datastore.testdata.authDecision1.redirectUri,
-            gpii.tests.oauth2.datastore.testdata.authDecision1.accessToken);
+        return gpii.tests.oauth2.datastore.saveAuthDecision(datastore,
+            gpii.tests.oauth2.datastore.testdata.authDecision1);
+    };
+
+    gpii.tests.oauth2.datastore.saveAuthDecision2 = function (datastore) {
+        return gpii.tests.oauth2.datastore.saveAuthDecision(datastore,
+            gpii.tests.oauth2.datastore.testdata.authDecision2);
+    };
+
+    gpii.tests.oauth2.datastore.saveAuthDecision3 = function (datastore) {
+        return gpii.tests.oauth2.datastore.saveAuthDecision(datastore,
+            gpii.tests.oauth2.datastore.testdata.authDecision3);
     };
 
     gpii.tests.oauth2.datastore.findAuthDecision1 = function (datastore) {
@@ -98,11 +134,6 @@ require("../inMemoryDatastore.js");
         jqUnit.assertFalse("not revoked", authDecision.revoked);
     };
 
-    gpii.tests.oauth2.datastore.revokeAuthDecision1 = function (datastore, authDecisionId) {
-        datastore.revokeAuthDecision(gpii.tests.oauth2.datastore.testdata.authDecision1.userId,
-            authDecisionId);
-    };
-
     gpii.tests.oauth2.datastore.saveAuthCode1 = function (datastore, authDecisionId) {
         datastore.saveAuthCode(authDecisionId, "code_1");
     };
@@ -111,16 +142,14 @@ require("../inMemoryDatastore.js");
         return datastore.findAuthByCode("code_1");
     };
 
-    gpii.tests.oauth2.datastore.verifyAuthForCode1 = function (auth) {
-        jqUnit.assertEquals("clientId",
-            gpii.tests.oauth2.datastore.testdata.authDecision1.clientId,
-            auth.clientId);
-        jqUnit.assertEquals("redirectUri",
-            gpii.tests.oauth2.datastore.testdata.authDecision1.redirectUri,
-            auth.redirectUri);
-        jqUnit.assertEquals("accessToken",
-            gpii.tests.oauth2.datastore.testdata.authDecision1.accessToken,
-            auth.accessToken);
+    gpii.tests.oauth2.datastore.verifyAuthorizedClientB = function (authClient, authDecisionId) {
+        jqUnit.assertEquals("authDecisionId", authDecisionId, authClient.authDecisionId);
+        jqUnit.assertEquals("clientName", "Client B", authClient.clientName);
+    };
+
+    gpii.tests.oauth2.datastore.verifyAuthorizedClientC = function (authClient, authDecisionId) {
+        jqUnit.assertEquals("authDecisionId", authDecisionId, authClient.authDecisionId);
+        jqUnit.assertEquals("clientName", "Client C", authClient.clientName);
     };
 
     jqUnit.module("GPII OAuth2 data store");
@@ -189,14 +218,14 @@ require("../inMemoryDatastore.js");
             datastore.findAuthDecisionById(-1));
     });
 
-    jqUnit.test("findAuthDecision() finds an existing authorization, but not revoked", function () {
+    jqUnit.test("findAuthDecision() finds an existing authorization and falsey for revoked", function () {
         var datastore = gpii.tests.oauth2.datastore.datastoreWithTestData();
         // save
         var authDecision1 = gpii.tests.oauth2.datastore.saveAuthDecision1(datastore);
         // find and verify
         gpii.tests.oauth2.datastore.verifyAuthDecision1(gpii.tests.oauth2.datastore.findAuthDecision1(datastore));
         // revoke
-        gpii.tests.oauth2.datastore.revokeAuthDecision1(datastore, authDecision1.id);
+        datastore.revokeAuthDecision(authDecision1.userId, authDecision1.id);
         // verify no longer found
         jqUnit.assertFalse("revoked authDecision is falsey",
             gpii.tests.oauth2.datastore.findAuthDecision1(datastore));
@@ -214,11 +243,49 @@ require("../inMemoryDatastore.js");
         var authDecision1 = gpii.tests.oauth2.datastore.saveAuthDecision1(datastore);
         gpii.tests.oauth2.datastore.saveAuthCode1(datastore, authDecision1.id);
         // find and verify
-        gpii.tests.oauth2.datastore.verifyAuthForCode1(gpii.tests.oauth2.datastore.findAuthByCode1(datastore));
+        var auth = gpii.tests.oauth2.datastore.findAuthByCode1(datastore);
+        jqUnit.assertEquals("clientId",
+            gpii.tests.oauth2.datastore.testdata.authDecision1.clientId,
+            auth.clientId);
+        jqUnit.assertEquals("redirectUri",
+            gpii.tests.oauth2.datastore.testdata.authDecision1.redirectUri,
+            auth.redirectUri);
+        jqUnit.assertEquals("accessToken",
+            gpii.tests.oauth2.datastore.testdata.authDecision1.accessToken,
+            auth.accessToken);
         // revoke authorization
-        gpii.tests.oauth2.datastore.revokeAuthDecision1(datastore, authDecision1.id);
+        datastore.revokeAuthDecision(authDecision1.userId, authDecision1.id);
         // verify no longer found
         jqUnit.assertFalse("revoked authorization is falsey", gpii.tests.oauth2.datastore.findAuthByCode1(datastore));
+    });
+
+    jqUnit.test("findAuthorizedClientsByUserId() with revoking", function () {
+        var datastore = gpii.tests.oauth2.datastore.datastoreWithTestData();
+        // save authDecisions
+        var authDecision1 = gpii.tests.oauth2.datastore.saveAuthDecision1(datastore);
+        var authDecision2 = gpii.tests.oauth2.datastore.saveAuthDecision2(datastore);
+        var userId = gpii.tests.oauth2.datastore.testdata.userId1;
+        // find both clients
+        var clients = datastore.findAuthorizedClientsByUserId(userId);
+        jqUnit.assertEquals("2 clients", 2, clients.length);
+        gpii.tests.oauth2.datastore.verifyAuthorizedClientB(clients[0], authDecision1.id);
+        gpii.tests.oauth2.datastore.verifyAuthorizedClientC(clients[1], authDecision2.id);
+        // revoke authDecision1
+        datastore.revokeAuthDecision(authDecision1.userId, authDecision1.id);
+        clients = datastore.findAuthorizedClientsByUserId(userId);
+        jqUnit.assertEquals("1 client", 1, clients.length);
+        gpii.tests.oauth2.datastore.verifyAuthorizedClientC(clients[0], authDecision2.id);
+        // save a new authDecision and verify found
+        var authDecision3 = gpii.tests.oauth2.datastore.saveAuthDecision3(datastore);
+        clients = datastore.findAuthorizedClientsByUserId(userId);
+        jqUnit.assertEquals("2 clients", 2, clients.length);
+        gpii.tests.oauth2.datastore.verifyAuthorizedClientC(clients[0], authDecision2.id);
+        gpii.tests.oauth2.datastore.verifyAuthorizedClientB(clients[1], authDecision3.id);
+        // revoke authDecision2 and authDecision3
+        datastore.revokeAuthDecision(authDecision2.userId, authDecision2.id);
+        datastore.revokeAuthDecision(authDecision3.userId, authDecision3.id);
+        clients = datastore.findAuthorizedClientsByUserId(userId);
+        jqUnit.assertEquals("0 clients", 0, clients.length);
     });
 
 })();
