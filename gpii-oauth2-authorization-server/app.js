@@ -201,7 +201,6 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
 
     app.use(express.static(__dirname + '/public'));
     app.use("/infusion", express.static(fluid.module.modules.infusion.baseDir));
-    app.use("/jqUnit", express.static("../node_modules/jqUnit"));
     app.use(morgan(':method :url', { immediate: true }));
     app.use(bodyParser.urlencoded({ extended: true }));
     // TODO move the secret to configuration
