@@ -108,7 +108,7 @@ require("../inMemoryDatastore.js");
 
     jqUnit.test("findUserById() returns falsey for non-existing id", function () {
         var datastore = gpii.tests.oauth2.datastore.datastoreWithTestData();
-        jqUnit.assertFalse("non-existing user is falsey", datastore.findUserById(10));
+        jqUnit.assertFalse("non-existing user is falsey", datastore.findUserById(-1));
     });
 
     jqUnit.test("findUserByUsername() returns the user for existing username", function () {
@@ -130,7 +130,7 @@ require("../inMemoryDatastore.js");
 
     jqUnit.test("findClientById() returns falsey for non-existing id", function () {
         var datastore = gpii.tests.oauth2.datastore.datastoreWithTestData();
-        jqUnit.assertFalse("non-existing client is falsey", datastore.findClientById(10));
+        jqUnit.assertFalse("non-existing client is falsey", datastore.findClientById(-1));
     });
 
     jqUnit.test("findClientByOauth2ClientId() returns the client for existing client_id", function () {
@@ -144,13 +144,37 @@ require("../inMemoryDatastore.js");
         jqUnit.assertFalse("non-existing client is falsey", datastore.findClientByOauth2ClientId("NON-EXISTING"));
     });
 
-    jqUnit.test("Save an Authorization Decision and retrieve it", function () {
+    jqUnit.test("saveAuthDecision() assigns an id and returns the new entity", function () {
         var datastore = gpii.tests.oauth2.datastore.datastoreWithTestData();
         var authDecision1 = gpii.tests.oauth2.datastore.saveAuthDecision1(datastore);
         gpii.tests.oauth2.datastore.verifyAuthDecision1(authDecision1);
         jqUnit.assertValue("Id has been assigned", authDecision1.id);
+    });
+
+    jqUnit.test("findAuthDecisionById() finds an existing entity", function () {
+        var datastore = gpii.tests.oauth2.datastore.datastoreWithTestData();
+        var authDecision1 = gpii.tests.oauth2.datastore.saveAuthDecision1(datastore);
+        var retrieved = datastore.findAuthDecisionById(authDecision1.id);
+        gpii.tests.oauth2.datastore.verifyAuthDecision1(retrieved);
+    });
+
+    jqUnit.test("findAuthDecisionById() returns falsey for non-existing entity", function () {
+        var datastore = gpii.tests.oauth2.datastore.datastoreWithTestData();
+        jqUnit.assertFalse("non-existing authDecision is falsey",
+            datastore.findAuthDecisionById(-1));
+    });
+
+    jqUnit.test("findAuthDecision() finds an existing entity", function () {
+        var datastore = gpii.tests.oauth2.datastore.datastoreWithTestData();
+        gpii.tests.oauth2.datastore.saveAuthDecision1(datastore);
         var retrieved = gpii.tests.oauth2.datastore.findAuthDecision1(datastore);
         gpii.tests.oauth2.datastore.verifyAuthDecision1(retrieved);
+    });
+
+    jqUnit.test("findAuthDecision() returns falsey for non-existing entity", function () {
+        var datastore = gpii.tests.oauth2.datastore.datastoreWithTestData();
+        jqUnit.assertFalse("non-existing authDecision is falsey",
+            gpii.tests.oauth2.datastore.findAuthDecision1(datastore));
     });
 
 })();
