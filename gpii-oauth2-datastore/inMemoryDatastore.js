@@ -121,7 +121,7 @@ gpii.oauth2.datastore.saveAuthDecision = function (model, applier, userId, clien
 
 gpii.oauth2.datastore.findAuthDecisionById = function (authDecisions, id) {
     return fluid.find_if(authDecisions, function (ad) {
-        return ad.id === id && ad.revoked === false;
+        return ad.id === id;
     });
 };
 
@@ -175,8 +175,8 @@ gpii.oauth2.datastore.findAuthByCode = function (authCodes, authDecisions, code)
     }
     // TODO when move to CouchDB, do join there, rather than by hand
     var authDecision = gpii.oauth2.datastore.findAuthDecisionById(authDecisions, authCode.authDecisionId);
-    if (!authDecision) {
-        return authDecision;
+    if (!authDecision || authDecision.revoked !== false) {
+        return false;
     }
     return {
         clientId: authDecision.clientId,
