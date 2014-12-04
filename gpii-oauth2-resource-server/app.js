@@ -6,7 +6,7 @@ var BearerStrategy = require('passport-http-bearer').Strategy;
 var fluid = fluid || require("infusion");
 require('../gpii-oauth2-datastore');
 var gpii = fluid.registerNamespace("gpii");
-var data = gpii.oauth2.datastore();
+var datastore = gpii.oauth2.datastoreWithSampleData();
 var config = require('../config');
 
 // Used to check the accessToken on protected APIs
@@ -14,7 +14,7 @@ passport.use(new BearerStrategy(
     function (accessToken, done) {
         // TODO check the accessToken and find the associated user
         console.log('access_token=' + accessToken);
-        return done(null, data.findUserById(1));
+        return done(null, datastore.findUserById(1));
     }
 ));
 

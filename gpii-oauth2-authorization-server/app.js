@@ -5,7 +5,7 @@ var exphbs  = require('express-handlebars');
 var session = require('express-session');
 var morgan = require('morgan');
 var oauth2orize = require('oauth2orize');
-var passport = require('passport');
+var passportModule = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy;
 
@@ -68,11 +68,8 @@ gpii.oauth2.oauth2orizeServer.listenOauth2orize = function (oauth2orizeServer, c
 // --------------------
 
 gpii.oauth2.createPassport = function () {
-    return passport; // passport is apparently a singleton - but we will behave as if it isn't
+    return new passportModule.Passport();
 };
-
-// TODO: This is just a wrapper of the apparently static result of require("passport") under the pretence
-// that this call is instance-forming - instead this appears to produce a node-global repository of state
 
 fluid.defaults("gpii.oauth2.passport", {
     gradeNames: ["fluid.eventedComponent", "autoInit"],
@@ -145,7 +142,7 @@ fluid.defaults("gpii.oauth2.authServer", {
             type: "gpii.oauth2.passport"
         },
         dataStore: {
-            type: "gpii.oauth2.datastore" // variants here
+            type: "gpii.oauth2.datastoreWithSampleData" // variants here
         },
         authorizationService: {
             type: "gpii.oauth2.authorizationService",
