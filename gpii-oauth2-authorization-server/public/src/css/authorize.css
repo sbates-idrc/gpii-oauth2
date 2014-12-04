@@ -15,6 +15,10 @@ body {
     background-color: #51585D;
 }
 
+:focus {
+    outline: 3px solid #3D3F4C;
+}
+
 .gpii-oauth-authorization {
     padding-top: 100px;
 }
@@ -50,4 +54,22 @@ body {
 
  .gpii-oauth-authorization-currentUser a {
      color: #3D3F4C;
+ }
+
+ .gpii-oauth-authorization-currentUser a:hover {
+     text-decoration: underline;
+ }
+
+ .gpii-oauth-authorization .button {
+     border: solid 3px #3D3F4C;
+ }
+
+ .gpii-oauth-authorization .button:hover {
+     color: #3D3F4C;
+     background-color: transparent;
+ }
+
+ .gpii-oauth-authorization .button:focus {
+     border-color: #D2D2D1;
+     border-radius: 0;
  }
