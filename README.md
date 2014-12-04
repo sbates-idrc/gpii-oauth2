@@ -32,5 +32,4 @@ For a list of test users and passwords, see: [the datastore source code](gpii-oa
 Running the datastore tests
 ---------------------------
 
-- `cd gpii-oauth2-datastore`
-- `node test/DatastoreTests.js`
+- `gpii-oauth2-datastore/test/html/DatastoreTests.html`
