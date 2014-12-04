@@ -98,6 +98,31 @@ require("../inMemoryDatastore.js");
         jqUnit.assertFalse("not revoked", authDecision.revoked);
     };
 
+    gpii.tests.oauth2.datastore.revokeAuthDecision1 = function (datastore, authDecisionId) {
+        datastore.revokeAuthDecision(gpii.tests.oauth2.datastore.testdata.authDecision1.userId,
+            authDecisionId);
+    };
+
+    gpii.tests.oauth2.datastore.saveAuthCode1 = function (datastore, authDecisionId) {
+        datastore.saveAuthCode(authDecisionId, "code_1");
+    };
+
+    gpii.tests.oauth2.datastore.findAuthByCode1 = function (datastore) {
+        return datastore.findAuthByCode("code_1");
+    };
+
+    gpii.tests.oauth2.datastore.verifyAuthForCode1 = function (auth) {
+        jqUnit.assertEquals("clientId",
+            gpii.tests.oauth2.datastore.testdata.authDecision1.clientId,
+            auth.clientId);
+        jqUnit.assertEquals("redirectUri",
+            gpii.tests.oauth2.datastore.testdata.authDecision1.redirectUri,
+            auth.redirectUri);
+        jqUnit.assertEquals("accessToken",
+            gpii.tests.oauth2.datastore.testdata.authDecision1.accessToken,
+            auth.accessToken);
+    };
+
     jqUnit.module("GPII OAuth2 data store");
 
     jqUnit.test("findUserById() returns the user for existing id", function () {
@@ -151,30 +176,49 @@ require("../inMemoryDatastore.js");
         jqUnit.assertValue("Id has been assigned", authDecision1.id);
     });
 
-    jqUnit.test("findAuthDecisionById() finds an existing entity", function () {
+    jqUnit.test("findAuthDecisionById() finds an existing authorization", function () {
         var datastore = gpii.tests.oauth2.datastore.datastoreWithTestData();
         var authDecision1 = gpii.tests.oauth2.datastore.saveAuthDecision1(datastore);
         var retrieved = datastore.findAuthDecisionById(authDecision1.id);
         gpii.tests.oauth2.datastore.verifyAuthDecision1(retrieved);
     });
 
-    jqUnit.test("findAuthDecisionById() returns falsey for non-existing entity", function () {
+    jqUnit.test("findAuthDecisionById() returns falsey for non-existing authorization", function () {
         var datastore = gpii.tests.oauth2.datastore.datastoreWithTestData();
         jqUnit.assertFalse("non-existing authDecision is falsey",
             datastore.findAuthDecisionById(-1));
     });
 
-    jqUnit.test("findAuthDecision() finds an existing entity", function () {
+    jqUnit.test("findAuthDecision() finds an existing authorization, but not revoked", function () {
         var datastore = gpii.tests.oauth2.datastore.datastoreWithTestData();
-        gpii.tests.oauth2.datastore.saveAuthDecision1(datastore);
-        var retrieved = gpii.tests.oauth2.datastore.findAuthDecision1(datastore);
-        gpii.tests.oauth2.datastore.verifyAuthDecision1(retrieved);
+        // save
+        var authDecision1 = gpii.tests.oauth2.datastore.saveAuthDecision1(datastore);
+        // find and verify
+        gpii.tests.oauth2.datastore.verifyAuthDecision1(gpii.tests.oauth2.datastore.findAuthDecision1(datastore));
+        // revoke
+        gpii.tests.oauth2.datastore.revokeAuthDecision1(datastore, authDecision1.id);
+        // verify no longer found
+        jqUnit.assertFalse("revoked authDecision is falsey",
+            gpii.tests.oauth2.datastore.findAuthDecision1(datastore));
     });
 
-    jqUnit.test("findAuthDecision() returns falsey for non-existing entity", function () {
+    jqUnit.test("findAuthDecision() returns falsey for non-existing authorization", function () {
         var datastore = gpii.tests.oauth2.datastore.datastoreWithTestData();
         jqUnit.assertFalse("non-existing authDecision is falsey",
             gpii.tests.oauth2.datastore.findAuthDecision1(datastore));
+    });
+
+    jqUnit.test("saveAuthCode(), verify findAuthByCode(), revoke, and then verify no longer found", function () {
+        var datastore = gpii.tests.oauth2.datastore.datastoreWithTestData();
+        // save authDecision and authCode
+        var authDecision1 = gpii.tests.oauth2.datastore.saveAuthDecision1(datastore);
+        gpii.tests.oauth2.datastore.saveAuthCode1(datastore, authDecision1.id);
+        // find and verify
+        gpii.tests.oauth2.datastore.verifyAuthForCode1(gpii.tests.oauth2.datastore.findAuthByCode1(datastore));
+        // revoke authorization
+        gpii.tests.oauth2.datastore.revokeAuthDecision1(datastore, authDecision1.id);
+        // verify no longer found
+        jqUnit.assertFalse("revoked authorization is falsey", gpii.tests.oauth2.datastore.findAuthByCode1(datastore));
     });
 
 })();
