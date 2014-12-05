@@ -1,0 +1,64 @@
+.gpii-oauth :focus {
+    outline: 3px solid #3D3F4C;
+}
+
+body.gpii-oauth {
+    background-color: #51585D;
+}
+
+.gpii-oauth main {
+    padding-top: 100px;
+}
+
+.gpii-oauth .gpii-oauth-panel {
+    background-color: #D2D2D1;
+    padding: 5px 20px;
+    border-radius: 3px;
+}
+
+
+.gpii-oauth .gpii-oauth-activeUser {
+    padding-top: 5px;
+    padding-bottom: 1.5rem;
+    color: #3D3F4C;
+}
+
+.gpii-oauth .gpii-oauth-activeUser .gpii-oauth-userName {
+    padding-right: 0.5rem;
+}
+
+/******************
+ * Icon Overrides *
+ ******************/
+
+.gpii-oauth .gpii-icon.gpii-icon-profile {
+    margin-right: -0.25rem;
+}
+
+/************************
+ * Foundation Overrides *
+ ************************/
+
+.gpii-oauth a {
+    color: #3D3F4C;
+}
+
+.gpii-oauth a:hover {
+    text-decoration: underline;
+}
+
+.gpii-oauth .button {
+    border: solid 3px #3D3F4C;
+    color: #FFFFFF;
+    background-color: #3D3F4C;
+}
+
+.gpii-oauth .button:hover {
+    color: #3D3F4C;
+    background-color: transparent;
+}
+
+.gpii-oauth .button:focus {
+    border-color: #D2D2D1;
+    border-radius: 0;
+}

@@ -1,33 +1,16 @@
 {{#section 'head'}}
-    <link rel="stylesheet" type="text/css" href="infusion/src/lib/normalize/css/normalize.css" />
-    <link rel="stylesheet" type="text/css" href="lib/foundation/css/foundation.css" />
-    <link rel="stylesheet" type="text/css" href="src/components/authorization/css/Authorize.css" />
-
-    <script type="text/javascript" src="infusion/src/lib/jquery/core/js/jquery.js"></script>
-    <script type="text/javascript" src="infusion/src/framework/core/js/Fluid.js"></script>
-    <script type="text/javascript" src="infusion/src/framework/core/js/FluidDocument.js"></script>
-    <script type="text/javascript" src="infusion/src/framework/core/js/FluidIoC.js"></script>
-    <script type="text/javascript" src="infusion/src/framework/core/js/DataBinding.js"></script>
-    <script type="text/javascript" src="infusion/src/framework/core/js/FluidView.js"></script>
-    <script type="text/javascript" src="infusion/src/framework/core/js/FluidDOMUtilities.js"></script>
-    <script type="text/javascript" src="infusion/src/framework/core/js/FluidRequests.js"></script>
-    <script type="text/javascript" src="infusion/src/framework/core/js/JavaProperties.js"></script>
-    <script type="text/javascript" src="infusion/src/lib/fastXmlPull/js/fastXmlPull.js"></script>
-    <script type="text/javascript" src="infusion/src/framework/renderer/js/fluidParser.js"></script>
-    <script type="text/javascript" src="infusion/src/framework/renderer/js/fluidRenderer.js"></script>
-    <script type="text/javascript" src="infusion/src/framework/renderer/js/RendererUtilities.js"></script>
     <script type="text/javascript" src="src/components/authorization/js/Authorize.js"></script>
 
     <title>Authorize Service</title>
 
 {{/section}}
 
-<section class="gpiic-oauth-authorization gpii-oauth-authorization row">
-    <div class="gpii-oauth-authorization-content small-10 large-6 small-centered columns">
-        <div class="gpii-oauth-authorization-currentUser clearfix">
+{{#section 'main'}}
+    <section class="gpiic-oauth-authorization gpii-oauth-panel small-10 large-6 small-centered columns">
+        <div class="gpii-oauth-activeUser clearfix">
             <span class="right">
-                <span class="gpii-icon gpii-icon-user"></span>
-                <span class="gpiic-oauth-authorization-user gpii-oauth-authorization-user"></span>
+                <span class="gpii-icon gpii-icon-profile"></span>
+                <span class="gpiic-oauth-authorization-user gpii-oauth-userName"></span>
                 <a href=""><strong class="gpiic-oauth-authorization-logout"></strong></a>
             </span>
         </div>
@@ -41,15 +24,15 @@
         </form>
 
         <p class="gpiic-oauth-authorization-directions"></p>
-    </div>
-</section>
+    </section>
 
-<script>
-    gpii.oauth.authorization(".gpiic-oauth-authorization", {
-        model: {
-            user: "{{user.username}}",
-            service: "{{client.name}}",
-            transactionID: "{{ transactionID }}"
-        }
-    });
-</script>
+    <script>
+        gpii.oauth.authorization(".gpiic-oauth-authorization", {
+            model: {
+                user: "{{user.username}}",
+                service: "{{client.name}}",
+                transactionID: "{{ transactionID }}"
+            }
+        });
+    </script>
+{{/section}}
