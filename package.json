@@ -6,6 +6,8 @@
   },
   "devDependencies": {
     "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "~0.9.0",
+    "grunt-jsonlint": "1.0.4",
     "grunt-gpii": "git://github.com/GPII/grunt-gpii.git#a4aca06cbaf7523eb1af56ed65ce6bd30b8ec325",
     "jqUnit": "git://github.com/fluid-project/node-jqUnit.git#b7ef53aac1ca365bf23d35d255fae874faa88b70"
   }
