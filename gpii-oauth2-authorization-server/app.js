@@ -50,15 +50,15 @@ gpii.oauth2.oauth2orizeServer.listenOauth2orize = function (oauth2orizeServer, c
     oauth2orizeServer.serializeClient(function (client, done) {
         return done(null, client.id);
     });
-    
+
     oauth2orizeServer.deserializeClient(function (id, done) {
         return done(null, clientService.getClientById(id));
     });
-    
+
     oauth2orizeServer.grant(oauth2orize.grant.code(function (client, redirectUri, user, ares, done) {
         return done(null, authorizationService.grantAuthorizationCode(user.id, client.id, redirectUri));
     }));
-    
+
     oauth2orizeServer.exchange(oauth2orize.exchange.code(function (client, code, redirectUri, done) {
         return done(null, authorizationService.exchangeCodeForAccessToken(code, client.id, redirectUri));
     }));
@@ -93,17 +93,17 @@ gpii.oauth2.passport.listenPassport = function (passport, userService, clientSer
     passport.serializeUser(function (user, done) {
         return done(null, user.id);
     });
-    
+
     passport.deserializeUser(function(id, done) {
         return done(null, userService.getUserById(id));
     });
-    
+
     passport.use(new LocalStrategy(
         function (username, password, done) {
             return done(null, userService.authenticateUser(username, password));
         }
     ));
-    
+
     // ClientPasswordStrategy reads the client_id and client_secret from the
     // request body. Can also use a BasicStrategy for HTTP Basic authentication.
     passport.use(new ClientPasswordStrategy(
@@ -172,7 +172,7 @@ fluid.defaults("gpii.oauth2.authServer", {
     listeners: {
         onCreate: {
             listener: "gpii.oauth2.authServer.listenApp",
-            args: ["{that}.expressApp", "{that}.oauth2orizeServer.oauth2orizeServer", 
+            args: ["{that}.expressApp", "{that}.oauth2orizeServer.oauth2orizeServer",
                 "{that}.clientService", "{that}.authorizationService", "{that}.passport.passport"]
         }
     }
@@ -182,23 +182,42 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
 
     // TODO in Express 3, what are the semantics of middleware and route ordering?
 
+    var hbs = exphbs.create({
+        defaultLayout: 'main',
+        helpers: {
+            // Based on the example from page 79 of:
+            // Web Development with Node and Express by Ethan Brown (O'Reilly).
+            // Copyright 2014 Ethan Brown, 978-1-491-94930-6
+            section: function (name, options) {
+                if(!this._sections) {
+                    this._sections = {};
+                }
+                this._sections[name] = options.fn(this);
+                return null;
+            }
+        }
+
+    });
+
+    app.use(express.static(__dirname + '/public'));
+    app.use("/infusion", express.static(fluid.module.modules.infusion.baseDir));
     app.use(morgan(':method :url', { immediate: true }));
     app.use(bodyParser.urlencoded({ extended: true }));
     // TODO move the secret to configuration
     app.use(session({ name: 'auth_server_connect.sid', secret: 'some secret' }));
     app.use(passport.initialize()); // TODO: warning, dependency risk
     app.use(passport.session()); // TODO: warning, dependency risk
-    app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+    app.engine('handlebars', hbs.engine);
     app.set('view engine', 'handlebars');
-    
+
     app.get('/login', function(req, res) {
         res.render('login');
     });
-    
+
     app.post('/login',
         passport.authenticate('local', { successReturnToOrRedirect: '/', failureRedirect: '/login' })
     );
-    
+
     app.get('/authorize',
         login.ensureLoggedIn('/login'),
         oauth2orizeServer.authorize(function (oauth2ClientId, redirectUri, done) {
@@ -220,12 +239,12 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
             }
         }
     );
-    
+
     app.post('/authorize_decision',
         login.ensureLoggedIn('/login'),
         oauth2orizeServer.decision()
     );
-    
+
     app.get('/privacy',
         login.ensureLoggedIn('/login'),
         function (req, res) {
@@ -241,7 +260,7 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
             res.render('privacy', { user: req.user, authorizedServices: services });
         }
     );
-    
+
     app.post('/remove_authorization',
         login.ensureLoggedIn('/login'),
         function (req, res) {
@@ -251,7 +270,7 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
             res.redirect('/privacy');
         }
     );
-    
+
     app.post('/access_token',
         passport.authenticate('oauth2-client-password', { session: false }),
         oauth2orizeServer.token()
