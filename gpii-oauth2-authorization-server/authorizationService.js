@@ -1,5 +1,7 @@
+"use strict";
+
 var fluid = require("infusion");
-var crypto = require('crypto');
+var crypto = require("crypto");
 
 var gpii = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.oauth2");
@@ -40,16 +42,16 @@ gpii.oauth2.authorizationService.generateHandle = function () {
     // TODO ensure that handles cannot be guessed
     // TODO crypto.randomBytes can fail if there is not enough entropy
     // see http://nodejs.org/api/crypto.html
-    return crypto.randomBytes(16).toString('hex');
-}
+    return crypto.randomBytes(16).toString("hex");
+};
 
 gpii.oauth2.authorizationService.generateAuthCode = function () {
     return gpii.oauth2.authorizationService.generateHandle();
-}
+};
 
 gpii.oauth2.authorizationService.generateAccessToken = function () {
     return gpii.oauth2.authorizationService.generateHandle();
-}
+};
 
 gpii.oauth2.authorizationService.grantAuthorizationCode = function (datastore, userId, clientId, redirectUri) {
     // Record the authorization decision if we haven't already

@@ -10,6 +10,8 @@ You may obtain a copy of the License at
 https://github.com/gpii/universal/LICENSE.txt
 */
 
+/* global fluid, jQuery */
+
 var gpii = gpii || {};
 
 (function ($, fluid) {
@@ -48,7 +50,7 @@ var gpii = gpii || {};
             },
             allow: {messagekey: "allow"},
             cancel: {messagekey: "cancel"},
-            directions: {messagekey: "directions"},
+            directions: {messagekey: "directions"}
         },
         renderOnInit: true
     });

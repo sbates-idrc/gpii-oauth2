@@ -1,22 +1,24 @@
-var bodyParser = require('body-parser');
-var login = require('connect-ensure-login');
-var express = require('express');
-var exphbs  = require('express-handlebars');
-var session = require('express-session');
-var morgan = require('morgan');
-var oauth2orize = require('oauth2orize');
-var passportModule = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy;
+"use strict";
 
-var utils = require('./utils');
-var config = require('../config'); // TODO: export up to options in gpii.oauth2.authServer
+var bodyParser = require("body-parser");
+var login = require("connect-ensure-login");
+var express = require("express");
+var exphbs  = require("express-handlebars");
+var session = require("express-session");
+var morgan = require("morgan");
+var oauth2orize = require("oauth2orize");
+var passportModule = require("passport");
+var LocalStrategy = require("passport-local").Strategy;
+var ClientPasswordStrategy = require("passport-oauth2-client-password").Strategy;
+
+var utils = require("./utils");
+var config = require("../config"); // TODO: export up to options in gpii.oauth2.authServer
 
 var fluid = require("infusion");
-require('../gpii-oauth2-datastore');
-require('./userService');
-require('./authorizationService');
-require('./clientService');
+require("../gpii-oauth2-datastore");
+require("./userService");
+require("./authorizationService");
+require("./clientService");
 
 var gpii = fluid.registerNamespace("gpii");
 
@@ -122,7 +124,7 @@ gpii.oauth2.createExpressApp = function () {
 
 // An empty grade to guide resolution of IoC expressions onto a suitable gpii.oauth2.datastore
 fluid.defaults("gpii.oauth2.datastoreHolder", {
-   gradeNames: ["fluid.eventedComponent", "autoInit"]
+    gradeNames: ["fluid.eventedComponent", "autoInit"]
 });
 
 fluid.defaults("gpii.oauth2.authServer", {
@@ -136,7 +138,7 @@ fluid.defaults("gpii.oauth2.authServer", {
     },
     components: {
         oauth2orizeServer: {
-            type: "gpii.oauth2.oauth2orizeServer",
+            type: "gpii.oauth2.oauth2orizeServer"
         },
         passport: {
             type: "gpii.oauth2.passport"
@@ -167,7 +169,7 @@ fluid.defaults("gpii.oauth2.authServer", {
                     dataStore: "{gpii.oauth2.datastoreHolder}.dataStore"
                 }
             }
-        },
+        }
     },
     listeners: {
         onCreate: {
@@ -183,7 +185,7 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
     // TODO in Express 3, what are the semantics of middleware and route ordering?
 
     var hbs = exphbs.create({
-        defaultLayout: 'main',
+        defaultLayout: "main",
         helpers: {
             // Based on the example from page 79 of:
             // Web Development with Node and Express by Ethan Brown (O'Reilly).
@@ -199,27 +201,27 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
 
     });
 
-    app.use(express.static(__dirname + '/public'));
+    app.use(express.static(__dirname + "/public"));
     app.use("/infusion", express.static(fluid.module.modules.infusion.baseDir));
-    app.use(morgan(':method :url', { immediate: true }));
+    app.use(morgan(":method :url", { immediate: true }));
     app.use(bodyParser.urlencoded({ extended: true }));
     // TODO move the secret to configuration
-    app.use(session({ name: 'auth_server_connect.sid', secret: 'some secret' }));
+    app.use(session({ name: "auth_server_connect.sid", secret: "some secret" }));
     app.use(passport.initialize()); // TODO: warning, dependency risk
     app.use(passport.session()); // TODO: warning, dependency risk
-    app.engine('handlebars', hbs.engine);
-    app.set('view engine', 'handlebars');
+    app.engine("handlebars", hbs.engine);
+    app.set("view engine", "handlebars");
 
-    app.get('/login', function(req, res) {
-        res.render('login');
+    app.get("/login", function(req, res) {
+        res.render("login");
     });
 
-    app.post('/login',
-        passport.authenticate('local', { successReturnToOrRedirect: '/', failureRedirect: '/login' })
+    app.post("/login",
+        passport.authenticate("local", { successReturnToOrRedirect: "/", failureRedirect: "/login" })
     );
 
-    app.get('/authorize',
-        login.ensureLoggedIn('/login'),
+    app.get("/authorize",
+        login.ensureLoggedIn("/login"),
         oauth2orizeServer.authorize(function (oauth2ClientId, redirectUri, done) {
             done(null, clientService.checkClientRedirectUri(oauth2ClientId, redirectUri), redirectUri);
         }),
@@ -229,24 +231,24 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
             var redirectUri = req.oauth2.redirectURI;
             if (authorizationService.userHasAuthorized(userId, clientId, redirectUri)) {
                 // The user has previously authorized so we can grant a code without asking them
-                req.query['transaction_id'] = req.oauth2.transactionID;
+                req.query["transaction_id"] = req.oauth2.transactionID;
                 // TODO we can cache the oauth2orizeServer.decision middleware as it doesn't change for each request
                 var middleware = oauth2orizeServer.decision();
                 return utils.walkMiddleware(middleware, 0, req, res, next);
             } else {
                 // otherwise, show the authorize page
-                res.render('authorize', { transactionID: req.oauth2.transactionID, user: req.user, client: req.oauth2.client });
+                res.render("authorize", { transactionID: req.oauth2.transactionID, user: req.user, client: req.oauth2.client });
             }
         }
     );
 
-    app.post('/authorize_decision',
-        login.ensureLoggedIn('/login'),
+    app.post("/authorize_decision",
+        login.ensureLoggedIn("/login"),
         oauth2orizeServer.decision()
     );
 
-    app.get('/privacy',
-        login.ensureLoggedIn('/login'),
+    app.get("/privacy",
+        login.ensureLoggedIn("/login"),
         function (req, res) {
             var authorizedClients = authorizationService.getAuthorizedClientsForUser(req.user.id);
             // Build view objects
@@ -257,22 +259,22 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
                     authDecisionId: client.authDecisionId
                 });
             });
-            res.render('privacy', { user: req.user, authorizedServices: services });
+            res.render("privacy", { user: req.user, authorizedServices: services });
         }
     );
 
-    app.post('/remove_authorization',
-        login.ensureLoggedIn('/login'),
+    app.post("/remove_authorization",
+        login.ensureLoggedIn("/login"),
         function (req, res) {
             var userId = req.user.id;
             var authDecisionId = parseInt(req.body.remove, 10);
             authorizationService.revokeAuthorization(userId, authDecisionId);
-            res.redirect('/privacy');
+            res.redirect("/privacy");
         }
     );
 
-    app.post('/access_token',
-        passport.authenticate('oauth2-client-password', { session: false }),
+    app.post("/access_token",
+        passport.authenticate("oauth2-client-password", { session: false }),
         oauth2orizeServer.token()
     );
 };

@@ -8,6 +8,8 @@ You may obtain a copy of the License at
 https://github.com/gpii/universal/LICENSE.txt
 */
 
+"use strict";
+
 var fluid = require("infusion");
 var util = require("util");
 var config = require("../config");
@@ -25,7 +27,7 @@ fluid.defaults("gpii.oauth2.datastoreWithSampleData", {
                 name: "Service A",
                 oauth2ClientId: "client_id_1",
                 oauth2ClientSecret: "client_secret_1",
-                redirectUri: util.format('http://localhost:%d/authorize_callback', config.clientPort)
+                redirectUri: util.format("http://localhost:%d/authorize_callback", config.clientPort)
             },
             {
                 id: 2,
