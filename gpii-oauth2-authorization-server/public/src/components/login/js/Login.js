@@ -10,9 +10,12 @@ You may obtain a copy of the License at
 https://github.com/gpii/universal/LICENSE.txt
 */
 
+// Declare dependencies
+/* global fluid, history */
+
 var gpii = gpii || {};
 
-(function ($, fluid) {
+(function () {
     "use strict";
 
     fluid.defaults("gpii.oauth.login", {
@@ -78,4 +81,4 @@ var gpii = gpii || {};
     gpii.oauth.login.cancel = function () {
         history.back();
     };
-})(jQuery, fluid);
+})();

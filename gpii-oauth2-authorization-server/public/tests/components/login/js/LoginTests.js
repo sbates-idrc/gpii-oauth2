@@ -10,7 +10,10 @@ You may obtain a copy of the License at
 https://github.com/gpii/universal/LICENSE.txt
 */
 
-(function ($) {
+// Declare dependencies
+/* global fluid, gpii, jqUnit */
+
+(function () {
     "use strict";
 
     fluid.registerNamespace("gpii.tests.oauth");
@@ -98,4 +101,4 @@ https://github.com/gpii/universal/LICENSE.txt
             "gpii.tests.oauth.loginTestTree"
         ]);
     };
-})(jQuery);
+})();
