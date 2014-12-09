@@ -11,7 +11,6 @@ var passportModule = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
 var ClientPasswordStrategy = require("passport-oauth2-client-password").Strategy;
 
-var utils = require("./utils");
 var config = require("../config"); // TODO: export up to options in gpii.oauth2.authServer
 
 var fluid = require("infusion");
@@ -19,6 +18,7 @@ require("../gpii-oauth2-datastore");
 require("./userService");
 require("./authorizationService");
 require("./clientService");
+require("./utils");
 
 var gpii = fluid.registerNamespace("gpii");
 
@@ -234,7 +234,7 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
                 req.query["transaction_id"] = req.oauth2.transactionID;
                 // TODO we can cache the oauth2orizeServer.decision middleware as it doesn't change for each request
                 var middleware = oauth2orizeServer.decision();
-                return utils.walkMiddleware(middleware, 0, req, res, next);
+                return gpii.oauth2.utils.walkMiddleware(middleware, 0, req, res, next);
             } else {
                 // otherwise, show the authorize page
                 res.render("authorize", { transactionID: req.oauth2.transactionID, user: req.user, client: req.oauth2.client });
