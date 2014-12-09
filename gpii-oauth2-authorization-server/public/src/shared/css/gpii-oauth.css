@@ -4,15 +4,14 @@
 
 body.gpii-oauth {
     background-color: #51585D;
-}
-
-.gpii-oauth main {
-    padding-top: 100px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
 }
 
 .gpii-oauth .gpii-oauth-panel {
     background-color: #D2D2D1;
-    padding: 5px 20px;
     border-radius: 3px;
 }
 
@@ -25,6 +24,19 @@ body.gpii-oauth {
 
 .gpii-oauth .gpii-oauth-activeUser .gpii-oauth-userName {
     padding-right: 0.5rem;
+}
+
+.gpii-ouath-footer {
+    background-color: #5FA9A8;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    padding: 5px 5px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-align-items: baseline;
+    align-items: baseline;
 }
 
 /******************
@@ -61,4 +73,8 @@ body.gpii-oauth {
 .gpii-oauth .button:focus {
     border-color: #D2D2D1;
     border-radius: 0;
+}
+
+.gpii-oauth .gpii-ouath-footer .button {
+    margin: 0;
 }
