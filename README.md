@@ -33,5 +33,5 @@ Tests
 -----
 
 - `<Authorization Server>/tests/all-tests.html` (the server must be running)
-- `gpii-oauth2-authorization-server/test/html/UtilsTests.html`
 - `gpii-oauth2-datastore/test/html/DatastoreTests.html`
+- `oauth2Utilities/test/html/OAuth2UtilitiesTests.html`

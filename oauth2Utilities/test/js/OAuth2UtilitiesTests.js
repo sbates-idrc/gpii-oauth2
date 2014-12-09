@@ -7,9 +7,9 @@ var fluid = fluid || require("infusion");
     "use strict";
 
     var gpii = fluid.registerNamespace("gpii");
-    fluid.registerNamespace("gpii.tests.oauth2.utils");
+    fluid.registerNamespace("gpii.tests.oauth2");
 
-    gpii.tests.oauth2.utils.makeTestMiddleware = function (called, key) {
+    gpii.tests.oauth2.makeTestMiddleware = function (called, key) {
         return function (req, res, next) {
             jqUnit.assertEquals("request", "request", req);
             jqUnit.assertEquals("response", "response", res);
@@ -18,48 +18,48 @@ var fluid = fluid || require("infusion");
         };
     };
 
-    gpii.tests.oauth2.utils.runTests = function () {
+    gpii.tests.oauth2.runOAuth2UtilitiesTests = function () {
 
-        jqUnit.module("GPII OAuth2 Utils");
+        jqUnit.module("GPII OAuth2 Utilities");
 
         jqUnit.asyncTest("Walk an empty array of middleware", function () {
             jqUnit.expect(0);
-            gpii.oauth2.utils.walkMiddleware([], 0, "request", "response", function () { jqUnit.start(); });
+            gpii.oauth2.walkMiddleware([], 0, "request", "response", function () { jqUnit.start(); });
         });
 
         jqUnit.asyncTest("Walk an array of 1 middleware", function () {
             jqUnit.expect(3);
             var called = {};
-            var middleware1 = gpii.tests.oauth2.utils.makeTestMiddleware(called, "middleware1");
+            var middleware1 = gpii.tests.oauth2.makeTestMiddleware(called, "middleware1");
             var check = function () {
                 jqUnit.assertTrue("middleware1 called", called.middleware1);
                 jqUnit.start();
             };
-            gpii.oauth2.utils.walkMiddleware([middleware1], 0, "request", "response", check);
+            gpii.oauth2.walkMiddleware([middleware1], 0, "request", "response", check);
         });
 
         jqUnit.asyncTest("Walk an array of 2 middleware", function () {
             jqUnit.expect(6);
             var called = {};
-            var middleware1 = gpii.tests.oauth2.utils.makeTestMiddleware(called, "middleware1");
-            var middleware2 = gpii.tests.oauth2.utils.makeTestMiddleware(called, "middleware2");
+            var middleware1 = gpii.tests.oauth2.makeTestMiddleware(called, "middleware1");
+            var middleware2 = gpii.tests.oauth2.makeTestMiddleware(called, "middleware2");
             var check = function () {
                 jqUnit.assertTrue("middleware1 called", called.middleware1);
                 jqUnit.assertTrue("middleware2 called", called.middleware2);
                 jqUnit.start();
             };
-            gpii.oauth2.utils.walkMiddleware([middleware1, middleware2], 0, "request", "response", check);
+            gpii.oauth2.walkMiddleware([middleware1, middleware2], 0, "request", "response", check);
         });
 
         jqUnit.asyncTest("Walk a single middleware function", function () {
             jqUnit.expect(3);
             var called = {};
-            var middleware1 = gpii.tests.oauth2.utils.makeTestMiddleware(called, "middleware1");
+            var middleware1 = gpii.tests.oauth2.makeTestMiddleware(called, "middleware1");
             var check = function () {
                 jqUnit.assertTrue("middleware1 called", called.middleware1);
                 jqUnit.start();
             };
-            gpii.oauth2.utils.walkMiddleware(middleware1, 0, "request", "response", check);
+            gpii.oauth2.walkMiddleware(middleware1, 0, "request", "response", check);
         });
 
     };
