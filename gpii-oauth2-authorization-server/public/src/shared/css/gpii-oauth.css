@@ -26,7 +26,7 @@ body.gpii-oauth {
     padding-right: 0.5rem;
 }
 
-.gpii-ouath-footer {
+.gpii-oauth-footer {
     background-color: #5FA9A8;
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
@@ -75,6 +75,6 @@ body.gpii-oauth {
     border-radius: 0;
 }
 
-.gpii-oauth .gpii-ouath-footer .button {
+.gpii-oauth .gpii-oauth-footer .button {
     margin: 0;
 }
