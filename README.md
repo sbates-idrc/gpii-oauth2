@@ -29,7 +29,9 @@ Pages:
 
 For a list of test users and passwords, see: [the datastore source code](gpii-oauth2-datastore/index.js)
 
-Running the datastore tests
----------------------------
+Tests
+-----
 
+- `<Authorization Server>/tests/all-tests.html` (the server must be running)
 - `gpii-oauth2-datastore/test/html/DatastoreTests.html`
+- `oauth2Utilities/test/html/OAuth2UtilitiesTests.html`

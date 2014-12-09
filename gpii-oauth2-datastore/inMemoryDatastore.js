@@ -1,3 +1,5 @@
+"use strict";
+
 var fluid = fluid || require("infusion");
 
 var gpii = fluid.registerNamespace("gpii");
@@ -127,10 +129,10 @@ gpii.oauth2.datastore.findAuthDecisionById = function (authDecisions, id) {
 
 gpii.oauth2.datastore.findAuthDecision = function (authDecisions, userId, clientId, redirectUri) {
     return fluid.find_if(authDecisions, function (ad) {
-        return ad.userId === userId
-            && ad.clientId === clientId
-            && ad.redirectUri === redirectUri
-            && ad.revoked === false;
+        return ad.userId === userId &&
+            ad.clientId === clientId &&
+            ad.redirectUri === redirectUri &&
+            ad.revoked === false;
     });
 };
 
@@ -169,7 +171,7 @@ gpii.oauth2.datastore.saveAuthCode = function (authCodes, applier, authDecisionI
 // ----------------------------------------------
 
 gpii.oauth2.datastore.findAuthByCode = function (authCodes, authDecisions, code) {
-    var authCode = fluid.find_if(authCodes, function (ac) { return ac.code === code });
+    var authCode = fluid.find_if(authCodes, function (ac) { return ac.code === code; });
     if (!authCode) {
         return authCode;
     }
