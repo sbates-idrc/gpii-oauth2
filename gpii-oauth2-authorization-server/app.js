@@ -194,7 +194,7 @@ fluid.defaults("gpii.oauth2.authServer", {
  */
 gpii.oauth2.authServer.loginRouting = function (passport, options) {
     return function (req, res, next) {
-        passport.authenticate('local', function(err, user, info) {
+        passport.authenticate("local", function(err, user) {
             if (err) {
                 return next(err);
             }
