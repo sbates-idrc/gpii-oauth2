@@ -201,8 +201,8 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
 
     });
 
-    app.use(express.static(__dirname + "/public"));
-    app.use("/infusion", express.static(fluid.module.modules.infusion.baseDir));
+    app.use(express["static"](__dirname + "/public"));
+    app.use("/infusion", express["static"](fluid.module.modules.infusion.baseDir));
     app.use(morgan(":method :url", { immediate: true }));
     app.use(bodyParser.urlencoded({ extended: true }));
     // TODO move the secret to configuration
@@ -231,7 +231,7 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
             var redirectUri = req.oauth2.redirectURI;
             if (authorizationService.userHasAuthorized(userId, clientId, redirectUri)) {
                 // The user has previously authorized so we can grant a code without asking them
-                req.query["transaction_id"] = req.oauth2.transactionID;
+                req.query.transaction_id = req.oauth2.transactionID;
                 // TODO we can cache the oauth2orizeServer.decision middleware as it doesn't change for each request
                 var middleware = oauth2orizeServer.decision();
                 return gpii.oauth2.utils.walkMiddleware(middleware, 0, req, res, next);

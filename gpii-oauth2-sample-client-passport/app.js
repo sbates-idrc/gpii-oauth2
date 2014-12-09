@@ -5,7 +5,6 @@ var exphbs  = require("express-handlebars");
 var http = require("http");
 var morgan = require("morgan");
 var session = require("express-session");
-var querystring = require("querystring");
 var util = require("util");
 var config = require("../config");
 var passport = require("passport");
@@ -15,7 +14,6 @@ var clientId = "client_id_pp";
 var clientSecret = "client_secret_pp";
 
 var requestedScope = "scope_1";
-var state = "RANDOM-STRING";
 
 var authorizeUri = util.format("http://localhost:%d/authorize", config.authorizationServerPort);
 var authorizeCallbackUri = util.format("http://localhost:%d/authorize_callback", config.passportClientPort);

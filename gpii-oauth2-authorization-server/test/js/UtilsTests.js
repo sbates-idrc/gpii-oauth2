@@ -32,7 +32,7 @@ var fluid = fluid || require("infusion");
             var called = {};
             var middleware1 = gpii.tests.oauth2.utils.makeTestMiddleware(called, "middleware1");
             var check = function () {
-                jqUnit.assertTrue("middleware1 called", called["middleware1"]);
+                jqUnit.assertTrue("middleware1 called", called.middleware1);
                 jqUnit.start();
             };
             gpii.oauth2.utils.walkMiddleware([middleware1], 0, "request", "response", check);
@@ -44,8 +44,8 @@ var fluid = fluid || require("infusion");
             var middleware1 = gpii.tests.oauth2.utils.makeTestMiddleware(called, "middleware1");
             var middleware2 = gpii.tests.oauth2.utils.makeTestMiddleware(called, "middleware2");
             var check = function () {
-                jqUnit.assertTrue("middleware1 called", called["middleware1"]);
-                jqUnit.assertTrue("middleware2 called", called["middleware2"]);
+                jqUnit.assertTrue("middleware1 called", called.middleware1);
+                jqUnit.assertTrue("middleware2 called", called.middleware2);
                 jqUnit.start();
             };
             gpii.oauth2.utils.walkMiddleware([middleware1, middleware2], 0, "request", "response", check);
@@ -56,7 +56,7 @@ var fluid = fluid || require("infusion");
             var called = {};
             var middleware1 = gpii.tests.oauth2.utils.makeTestMiddleware(called, "middleware1");
             var check = function () {
-                jqUnit.assertTrue("middleware1 called", called["middleware1"]);
+                jqUnit.assertTrue("middleware1 called", called.middleware1);
                 jqUnit.start();
             };
             gpii.oauth2.utils.walkMiddleware(middleware1, 0, "request", "response", check);
