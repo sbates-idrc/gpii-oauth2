@@ -5,10 +5,6 @@ var fluid = fluid || require("infusion");
 var gpii = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.oauth2");
 
-gpii.oauth2.parseBearerHeader = function (req) {
-    return false;
-};
-
 gpii.oauth2.walkMiddleware = function (middleware, i, req, res, next) {
     // TODO best way to check if middleware is a single function?
     if (typeof middleware === "function") {
