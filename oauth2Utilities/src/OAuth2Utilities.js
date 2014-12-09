@@ -5,8 +5,14 @@ var fluid = fluid || require("infusion");
 var gpii = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.oauth2");
 
-gpii.oauth2.parseBearerHeader = function (req) {
-    return false;
+gpii.oauth2.parseBearerAuthorizationHeader = function (req) {
+    if (req.headers && req.headers.authorization) {
+        var parts = req.headers.authorization.split(/\s+/);
+        if (parts.length === 2 && parts[0].toLowerCase() === "bearer") {
+            return parts[1];
+        }
+    }
+    return undefined;
 };
 
 gpii.oauth2.walkMiddleware = function (middleware, i, req, res, next) {
