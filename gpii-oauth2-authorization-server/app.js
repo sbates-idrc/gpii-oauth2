@@ -2,7 +2,6 @@
 
 var bodyParser = require("body-parser");
 var login = require("connect-ensure-login");
-var express = require("express");
 var exphbs  = require("express-handlebars");
 var session = require("express-session");
 var morgan = require("morgan");
@@ -117,10 +116,6 @@ gpii.oauth2.passport.listenPassport = function (passport, userService, clientSer
 
 // gpii.oauth2.authServer
 // ----------------------
-
-gpii.oauth2.createExpressApp = function () {
-    return express();
-};
 
 // An empty grade to guide resolution of IoC expressions onto a suitable gpii.oauth2.datastore
 fluid.defaults("gpii.oauth2.datastoreHolder", {
@@ -240,8 +235,8 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
 
     });
 
-    app.use(express["static"](__dirname + "/public"));
-    app.use("/infusion", express["static"](fluid.module.modules.infusion.baseDir));
+    app.use(gpii.oauth2.expressStatic(__dirname + "/public"));
+    app.use("/infusion", gpii.oauth2.expressStatic(fluid.module.modules.infusion.baseDir));
     app.use(morgan(":method :url", { immediate: true }));
     app.use(bodyParser.urlencoded({ extended: true }));
     // TODO move the secret to configuration
