@@ -180,6 +180,45 @@ fluid.defaults("gpii.oauth2.authServer", {
     }
 });
 
+/*
+ * Manually performs the login routing, similar to the passport
+ * middleware, but with the addition of adding a "loginFailed"
+ * flag to the session. This is useful for displaying an error
+ * message on the login screen after an unsucessful login attempt.
+ *
+ * @param {object} passport - an instance of a passport object
+ *
+ * @param {object} options - Like the passport middleware it takes in
+ *                           successReturnToOrRedirect and failureRedirect
+ *                           paths.
+ */
+gpii.oauth2.authServer.loginRouting = function (passport, options) {
+    return function (req, res, next) {
+        passport.authenticate("local", function(err, user) {
+            if (err) {
+                return next(err);
+            }
+
+            if (!user) {
+                req.session.loginFailed = true;
+                return res.redirect(options.failureRedirect);
+            }
+
+            req.logIn(user, function(err) {
+                var url = options.successReturnToOrRedirect;
+                if (err) {
+                    return next(err);
+                }
+                if (req.session && req.session.returnTo) {
+                    url = req.session.returnTo;
+                    delete req.session.returnTo;
+                }
+                return res.redirect(url);
+            });
+        })(req, res, next);
+    };
+};
+
 gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientService, authorizationService, passport) {
 
     // TODO in Express 3, what are the semantics of middleware and route ordering?
@@ -213,12 +252,13 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
     app.set("view engine", "handlebars");
 
     app.get("/login", function(req, res) {
-        res.render("login");
+        console.log("At login");
+        var loginFailed = req.session.loginFailed || false;
+        delete req.session.loginFailed;
+        res.render("login", {loginFailed: loginFailed});
     });
 
-    app.post("/login",
-        passport.authenticate("local", { successReturnToOrRedirect: "/", failureRedirect: "/login" })
-    );
+    app.post("/login", gpii.oauth2.authServer.loginRouting(passport, {successReturnToOrRedirect: "/", failureRedirect: "/login"}));
 
     app.get("/authorize",
         login.ensureLoggedIn("/login"),
