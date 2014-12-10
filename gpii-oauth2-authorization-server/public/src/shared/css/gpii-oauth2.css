@@ -1,8 +1,8 @@
-.gpii-oauth :focus {
+.gpii-oauth2 :focus {
     outline: 3px solid #3D3F4C;
 }
 
-body.gpii-oauth {
+body.gpii-oauth2 {
     background-color: #51585D;
     display: -webkit-flex;
     display: flex;
@@ -10,23 +10,23 @@ body.gpii-oauth {
     align-items: center;
 }
 
-.gpii-oauth .gpii-oauth-panel {
+.gpii-oauth2 .gpii-oauth2-panel {
     background-color: #D2D2D1;
     border-radius: 3px;
 }
 
 
-.gpii-oauth .gpii-oauth-activeUser {
+.gpii-oauth2 .gpii-oauth2-activeUser {
     padding-top: 5px;
     padding-bottom: 1.5rem;
     color: #3D3F4C;
 }
 
-.gpii-oauth .gpii-oauth-activeUser .gpii-oauth-userName {
+.gpii-oauth2 .gpii-oauth2-activeUser .gpii-oauth2-userName {
     padding-right: 0.5rem;
 }
 
-.gpii-oauth-footer {
+.gpii-oauth2-footer {
     background-color: #5FA9A8;
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
@@ -43,7 +43,7 @@ body.gpii-oauth {
  * Icon Overrides *
  ******************/
 
-.gpii-oauth .gpii-icon.gpii-icon-profile {
+.gpii-oauth2 .gpii-icon.gpii-icon-profile {
     margin-right: -0.25rem;
 }
 
@@ -51,30 +51,30 @@ body.gpii-oauth {
  * Foundation Overrides *
  ************************/
 
-.gpii-oauth a {
+.gpii-oauth2 a {
     color: #3D3F4C;
 }
 
-.gpii-oauth a:hover {
+.gpii-oauth2 a:hover {
     text-decoration: underline;
 }
 
-.gpii-oauth .button {
+.gpii-oauth2 .button {
     border: solid 3px #3D3F4C;
     color: #FFFFFF;
     background-color: #3D3F4C;
 }
 
-.gpii-oauth .button:hover {
+.gpii-oauth2 .button:hover {
     color: #3D3F4C;
     background-color: transparent;
 }
 
-.gpii-oauth .button:focus {
+.gpii-oauth2 .button:focus {
     border-color: #D2D2D1;
     border-radius: 0;
 }
 
-.gpii-oauth .gpii-oauth-footer .button {
+.gpii-oauth2 .gpii-oauth2-footer .button {
     margin: 0;
 }

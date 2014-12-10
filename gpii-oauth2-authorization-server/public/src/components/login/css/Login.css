@@ -1,16 +1,16 @@
-.gpii-oauth-login-header {
+.gpii-oauth2-login-header {
     padding-top: 1rem;
 }
 
-.gpii-oauth-login-header,
-.gpii-oauth-login-instructions,
-.gpii-oauth-login-formPanel,
-.gpii-oauth-login-formFields {
+.gpii-oauth2-login-header,
+.gpii-oauth2-login-instructions,
+.gpii-oauth2-login-formPanel,
+.gpii-oauth2-login-formFields {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
 }
 
-.gpii-oauth-login-formFields {
+.gpii-oauth2-login-formFields {
     border-top: 5px solid #5FA9A8;
     background-color: #FFFFFF;
     padding-top: 1.5rem;
@@ -20,53 +20,53 @@
     box-shadow: 4px 4px 4px 1px #A8A8A8;
 }
 
-.gpii-oauth-login-username,
-.gpii-oauth-login-password {
+.gpii-oauth2-login-username,
+.gpii-oauth2-login-password {
     padding-top: 0.5rem;
     color: #3D3F4C;
     display: -webkit-flex;
     display: flex;
 }
 
-.gpii-oauth-login-username {
+.gpii-oauth2-login-username {
     padding-bottom: 2rem;
 }
 
-.gpii-oauth-login-username input,
-.gpii-oauth-login-username span,
-.gpii-oauth-login-password input,
-.gpii-oauth-login-password span {
+.gpii-oauth2-login-username input,
+.gpii-oauth2-login-username span,
+.gpii-oauth2-login-password input,
+.gpii-oauth2-login-password span {
     background-color: #D2D2D1;
     font-size: 1.5rem;
     border: none;
 }
 
-.gpii-oauth-login-username span,
-.gpii-oauth-login-password span {
+.gpii-oauth2-login-username span,
+.gpii-oauth2-login-password span {
     padding: 0.1rem 1rem 0.34rem 1rem;
 }
 
-.gpii-oauth-login-username input,
-.gpii-oauth-login-password input {
+.gpii-oauth2-login-username input,
+.gpii-oauth2-login-password input {
     -webkit-flex: 1;
     flex: 1;
 }
 
-.gpii-oauth-login-passwordMsgContainer {
+.gpii-oauth2-login-passwordMsgContainer {
     display: -webkit-flex;
     display: flex;
     -webkit-justify-content: space-between;
     justify-content: space-between;
 }
 
-.gpii-oauth-login-passwordMsgContainer .gpii-oauth-login-passwordMsg {
+.gpii-oauth2-login-passwordMsgContainer .gpii-oauth2-login-passwordMsg {
     display: -webkit-flex;
     display: flex;
     -webkit-justify-content: flex-end;
     justify-content: flex-end;
 }
 
-.gpii-oauth-login-cancel {
+.gpii-oauth2-login-cancel {
     padding-left: 15px;
 }
 
@@ -74,16 +74,16 @@
  * gpii-oauth styling overrides
  */
 
-.gpii-oauth-login-username input:focus,
-.gpii-oauth-login-password input:focus {
+.gpii-oauth2-login-username input:focus,
+.gpii-oauth2-login-password input:focus {
     outline: none;
 }
 
-.gpii-oauth-login-header .gpii-icon {
+.gpii-oauth2-login-header .gpii-icon {
     color: #3D3F4C;
 }
 
-.gpii-oauth-login-passwordMsg .gpii-icon-exclamation {
+.gpii-oauth2-login-passwordMsg .gpii-icon-exclamation {
     background-color: #F4D934;
     border-radius: 50%;
     margin-left: 0.25rem;
@@ -91,14 +91,14 @@
     width: 1.5rem;
 }
 
-.gpii-oauth-footer {
+.gpii-oauth2-footer {
     margin-top: 100px;
 }
 
 /*
  * Foundation overrides
  */
-.gpii-oauth-panel.columns {
+.gpii-oauth2-panel.columns {
     padding-left: 0;
     padding-right: 0;
 }

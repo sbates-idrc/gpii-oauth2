@@ -18,15 +18,15 @@ https://github.com/gpii/universal/LICENSE.txt
 
     fluid.registerNamespace("gpii.tests.oauth");
 
-    fluid.defaults("gpii.tests.oauth.login", {
-        gradeNames: ["gpii.oauth.login", "autoInit"],
+    fluid.defaults("gpii.tests.oauth2.login", {
+        gradeNames: ["gpii.oauth2.login", "autoInit"],
         model: {
             loginFailure: false
         },
         renderOnInit: false
     });
 
-    gpii.tests.oauth.login.assertRendering = function (that) {
+    gpii.tests.oauth2.login.assertRendering = function (that) {
         var keys = ["header", "instructions", "usernameLabel", "passwordLabel", "cancel"];
 
         fluid.each(keys, function (key) {
@@ -40,40 +40,40 @@ https://github.com/gpii/universal/LICENSE.txt
         jqUnit.assertEquals("The password should be empty", "", that.locate("passwordInput").val());
     };
 
-    gpii.tests.oauth.login.assertNoErrorMsg = function (that) {
+    gpii.tests.oauth2.login.assertNoErrorMsg = function (that) {
         jqUnit.notExists("The error message should not be rendered", that.locate("error"));
         jqUnit.notExists("The error message icon should not be rendered", that.locate("errorIcon"));
     };
 
-    gpii.tests.oauth.login.assertErrorMsg = function (that) {
+    gpii.tests.oauth2.login.assertErrorMsg = function (that) {
         jqUnit.exists("The error message should be rendered", that.locate("error"));
         jqUnit.exists("The error message icon should be rendered", that.locate("errorIcon"));
     };
 
-    gpii.tests.oauth.login.testLogin = function (that) {
-        gpii.tests.oauth.login.assertRendering(that);
+    gpii.tests.oauth2.login.testLogin = function (that) {
+        gpii.tests.oauth2.login.assertRendering(that);
 
         if (that.model.loginFailure) {
-            gpii.tests.oauth.login.assertErrorMsg(that);
+            gpii.tests.oauth2.login.assertErrorMsg(that);
         } else {
-            gpii.tests.oauth.login.assertNoErrorMsg(that);
+            gpii.tests.oauth2.login.assertNoErrorMsg(that);
         }
     };
 
-    fluid.defaults("gpii.tests.oauth.loginTestTree", {
+    fluid.defaults("gpii.tests.oauth2.loginTestTree", {
         gradeNames: ["fluid.test.testEnvironment", "autoInit"],
         components: {
             login: {
-                type: "gpii.tests.oauth.login",
-                container: ".gpiic-oauth-login"
+                type: "gpii.tests.oauth2.login",
+                container: ".gpiic-oauth2-login"
             },
             catTester: {
-                type: "gpii.tests.oauth.loginTester"
+                type: "gpii.tests.oauth2.loginTester"
             }
         }
     });
 
-    fluid.defaults("gpii.tests.oauth.loginTester", {
+    fluid.defaults("gpii.tests.oauth2.loginTester", {
         gradeNames: ["fluid.test.testCaseHolder", "autoInit"],
         modules: [ {
             name: "Login tests",
@@ -83,22 +83,22 @@ https://github.com/gpii/universal/LICENSE.txt
                 sequence: [{
                     func: "{login}.refreshView"
                 }, {
-                    listener: "gpii.tests.oauth.login.testLogin",
+                    listener: "gpii.tests.oauth2.login.testLogin",
                     event: "{login}.events.afterRender"
                 }, {
                     func: "{login}.applier.change",
                     args: ["loginFailure", true]
                 }, {
-                    listener: "gpii.tests.oauth.login.testLogin",
+                    listener: "gpii.tests.oauth2.login.testLogin",
                     event: "{login}.events.afterRender"
                 }]
             }]
         }]
     });
 
-    gpii.tests.oauth.login.runTests = function () {
+    gpii.tests.oauth2.login.runTests = function () {
         fluid.test.runTests([
-            "gpii.tests.oauth.loginTestTree"
+            "gpii.tests.oauth2.loginTestTree"
         ]);
     };
 })();
