@@ -1,7 +1,4 @@
 {
   "name": "gpii-oauth2-resource-server",
-  "version": "0.1.0",
-  "dependencies": {
-    "morgan": "^1.4.1"
-  }
+  "version": "0.1.0"
 }

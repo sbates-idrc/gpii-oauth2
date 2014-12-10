@@ -4,13 +4,10 @@ var bodyParser = require("body-parser");
 var login = require("connect-ensure-login");
 var exphbs  = require("express-handlebars");
 var session = require("express-session");
-var morgan = require("morgan");
 var oauth2orize = require("oauth2orize");
 var passportModule = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
 var ClientPasswordStrategy = require("passport-oauth2-client-password").Strategy;
-
-var config = require("../config"); // TODO: export up to options in gpii.oauth2.authServer
 
 var fluid = require("infusion");
 require("../gpii-oauth2-datastore");
@@ -237,7 +234,6 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
 
     app.use(gpii.oauth2.expressStatic(__dirname + "/public"));
     app.use("/infusion", gpii.oauth2.expressStatic(fluid.module.modules.infusion.baseDir));
-    app.use(morgan(":method :url", { immediate: true }));
     app.use(bodyParser.urlencoded({ extended: true }));
     // TODO move the secret to configuration
     app.use(session({ name: "auth_server_connect.sid", secret: "some secret" }));
@@ -313,10 +309,3 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
         oauth2orizeServer.token()
     );
 };
-
-// Top-level driver
-// ----------------
-
-var server = gpii.oauth2.authServer();
-// TODO replace the line below with: server.expressApp.listen(server.options.port);
-server.expressApp.listen(config.authorizationServerPort);
