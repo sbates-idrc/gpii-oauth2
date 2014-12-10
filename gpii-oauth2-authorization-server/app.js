@@ -216,6 +216,7 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
     // TODO in Express 3, what are the semantics of middleware and route ordering?
 
     var hbs = exphbs.create({
+        layoutsDir: __dirname + "/views/layouts",
         defaultLayout: "main",
         helpers: {
             // Based on the example from page 79 of:
@@ -239,6 +240,7 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
     app.use(session({ name: "auth_server_connect.sid", secret: "some secret" }));
     app.use(passport.initialize()); // TODO: warning, dependency risk
     app.use(passport.session()); // TODO: warning, dependency risk
+    app.set('views', __dirname + "/views");
     app.engine("handlebars", hbs.engine);
     app.set("view engine", "handlebars");
 
