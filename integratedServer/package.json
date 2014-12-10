@@ -1,0 +1,7 @@
+{
+  "name": "integratedServer",
+  "version": "0.1.0",
+  "dependencies": {
+    "morgan": "^1.4.1"
+  }
+}

@@ -240,7 +240,7 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
     app.use(session({ name: "auth_server_connect.sid", secret: "some secret" }));
     app.use(passport.initialize()); // TODO: warning, dependency risk
     app.use(passport.session()); // TODO: warning, dependency risk
-    app.set('views', __dirname + "/views");
+    app.set("views", __dirname + "/views");
     app.engine("handlebars", hbs.engine);
     app.set("view engine", "handlebars");
 
