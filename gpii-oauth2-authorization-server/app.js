@@ -181,6 +181,10 @@ fluid.defaults("gpii.oauth2.authServer", {
 });
 
 /*
+ * Based on the Custom Callback example from the passportjs guide.
+ * http://passportjs.org/guide/authenticate/
+ * Licensed under CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0/) 
+ *
  * Manually performs the login routing, similar to the passport
  * middleware, but with the addition of adding a "loginFailed"
  * flag to the session. This is useful for displaying an error
