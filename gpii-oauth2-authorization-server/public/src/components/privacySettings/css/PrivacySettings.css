@@ -3,12 +3,23 @@
 }
 
 .gpii-oauth2-privacySettings-serviceList ul {
-    padding: 0;
+    padding: 1rem 0;
     margin: 0;
 }
 
 .gpii-oauth2-privacySettings-serviceList ul li {
     list-style: none;
+}
+
+.gpii-oauth2-privacySettings-removeServiceLabel {
+    padding-left: 0.1rem;
+    font-size: 0.7rem;
+    visibility: hidden;
+}
+
+.gpii-oauth2-privacySettings-removeService:hover .gpii-oauth2-privacySettings-removeServiceLabel,
+.gpii-oauth2-privacySettings-removeService:focus .gpii-oauth2-privacySettings-removeServiceLabel {
+    visibility: visible;
 }
 
 /*
@@ -19,22 +30,25 @@
     background-color: #FFFFFF;
 }
 
-.gpii-oauth2 .gpii-oauth2-privacySettings-service .gpii-icon-x-small {
+.gpii-oauth2 .gpii-oauth2-privacySettings-removeService .gpii-icon-x-small {
     border: 2px solid #3D3F4C;
     border-radius: 50%;
     font-size: 0.7rem;
     text-align: center;
 }
 
-.gpii-oauth2 .gpii-oauth2-privacySettings-service:hover {
-    cursor: pointer;
-}
-
-.gpii-oauth2 .gpii-oauth2-privacySettings-service:hover .gpii-oauth2-privacySettings-serviceName {
-    text-decoration: underline;
-}
-
-.gpii-oauth2 .gpii-oauth2-privacySettings-service:hover .gpii-icon-x-small{
+.gpii-oauth2 .gpii-oauth2-privacySettings-removeService:hover .gpii-icon-x-small{
     background-color: #3D3F4C;
     color: #FFFFFF;
+}
+
+/*
+ *
+ */
+
+button.gpii-oauth2-privacySettings-removeService {
+    margin: 0;
+    padding: 0 0.5rem;
+    background-color: transparent;
+    color: #3D3F4C;
 }

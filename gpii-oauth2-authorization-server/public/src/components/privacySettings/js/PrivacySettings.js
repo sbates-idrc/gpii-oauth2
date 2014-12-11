@@ -26,13 +26,9 @@ var gpii = gpii || {};
             header: ".gpiic-oauth2-privacySettings-header",
             description: ".gpiic-oauth2-privacySettings-description",
             directions: ".gpiic-oauth2-privacySettings-directions",
-            services: ".gpiic-oauth2-privacySettings-service",
-            serviceName: ".gpiic-oauth2-privacySettings-serviceName",
             addService: ".gpiic-oauth2-privacySettings-addService",
-            cancel: ".gpiic-oauth2-privacySettings-cancel",
-            save: ".gpiic-oauth2-privacySettings-save"
+            removeServiceLabel: ".gpiic-oauth2-privacySettings-removeServiceLabel"
         },
-        repeatingSelectors: ["services"],
         strings: {
             logout: "Log Out",
             header: "Privacy",
@@ -44,16 +40,10 @@ var gpii = gpii || {};
                          "application or an online banking website.</p>",
             directions: "Allow the following services to access my preferences:",
             addService: "Add service",
-            cancel: "cancel",
-            save: "save"
+            removeServiceLabel: "remove"
         },
         model: {
-            user: "username",
-            services: [{
-                serviceName: "test 1"
-            }, {
-                serviceName: "test 2"
-            }]
+            user: "username"
         },
         renderOnInit: true,
         protoTree: {
@@ -66,17 +56,7 @@ var gpii = gpii || {};
                 }
             },
             directions: {messagekey: "directions"},
-            cancel: {messagekey: "cancel"},
-            save: {messagekey: "save"},
-            expander: {
-                type: "fluid.renderer.repeat",
-                repeatID: "services:",
-                controlledBy: "services",
-                pathAs: "serviceInfo",
-                tree: {
-                    serviceName: "${{serviceInfo}.serviceName}"
-                }
-            }
+            removeServiceLabel: {messagekey: "removeServiceLabel"}
         }
     });
 

@@ -43,11 +43,16 @@
             <form>
                 <p><strong class="gpiic-oauth2-privacySettings-directions"></strong></p>
                 <div class="gpii-oauth2-privacySettings-serviceList">
-                    <ul class="gpii-ouath2-inset-vertical">
-                        <li class="gpiic-oauth2-privacySettings-service gpii-oauth2-privacySettings-service gpii-ouath2-inset-horizontal">
-                            <strong class="gpiic-oauth2-privacySettings-serviceName gpii-oauth2-privacySettings-serviceName"></strong>
-                            <span  class="gpii-icon gpii-icon-x-small" role="presentation"></span>
-                        </li>
+                    <ul>
+                        {{#each authorizedServices}}
+                            <li class="gpii-oauth2-privacySettings-service gpii-ouath2-inset-horizontal">
+                                <strong>{{serviceName}}</strong>
+                                <button class="gpii-oauth2-privacySettings-removeService" type="submit" name="remove" value="{{authDecisionId}}">
+                                    <span  class="gpii-icon gpii-icon-x-small" role="presentation"></span>
+                                    <span class="gpiic-oauth2-privacySettings-removeServiceLabel gpii-oauth2-privacySettings-removeServiceLabel"></span>
+                                </button>
+                            </li>
+                        {{/each}}
                     </ul>
                 </div>
             </form>
@@ -57,8 +62,7 @@
     <script>
         gpii.oauth2.privacySettings(".gpiic-oauth2-privacySettings", {
             model: {
-                user: "{{user.username}}",
-                // services: {{authorizedServices}}
+                user: "{{user.username}}"
             }
         });
     </script>
