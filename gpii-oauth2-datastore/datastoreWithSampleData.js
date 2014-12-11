@@ -18,8 +18,8 @@ fluid.defaults("gpii.oauth2.datastoreWithSampleData", {
     gradeNames: ["gpii.oauth2.inMemoryDatastore", "autoInit"],
     model: {
         users: [
-            { id: 1, username: "alice", password: "a" },
-            { id: 2, username: "bob", password: "b" }
+            { id: 1, username: "alice", password: "a", gpiiToken: "alice_gpii_token" },
+            { id: 2, username: "bob", password: "b", gpiiToken: "bob_gpii_token" }
         ],
         clients: [
             {

@@ -28,47 +28,63 @@ fluid.defaults("gpii.oauth2.inMemoryDatastore", {
         findUserById: {
             funcName: "gpii.oauth2.datastore.findUserById",
             args: ["{that}.model.users", "{arguments}.0"]
+                // id
         },
         findUserByUsername: {
             funcName: "gpii.oauth2.datastore.findUserByUsername",
             args: ["{that}.model.users", "{arguments}.0"]
+                // username
         },
         findClientById: {
             funcName: "gpii.oauth2.datastore.findClientById",
             args: ["{that}.model.clients", "{arguments}.0"]
+                // id
         },
         findClientByOauth2ClientId: {
             funcName: "gpii.oauth2.datastore.findClientByOauth2ClientId",
             args: ["{that}.model.clients", "{arguments}.0"]
+                // oauth2ClientId
         },
         saveAuthDecision: {
             funcName: "gpii.oauth2.datastore.saveAuthDecision",
-            args: ["{that}.model", "{that}.applier", "{arguments}.0",
-                "{arguments}.1", "{arguments}.2", "{arguments}.3"]
+            args: ["{that}.model", "{that}.applier",
+                "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
+                // userId, clientId, redirectUri, accessToken
         },
         findAuthDecisionById: {
             funcName: "gpii.oauth2.datastore.findAuthDecisionById",
             args: ["{that}.model.authDecisions", "{arguments}.0"]
+                // id
         },
         findAuthDecision: {
             funcName: "gpii.oauth2.datastore.findAuthDecision",
             args: ["{that}.model.authDecisions", "{arguments}.0", "{arguments}.1", "{arguments}.2"]
+                // userId, clientId, redirectUri
         },
         revokeAuthDecision: {
             funcName: "gpii.oauth2.datastore.revokeAuthDecision",
             args: ["{that}.model.authDecisions", "{that}.applier", "{arguments}.0", "{arguments}.1"]
+                // userId, authDecisionId
         },
         saveAuthCode: {
             funcName: "gpii.oauth2.datastore.saveAuthCode",
             args: ["{that}.model.authCodes", "{that}.applier", "{arguments}.0", "{arguments}.1"]
+                // authDecisionId, code
         },
         findAuthByCode: {
             funcName: "gpii.oauth2.datastore.findAuthByCode",
             args: ["{that}.model.authCodes", "{that}.model.authDecisions", "{arguments}.0"]
+                // code
         },
         findAuthorizedClientsByUserId: {
             funcName: "gpii.oauth2.datastore.findAuthorizedClientsByUserId",
             args: ["{that}.model.authDecisions", "{that}.model.clients", "{arguments}.0"]
+                // userId
+        },
+        findAuthByAccessToken: {
+            funcName: "gpii.oauth2.datastore.findAuthByAccessToken",
+            args: ["{that}.model.authDecisions", "{that}.model.users", "{that}.model.clients", "{arguments}.0"]
+                // accessToken
         }
     }
 
@@ -207,4 +223,27 @@ gpii.oauth2.datastore.findAuthorizedClientsByUserId = function (authDecisions, c
         }
     });
     return authorizedClients;
+};
+
+// Authorization Decision join User and Client
+// -------------------------------------------
+
+gpii.oauth2.datastore.findAuthByAccessToken = function (authDecisions, users, clients, accessToken) {
+    var authDecision = fluid.find_if(authDecisions, function (ad) { return ad.accessToken === accessToken; });
+    if (!authDecision || authDecision.revoked !== false) {
+        return undefined;
+    }
+    // TODO when move to CouchDB, do joins there, rather than by hand
+    var user = gpii.oauth2.datastore.findUserById(users, authDecision.userId);
+    if (!user) {
+        return undefined;
+    }
+    var client = gpii.oauth2.datastore.findClientById(clients, authDecision.clientId);
+    if (!client) {
+        return undefined;
+    }
+    return {
+        userGpiiToken: user.gpiiToken,
+        oauth2ClientId: client.oauth2ClientId
+    };
 };
