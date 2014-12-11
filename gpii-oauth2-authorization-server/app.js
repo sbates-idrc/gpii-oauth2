@@ -135,14 +135,14 @@ fluid.defaults("gpii.oauth2.authServer", {
         passport: {
             type: "gpii.oauth2.passport"
         },
-        dataStore: {
+        datastore: {
             type: "gpii.oauth2.datastoreWithSampleData" // variants here
         },
         authorizationService: {
             type: "gpii.oauth2.authorizationService",
             options: {
                 components: {
-                    dataStore: "{gpii.oauth2.datastoreHolder}.dataStore"
+                    datastore: "{gpii.oauth2.datastoreHolder}.datastore"
                 }
             }
         },
@@ -150,7 +150,7 @@ fluid.defaults("gpii.oauth2.authServer", {
             type: "gpii.oauth2.clientService",
             options: {
                 components: {
-                    dataStore: "{gpii.oauth2.datastoreHolder}.dataStore"
+                    datastore: "{gpii.oauth2.datastoreHolder}.datastore"
                 }
             }
         },
@@ -158,7 +158,7 @@ fluid.defaults("gpii.oauth2.authServer", {
             type: "gpii.oauth2.userService",
             options: {
                 components: {
-                    dataStore: "{gpii.oauth2.datastoreHolder}.dataStore"
+                    datastore: "{gpii.oauth2.datastoreHolder}.datastore"
                 }
             }
         }
