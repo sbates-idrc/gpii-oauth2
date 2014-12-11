@@ -1,23 +1,33 @@
 "use strict";
 
-var express = require("express");
-var morgan = require("morgan");
-
-var fluid = fluid || require("infusion");
+var fluid = require("infusion");
 require("../oauth2Utilities");
 var gpii = fluid.registerNamespace("gpii");
-var config = require("../config");
 
-var app = express();
-app.use(morgan(":method :url", { immediate: true }));
-
-app.get("/settings",
-    function (req, res) {
-        var accessToken = gpii.oauth2.parseBearerAuthorizationHeader(req);
-        // TODO check accessToken
-        console.log("access_token=" + accessToken);
-        res.send("PREFERENCES RESPONSE GOES HERE");
+fluid.defaults("gpii.oauth2.resourceServer", {
+    gradeNames: ["fluid.eventedComponent", "autoInit"],
+    members: {
+        expressApp: {
+            expander: {
+                func: "gpii.oauth2.createExpressApp"
+            }
+        }
+    },
+    listeners: {
+        onCreate: {
+            listener: "gpii.oauth2.resourceServer.listenApp",
+            args: ["{that}.expressApp"]
+        }
     }
-);
+});
 
-app.listen(config.resourceServerPort);
+gpii.oauth2.resourceServer.listenApp = function (app) {
+    app.get("/settings",
+        function (req, res) {
+            var accessToken = gpii.oauth2.parseBearerAuthorizationHeader(req);
+            // TODO check accessToken and retrieve user and solution info
+            console.log("access_token=" + accessToken);
+            res.send("PREFERENCES RESPONSE GOES HERE");
+        }
+    );
+};

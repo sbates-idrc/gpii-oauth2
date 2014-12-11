@@ -2,16 +2,12 @@
 
 var bodyParser = require("body-parser");
 var login = require("connect-ensure-login");
-var express = require("express");
 var exphbs  = require("express-handlebars");
 var session = require("express-session");
-var morgan = require("morgan");
 var oauth2orize = require("oauth2orize");
 var passportModule = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
 var ClientPasswordStrategy = require("passport-oauth2-client-password").Strategy;
-
-var config = require("../config"); // TODO: export up to options in gpii.oauth2.authServer
 
 var fluid = require("infusion");
 require("../gpii-oauth2-datastore");
@@ -117,10 +113,6 @@ gpii.oauth2.passport.listenPassport = function (passport, userService, clientSer
 
 // gpii.oauth2.authServer
 // ----------------------
-
-gpii.oauth2.createExpressApp = function () {
-    return express();
-};
 
 // An empty grade to guide resolution of IoC expressions onto a suitable gpii.oauth2.datastore
 fluid.defaults("gpii.oauth2.datastoreHolder", {
@@ -228,6 +220,7 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
     // TODO in Express 3, what are the semantics of middleware and route ordering?
 
     var hbs = exphbs.create({
+        layoutsDir: __dirname + "/views/layouts",
         defaultLayout: "main",
         helpers: {
             // Based on the example from page 79 of:
@@ -244,14 +237,14 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
 
     });
 
-    app.use(express["static"](__dirname + "/public"));
-    app.use("/infusion", express["static"](fluid.module.modules.infusion.baseDir));
-    app.use(morgan(":method :url", { immediate: true }));
+    app.use(gpii.oauth2.expressStatic(__dirname + "/public"));
+    app.use("/infusion", gpii.oauth2.expressStatic(fluid.module.modules.infusion.baseDir));
     app.use(bodyParser.urlencoded({ extended: true }));
     // TODO move the secret to configuration
     app.use(session({ name: "auth_server_connect.sid", secret: "some secret" }));
     app.use(passport.initialize()); // TODO: warning, dependency risk
     app.use(passport.session()); // TODO: warning, dependency risk
+    app.set("views", __dirname + "/views");
     app.engine("handlebars", hbs.engine);
     app.set("view engine", "handlebars");
 
@@ -322,10 +315,3 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
         oauth2orizeServer.token()
     );
 };
-
-// Top-level driver
-// ----------------
-
-var server = gpii.oauth2.authServer();
-// TODO replace the line below with: server.expressApp.listen(server.options.port);
-server.expressApp.listen(config.authorizationServerPort);
