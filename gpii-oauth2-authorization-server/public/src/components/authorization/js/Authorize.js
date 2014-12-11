@@ -29,7 +29,7 @@ var gpii = gpii || {};
             directions: ".gpiic-oauth2-authorization-directions"
         },
         strings: {
-            description: "In order to personalise your experience, %service would like to access some of your Cloud for All preferences.",
+            description: "In order to personalise your experience, <strong>%service</strong> would like to access some of your Cloud for All preferences.",
             allow: "allow",
             cancel: "do not allow",
             directions: "To edit your privacy settings at any time, go to your Account settings in the Preference Management Tool",
@@ -45,8 +45,10 @@ var gpii = gpii || {};
             logout: {messagekey: "logout"},
             transaction: "${{that}.model.transactionID}",
             description: {
-                messagekey: "description",
-                args: {service: "{that}.model.service"}
+                markup: {
+                    messagekey: "description",
+                    args: {service: "{that}.model.service"}
+                }
             },
             allow: {messagekey: "allow"},
             cancel: {messagekey: "cancel"},
