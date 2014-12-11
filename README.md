@@ -6,19 +6,26 @@ Get Infusion and dedupe:
 - `npm install`
 - `grunt dedupe-infusion`
 
-Start servers:
+Install dependencies:
 
 - `cd gpii-oauth2-authorization-server`
 - `npm install`
-- `node app.js`
-- `cd gpii-oauth2-resource-server`
-- `npm install`
-- `node app.js`
 - `cd gpii-oauth2-sample-client`
 - `npm install`
-- `node app.js`
 - `cd gpii-oauth2-sample-client-passport`
 - `npm install`
+- `cd integratedServer`
+- `npm install`
+- `cd oauth2Utilities`
+- `npm install`
+
+Start servers:
+
+- `cd integratedServer`
+- `node app.js`
+- `cd gpii-oauth2-sample-client`
+- `node app.js`
+- `cd gpii-oauth2-sample-client-passport`
 - `node app.js`
 
 Pages:
@@ -27,7 +34,10 @@ Pages:
 - [http://localhost:3003/](http://localhost:3003/) - Sample client with Passport
 - [http://localhost:3000/privacy](http://localhost:3000/privacy) - Privacy settings
 
-For a list of test users and passwords, see: [the datastore source code](gpii-oauth2-datastore/index.js)
+Sample users and clients
+------------------------
+
+- [sample users and clients](gpii-oauth2-datastore/datastoreWithSampleData.js)
 
 Tests
 -----
