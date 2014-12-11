@@ -2,19 +2,9 @@
     padding-top: 1rem;
 }
 
-.gpii-oauth2-login-header,
-.gpii-oauth2-login-instructions,
-.gpii-oauth2-login-formPanel,
-.gpii-oauth2-login-formFields {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-}
-
 .gpii-oauth2-login-formFields {
     border-top: 5px solid #5FA9A8;
     background-color: #FFFFFF;
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
     -webkit-box-shadow: 4px 4px 4px 1px #A8A8A8;
     -moz-box-shadow: 4px 4px 4px 1px #A8A8A8;
     box-shadow: 4px 4px 4px 1px #A8A8A8;
@@ -66,10 +56,6 @@
     justify-content: flex-end;
 }
 
-.gpii-oauth2-login-cancel {
-    padding-left: 15px;
-}
-
 /*
  * gpii-oauth styling overrides
  */
@@ -89,16 +75,4 @@
     margin-left: 0.25rem;
     text-align: center;
     width: 1.5rem;
-}
-
-.gpii-oauth2-footer {
-    margin-top: 100px;
-}
-
-/*
- * Foundation overrides
- */
-.gpii-oauth2-panel.columns {
-    padding-left: 0;
-    padding-right: 0;
 }

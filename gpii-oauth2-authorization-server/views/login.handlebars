@@ -8,16 +8,18 @@
 
 {{#section 'main'}}
     <section class="gpiic-oauth2-login gpii-oauth2-panel small-10 large-8 small-centered columns">
-        <h1 class="gpii-oauth2-login-header">
-            <span class="gpii-icon gpii-icon-password" role="presentation"></span>
-            <span class="gpiic-oauth2-login-header">Heading</span>
-        </h1>
+        <div class="gpii-ouath2-inset-horizontal">
+            <h1 class="gpii-oauth2-login-header">
+                <span class="gpii-icon gpii-icon-password" role="presentation"></span>
+                <span class="gpiic-oauth2-login-header">Heading</span>
+            </h1>
 
-        <p class="gpiic-oauth2-login-instructions gpii-oauth2-login-instructions"></p>
+            <p class="gpiic-oauth2-login-instructions"></p>
+        </div>
 
         <form id="gpiic-oauth2-login-form" class="gpiic-oauth2-login-form" action="/login" method="post">
-            <div class="gpii-oauth2-login-formPanel">
-                <div class="gpii-oauth2-login-formFields">
+            <div class="gpii-ouath2-inset-horizontal">
+                <div class="gpii-oauth2-login-formFields gpii-ouath2-inset">
                     <label class="gpiic-oauth2-login-usernameLabel" for="gpiic-oauth2-login-usernameInput">Username</label>
                     <div class="gpii-oauth2-login-username">
                         <span class="gpii-icon gpii-icon-profile prefix" role="presentation"></span>
@@ -38,7 +40,7 @@
                 </div>
             </div>
             <div class="gpii-oauth2-footer">
-                <a href="" class="gpii-oauth2-login-cancel"><strong class="gpiic-oauth2-login-cancel"></strong></a>
+                <a href=""><strong class="gpiic-oauth2-login-cancel"></strong></a>
                 <input type="submit" class="gpiic-oauth2-login-submit gpii-oauth2-login-submit button radius" name="log in" value=""/>
             </div>
         </form>

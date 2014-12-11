@@ -28,7 +28,7 @@
 
 {{#section 'main'}}
     <section class="gpiic-oauth2-privacySettings gpii-oauth2-panel small-10 large-8 small-centered columns">
-        <div class="gpii-oauth2-activeUser clearfix">
+        <div class="gpii-oauth2-activeUser gpii-ouath2-inset clearfix">
             <span class="right">
                 <span class="gpii-icon gpii-icon-profile" role="presentation"></span>
                 <span class="gpiic-oauth2-privacySettings-user gpii-oauth2-userName"></span>
@@ -36,20 +36,28 @@
             </span>
         </div>
 
-        <h1 class="gpiic-oauth2-privacySettings-header gpii-oauth2-privacySettings-header">Heading</h1>
+        <div class="gpii-ouath2-inset-horizontal">
+            <h1 class="gpiic-oauth2-privacySettings-header gpii-oauth2-privacySettings-header">Heading</h1>
 
-        <p class="gpiic-oauth2-privacySettings-description"></p>
-
+            <p class="gpiic-oauth2-privacySettings-description"></p>
+        </div>
         <form>
-            <p class="gpiic-oath-login-description"></p>
+            <div class="gpii-ouath2-inset-horizontal">
+                <p class="gpiic-oath-login-description"></p>
+            </div>
             <div class="gpii-oauth2-footer">
-                <a href="" class="gpii-oauth2-privacySettings-cancel"><strong class="gpiic-oauth2-privacySettings-cancel"></strong></a>
+                <a href=""><strong class="gpiic-oauth2-privacySettings-cancel"></strong></a>
                 <input type="submit" class="gpiic-oauth2-privacySettings-save gpii-oauth2-privacySettings-save button radius" name="log in" value=""/>
             </div>
         </form>
     </section>
 
     <script>
-        gpii.oauth2.privacySettings(".gpiic-oauth2-privacySettings", {});
+        gpii.oauth2.privacySettings(".gpiic-oauth2-privacySettings", {
+            model: {
+                user: "{{user.username}}",
+                // services: {{authorizedServices}}
+            }
+        });
     </script>
 {{/section}}

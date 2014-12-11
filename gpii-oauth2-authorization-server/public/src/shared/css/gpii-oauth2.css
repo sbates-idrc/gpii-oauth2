@@ -10,6 +10,23 @@ body.gpii-oauth2 {
     align-items: center;
 }
 
+.gpii-oauth2 .gpii-ouath2-inset {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+.gpii-oauth2 .gpii-ouath2-inset-horizontal {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+.gpii-oauth2 .gpii-ouath2-inset-vertical {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
 .gpii-oauth2 .gpii-oauth2-panel {
     background-color: #D2D2D1;
     border-radius: 3px;
@@ -17,7 +34,6 @@ body.gpii-oauth2 {
 
 
 .gpii-oauth2 .gpii-oauth2-activeUser {
-    padding-top: 5px;
     padding-bottom: 1.5rem;
     color: #3D3F4C;
 }
@@ -26,17 +42,23 @@ body.gpii-oauth2 {
     padding-right: 0.5rem;
 }
 
-.gpii-oauth2-footer {
+.gpii-oauth2 .gpii-oauth2-footer {
     background-color: #5FA9A8;
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
     padding: 5px 5px;
+    margin-top: 100px;
     display: -webkit-flex;
     display: flex;
     -webkit-justify-content: space-between;
     justify-content: space-between;
     -webkit-align-items: baseline;
     align-items: baseline;
+}
+
+
+.gpii-oauth2 .gpii-oauth2-footer a {
+    padding-left: 15px;
 }
 
 /******************
@@ -73,6 +95,11 @@ body.gpii-oauth2 {
 .gpii-oauth2 .button:focus {
     border-color: #D2D2D1;
     border-radius: 0;
+}
+
+.gpii-oauth2 .gpii-oauth2-panel.columns {
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .gpii-oauth2 .gpii-oauth2-footer .button {
