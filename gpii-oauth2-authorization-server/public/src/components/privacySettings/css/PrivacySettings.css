@@ -1,6 +1,5 @@
 .gpii-oauth2-privacySettings-serviceList {
-    color: #3D3F4C;
-    background-color: #FFFFFF;
+    background-color: #D2D2D1;
 }
 
 .gpii-oauth2-privacySettings-serviceList ul {
@@ -16,21 +15,26 @@
  * gpii-oauth2 styling overrides
  */
 
-.gpii-oauth2-privacySettings-service .gpii-icon-x-small {
+.gpii-oauth2 .gpii-oauth2-panel {
+    background-color: #FFFFFF;
+}
+
+.gpii-oauth2 .gpii-oauth2-privacySettings-service .gpii-icon-x-small {
     border: 2px solid #3D3F4C;
     border-radius: 50%;
     font-size: 0.7rem;
+    text-align: center;
 }
 
-.gpii-oauth2-privacySettings-service:hover {
+.gpii-oauth2 .gpii-oauth2-privacySettings-service:hover {
     cursor: pointer;
 }
 
-.gpii-oauth2-privacySettings-service:hover .gpii-oauth2-privacySettings-serviceName {
+.gpii-oauth2 .gpii-oauth2-privacySettings-service:hover .gpii-oauth2-privacySettings-serviceName {
     text-decoration: underline;
 }
 
-.gpii-oauth2-privacySettings-service:hover .gpii-icon-x-small{
+.gpii-oauth2 .gpii-oauth2-privacySettings-service:hover .gpii-icon-x-small{
     background-color: #3D3F4C;
     color: #FFFFFF;
 }

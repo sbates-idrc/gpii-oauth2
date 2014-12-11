@@ -1,8 +1,13 @@
+html {
+    font-size: 20px;
+}
+
 .gpii-oauth2 :focus {
     outline: 3px solid #3D3F4C;
 }
 
 body.gpii-oauth2 {
+    color: #3D3F4C;
     background-color: #51585D;
     display: -webkit-flex;
     display: flex;
@@ -11,20 +16,20 @@ body.gpii-oauth2 {
 }
 
 .gpii-oauth2 .gpii-ouath2-inset {
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
 }
 
 .gpii-oauth2 .gpii-ouath2-inset-horizontal {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
 }
 
 .gpii-oauth2 .gpii-ouath2-inset-vertical {
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
 }
 
 .gpii-oauth2 .gpii-oauth2-panel {
@@ -35,7 +40,7 @@ body.gpii-oauth2 {
 
 .gpii-oauth2 .gpii-oauth2-activeUser {
     padding-bottom: 1.5rem;
-    color: #3D3F4C;
+    /*color: #3D3F4C;*/
 }
 
 .gpii-oauth2 .gpii-oauth2-activeUser .gpii-oauth2-userName {
@@ -56,9 +61,9 @@ body.gpii-oauth2 {
     align-items: baseline;
 }
 
-
 .gpii-oauth2 .gpii-oauth2-footer a {
-    padding-left: 15px;
+    padding: 1rem;
+    color: #000000;
 }
 
 /******************
@@ -73,7 +78,13 @@ body.gpii-oauth2 {
  * Foundation Overrides *
  ************************/
 
-.gpii-oauth2 a {
+.gpii-oauth2 a,
+.gpii-oauth2 h1,
+.gpii-oauth2 h2,
+.gpii-oauth2 h3,
+.gpii-oauth2 h4,
+.gpii-oauth2 h5,
+.gpii-oauth2 h6 {
     color: #3D3F4C;
 }
 
