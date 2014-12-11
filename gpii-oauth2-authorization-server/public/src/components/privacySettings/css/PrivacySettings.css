@@ -1,0 +1,36 @@
+.gpii-oauth2-privacySettings-serviceList {
+    color: #3D3F4C;
+    background-color: #FFFFFF;
+}
+
+.gpii-oauth2-privacySettings-serviceList ul {
+    padding: 0;
+    margin: 0;
+}
+
+.gpii-oauth2-privacySettings-serviceList ul li {
+    list-style: none;
+}
+
+/*
+ * gpii-oauth2 styling overrides
+ */
+
+.gpii-oauth2-privacySettings-service .gpii-icon-x-small {
+    border: 2px solid #3D3F4C;
+    border-radius: 50%;
+    font-size: 0.7rem;
+}
+
+.gpii-oauth2-privacySettings-service:hover {
+    cursor: pointer;
+}
+
+.gpii-oauth2-privacySettings-service:hover .gpii-oauth2-privacySettings-serviceName {
+    text-decoration: underline;
+}
+
+.gpii-oauth2-privacySettings-service:hover .gpii-icon-x-small{
+    background-color: #3D3F4C;
+    color: #FFFFFF;
+}

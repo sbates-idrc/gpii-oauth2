@@ -89,7 +89,7 @@ body.gpii-oauth2 {
 
 .gpii-oauth2 .button:hover {
     color: #3D3F4C;
-    background-color: transparent;
+    background-color: #FFFFFF;
 }
 
 .gpii-oauth2 .button:focus {

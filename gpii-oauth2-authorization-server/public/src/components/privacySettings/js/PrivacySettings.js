@@ -26,10 +26,13 @@ var gpii = gpii || {};
             header: ".gpiic-oauth2-privacySettings-header",
             description: ".gpiic-oauth2-privacySettings-description",
             directions: ".gpiic-oauth2-privacySettings-directions",
+            services: ".gpiic-oauth2-privacySettings-service",
+            serviceName: ".gpiic-oauth2-privacySettings-serviceName",
             addService: ".gpiic-oauth2-privacySettings-addService",
             cancel: ".gpiic-oauth2-privacySettings-cancel",
             save: ".gpiic-oauth2-privacySettings-save"
         },
+        repeatingSelectors: ["services"],
         strings: {
             logout: "Log Out",
             header: "Privacy",
@@ -45,7 +48,12 @@ var gpii = gpii || {};
             save: "save"
         },
         model: {
-            user: "username"
+            user: "username",
+            services: [{
+                serviceName: "test 1"
+            }, {
+                serviceName: "test 2"
+            }]
         },
         renderOnInit: true,
         protoTree: {
@@ -59,7 +67,16 @@ var gpii = gpii || {};
             },
             directions: {messagekey: "directions"},
             cancel: {messagekey: "cancel"},
-            save: {messagekey: "save"}
+            save: {messagekey: "save"},
+            expander: {
+                type: "fluid.renderer.repeat",
+                repeatID: "services:",
+                controlledBy: "services",
+                pathAs: "serviceInfo",
+                tree: {
+                    serviceName: "${{serviceInfo}.serviceName}"
+                }
+            }
         }
     });
 
