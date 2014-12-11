@@ -10,6 +10,8 @@ https://github.com/gpii/universal/LICENSE.txt
 
 /* global jqUnit */
 
+// TODO standardise on undefined rather than 'falsey'
+
 var fluid = fluid || require("infusion");
 
 (function () {
@@ -24,8 +26,8 @@ var fluid = fluid || require("infusion");
         gradeNames: ["gpii.oauth2.inMemoryDatastore", "autoInit"],
         model: {
             users: [
-                { id: 1, username: "alice", password: "a" },
-                { id: 2, username: "bob", password: "b" }
+                { id: 1, username: "alice", password: "a", gpiiToken: "alice_gpii_token" },
+                { id: 2, username: "bob", password: "b", gpiiToken: "bob_gpii_token" }
             ],
             clients: [
                 {
@@ -150,6 +152,11 @@ var fluid = fluid || require("infusion");
     gpii.tests.oauth2.datastore.verifyAuthorizedClientC = function (authClient, authDecisionId) {
         jqUnit.assertEquals("authDecisionId", authDecisionId, authClient.authDecisionId);
         jqUnit.assertEquals("clientName", "Client C", authClient.clientName);
+    };
+
+    gpii.tests.oauth2.datastore.verifyAuthForAccessToken1 = function (auth) {
+        jqUnit.assertEquals("userGpiiToken", "alice_gpii_token", auth.userGpiiToken);
+        jqUnit.assertEquals("oauth2ClientId", "client_id_B", auth.oauth2ClientId);
     };
 
     gpii.tests.oauth2.datastore.runTests = function () {
@@ -288,6 +295,32 @@ var fluid = fluid || require("infusion");
             datastore.revokeAuthDecision(authDecision3.userId, authDecision3.id);
             clients = datastore.findAuthorizedClientsByUserId(userId);
             jqUnit.assertEquals("0 clients", 0, clients.length);
+        });
+
+        jqUnit.test("findAuthByAccessToken() finds an existing authorization", function () {
+            var datastore = gpii.tests.oauth2.datastore.datastoreWithTestData();
+            var authDecision1 = gpii.tests.oauth2.datastore.saveAuthDecision1(datastore);
+            var auth = datastore.findAuthByAccessToken(authDecision1.accessToken);
+            gpii.tests.oauth2.datastore.verifyAuthForAccessToken1(auth);
+        });
+
+        jqUnit.test("findAuthByAccessToken() returns undefined for non-existing authorization", function () {
+            var datastore = gpii.tests.oauth2.datastore.datastoreWithTestData();
+            jqUnit.assertUndefined("non-existing authDecision is undefined",
+                datastore.findAuthByAccessToken("NON-EXISTING"));
+        });
+
+        jqUnit.test("findAuthByAccessToken() finds an existing authorization and undefined for revoked", function () {
+            var datastore = gpii.tests.oauth2.datastore.datastoreWithTestData();
+            // save
+            var authDecision1 = gpii.tests.oauth2.datastore.saveAuthDecision1(datastore);
+            // find and verify
+            gpii.tests.oauth2.datastore.verifyAuthForAccessToken1(datastore.findAuthByAccessToken(authDecision1.accessToken));
+            // revoke
+            datastore.revokeAuthDecision(authDecision1.userId, authDecision1.id);
+            // verify no longer found
+            jqUnit.assertUndefined("revoked authDecision is undefined",
+                datastore.findAuthByAccessToken(authDecision1.accessToken));
         });
 
     };
