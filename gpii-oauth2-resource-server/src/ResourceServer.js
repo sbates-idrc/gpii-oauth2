@@ -1,6 +1,7 @@
 "use strict";
 
 var fluid = require("infusion");
+require("../../gpii-oauth2-datastore");
 require("../../oauth2Utilities");
 var gpii = fluid.registerNamespace("gpii");
 
