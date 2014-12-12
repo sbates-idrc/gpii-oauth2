@@ -10,11 +10,11 @@ var LocalStrategy = require("passport-local").Strategy;
 var ClientPasswordStrategy = require("passport-oauth2-client-password").Strategy;
 
 var fluid = require("infusion");
-require("../gpii-oauth2-datastore");
-require("../oauth2Utilities");
-require("./userService");
-require("./authorizationService");
-require("./clientService");
+require("../../gpii-oauth2-datastore");
+require("../../oauth2Utilities");
+require("./UserService");
+require("./AuthorizationService");
+require("./ClientService");
 
 var gpii = fluid.registerNamespace("gpii");
 
@@ -220,7 +220,7 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
     // TODO in Express 3, what are the semantics of middleware and route ordering?
 
     var hbs = exphbs.create({
-        layoutsDir: __dirname + "/views/layouts",
+        layoutsDir: __dirname + "/../views/layouts",
         defaultLayout: "main",
         helpers: {
             // Based on the example from page 79 of:
@@ -237,14 +237,14 @@ gpii.oauth2.authServer.listenApp = function (app, oauth2orizeServer, clientServi
 
     });
 
-    app.use(gpii.oauth2.expressStatic(__dirname + "/public"));
+    app.use(gpii.oauth2.expressStatic(__dirname + "/../public"));
     app.use("/infusion", gpii.oauth2.expressStatic(fluid.module.modules.infusion.baseDir));
     app.use(bodyParser.urlencoded({ extended: true }));
     // TODO move the secret to configuration
     app.use(session({ name: "auth_server_connect.sid", secret: "some secret" }));
     app.use(passport.initialize()); // TODO: warning, dependency risk
     app.use(passport.session()); // TODO: warning, dependency risk
-    app.set("views", __dirname + "/views");
+    app.set("views", __dirname + "/../views");
     app.engine("handlebars", hbs.engine);
     app.set("view engine", "handlebars");
 
