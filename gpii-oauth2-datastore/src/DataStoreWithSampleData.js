@@ -12,7 +12,7 @@ https://github.com/gpii/universal/LICENSE.txt
 
 var fluid = require("infusion");
 var util = require("util");
-var config = require("../config");
+var config = require("../../config");
 
 fluid.defaults("gpii.oauth2.datastoreWithSampleData", {
     gradeNames: ["gpii.oauth2.inMemoryDatastore", "autoInit"],
