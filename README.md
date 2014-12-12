@@ -37,11 +37,11 @@ Pages:
 Sample users and clients
 ------------------------
 
-- [sample users and clients](gpii-oauth2-datastore/datastoreWithSampleData.js)
+- [sample users and clients](gpii-oauth2-datastore/src/DataStoreWithSampleData.js)
 
 Tests
 -----
 
 - `<Authorization Server>/tests/all-tests.html` (the server must be running)
-- `gpii-oauth2-datastore/test/html/DatastoreTests.html`
+- `gpii-oauth2-datastore/test/html/DataStoreTests.html`
 - `oauth2Utilities/test/html/OAuth2UtilitiesTests.html`
