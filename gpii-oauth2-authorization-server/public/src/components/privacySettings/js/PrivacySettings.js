@@ -26,7 +26,6 @@ var gpii = gpii || {};
             header: ".gpiic-oauth2-privacySettings-header",
             description: ".gpiic-oauth2-privacySettings-description",
             directions: ".gpiic-oauth2-privacySettings-directions",
-            addService: ".gpiic-oauth2-privacySettings-addService",
             removeServiceLabel: ".gpiic-oauth2-privacySettings-removeServiceLabel"
         },
         strings: {
@@ -39,7 +38,6 @@ var gpii = gpii || {};
                          "<p>Services may include things like a social media web " +
                          "application or an online banking website.</p>",
             directions: "Allow the following services to access my preferences:",
-            addService: "Add service",
             removeServiceLabel: "remove"
         },
         model: {

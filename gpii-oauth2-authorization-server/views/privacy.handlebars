@@ -1,24 +1,3 @@
-<!-- {{#section 'head'}}
-    <title>Privacy Settings</title>
-{{/section}}
-
-<h1>Privacy</h1>
-
-<p>User: {{user.username}}</p>
-
-<p><strong>Allow the following services to access my preferences:</strong></p>
-
-<form action="/remove_authorization" method="post">
-
-<ul>
-    {{#each authorizedServices}}
-        <li>{{serviceName}} <button type="submit" name="remove" value="{{authDecisionId}}">remove</button></li>
-    {{/each}}
-</ul>
-
-</form> -->
-
-
 {{#section 'head'}}
     <link rel="stylesheet" type="text/css" href="src/components/privacySettings/css/PrivacySettings.css" />
     <script type="text/javascript" src="src/components/privacySettings/js/PrivacySettings.js"></script>
@@ -39,8 +18,8 @@
 
             <h1 class="gpiic-oauth2-privacySettings-header">Heading</h1>
 
-            <p class="gpiic-oauth2-privacySettings-description"></p>
-            <form>
+            <div class="gpiic-oauth2-privacySettings-description">Description</div>
+            <form action="/remove_authorization" method="post">
                 <p><strong class="gpiic-oauth2-privacySettings-directions"></strong></p>
                 <div class="gpii-oauth2-privacySettings-serviceList">
                     <ul>
@@ -48,7 +27,7 @@
                             <li class="gpii-oauth2-privacySettings-service gpii-ouath2-inset-horizontal">
                                 <strong>{{serviceName}}</strong>
                                 <button class="gpii-oauth2-privacySettings-removeService" type="submit" name="remove" value="{{authDecisionId}}">
-                                    <span  class="gpii-icon gpii-icon-x-small" role="presentation"></span>
+                                    <span  class="gpii-icon gpii-icon-x-small" aria-hidden="true"></span>
                                     <span class="gpiic-oauth2-privacySettings-removeServiceLabel gpii-oauth2-privacySettings-removeServiceLabel"></span>
                                 </button>
                             </li>
