@@ -18,19 +18,19 @@ var gpii = gpii || {};
 (function () {
     "use strict";
 
-    fluid.defaults("gpii.oauth.login", {
+    fluid.defaults("gpii.oauth2.login", {
         gradeNames: ["fluid.rendererComponent", "autoInit"],
         selectors: {
-            header: ".gpiic-oath-login-header",
-            instructions: ".gpiic-oauth-login-instructions",
-            usernameLabel: ".gpiic-oauth-login-usernameLabel",
-            usernameInput: ".gpiic-oauth-login-usernameInput",
-            passwordLabel: ".gpiic-oauth-login-passwordLabel",
-            passwordInput: ".gpiic-oauth-login-passwordInput",
-            error: ".gpiic-oauth-login-error",
-            errorIcon: ".gpiic-oauth-login-errorIcon",
-            cancel: ".gpiic-oauth-login-cancel",
-            submit: ".gpiic-oauth-login-submit"
+            header: ".gpiic-oauth2-login-header",
+            instructions: ".gpiic-oauth2-login-instructions",
+            usernameLabel: ".gpiic-oauth2-login-usernameLabel",
+            usernameInput: ".gpiic-oauth2-login-usernameInput",
+            passwordLabel: ".gpiic-oauth2-login-passwordLabel",
+            passwordInput: ".gpiic-oauth2-login-passwordInput",
+            error: ".gpiic-oauth2-login-error",
+            errorIcon: ".gpiic-oauth2-login-errorIcon",
+            cancel: ".gpiic-oauth2-login-cancel",
+            submit: ".gpiic-oauth2-login-submit"
         },
         strings: {
             header: "Log in",
@@ -64,7 +64,7 @@ var gpii = gpii || {};
         },
         renderOnInit: true,
         invokers: {
-            cancel: "gpii.oauth.login.cancel"
+            cancel: "gpii.oauth2.login.cancel"
         },
         listeners: {
             "afterRender.bindCancel": {
@@ -78,7 +78,7 @@ var gpii = gpii || {};
         }
     });
 
-    gpii.oauth.login.cancel = function () {
+    gpii.oauth2.login.cancel = function () {
         history.back();
     };
 })();
