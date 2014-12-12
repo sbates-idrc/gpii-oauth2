@@ -6,7 +6,7 @@ var fluid = require("infusion");
 require("../../gpii-oauth2-datastore");
 require("../../oauth2Utilities");
 require("../../gpii-oauth2-authorization-server/src/AuthServer.js"); // TODO auth server index.js
-require("../../gpii-oauth2-resource-server/app.js");
+require("../../gpii-oauth2-resource-server/src/ResourceServer.js"); // TODO resource server index.js
 
 var gpii = fluid.registerNamespace("gpii");
 
