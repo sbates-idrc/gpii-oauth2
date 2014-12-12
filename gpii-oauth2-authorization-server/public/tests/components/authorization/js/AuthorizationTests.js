@@ -20,8 +20,8 @@ https://github.com/gpii/universal/LICENSE.txt
 
         fluid.registerNamespace("gpii.tests");
 
-        fluid.defaults("gpii.tests.oauth.authorization", {
-            gradeNames: ["gpii.oauth.authorization", "autoInit"],
+        fluid.defaults("gpii.tests.oauth2.authorization", {
+            gradeNames: ["gpii.oauth2.authorization", "autoInit"],
             model: {
                 user: "testUser",
                 service: "testService",
@@ -33,7 +33,7 @@ https://github.com/gpii/universal/LICENSE.txt
             var str = that.options.strings;
             var expDesc = fluid.stringTemplate(str.description, {service: that.model.service});
 
-            jqUnit.assertEquals("The 'description' string should have been rendered", expDesc, that.locate("description").text());
+            jqUnit.assertEquals("The 'description' string should have been rendered", expDesc, that.locate("description").html());
             jqUnit.assertEquals("The 'allow' string should have been rendered", str.allow, that.locate("allow").attr("value"));
             jqUnit.assertEquals("The 'cancel' string should have been rendered", str.cancel, that.locate("cancel").attr("value"));
             jqUnit.assertEquals("The 'directions' string should have been rendered", str.directions, that.locate("directions").text());
@@ -49,7 +49,7 @@ https://github.com/gpii/universal/LICENSE.txt
         };
 
         jqUnit.test("Initialization", function () {
-            gpii.tests.oauth.authorization(".gpiic-oauth-authorization", {
+            gpii.tests.oauth2.authorization(".gpiic-oauth2-authorization", {
                 listeners: {
                     afterRender: [assertStrings, assertUsername, assertForm]
                 }
