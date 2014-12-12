@@ -114,13 +114,13 @@ gpii.oauth2.passport.listenPassport = function (passport, userService, clientSer
 // gpii.oauth2.authServer
 // ----------------------
 
-// An empty grade to guide resolution of IoC expressions onto a suitable gpii.oauth2.datastore
-fluid.defaults("gpii.oauth2.datastoreHolder", {
+// An empty grade to guide resolution of IoC expressions onto a suitable gpii.oauth2.dataStore
+fluid.defaults("gpii.oauth2.dataStoreHolder", {
     gradeNames: ["fluid.eventedComponent", "autoInit"]
 });
 
 fluid.defaults("gpii.oauth2.authServer", {
-    gradeNames: ["fluid.eventedComponent", "gpii.oauth2.datastoreHolder", "autoInit"],
+    gradeNames: ["fluid.eventedComponent", "gpii.oauth2.dataStoreHolder", "autoInit"],
     members: {
         expressApp: {
             expander: {
@@ -135,14 +135,14 @@ fluid.defaults("gpii.oauth2.authServer", {
         passport: {
             type: "gpii.oauth2.passport"
         },
-        datastore: {
-            type: "gpii.oauth2.datastoreWithSampleData" // variants here
+        dataStore: {
+            type: "gpii.oauth2.dataStoreWithSampleData" // variants here
         },
         authorizationService: {
             type: "gpii.oauth2.authorizationService",
             options: {
                 components: {
-                    datastore: "{gpii.oauth2.datastoreHolder}.datastore"
+                    dataStore: "{gpii.oauth2.dataStoreHolder}.dataStore"
                 }
             }
         },
@@ -150,7 +150,7 @@ fluid.defaults("gpii.oauth2.authServer", {
             type: "gpii.oauth2.clientService",
             options: {
                 components: {
-                    datastore: "{gpii.oauth2.datastoreHolder}.datastore"
+                    dataStore: "{gpii.oauth2.dataStoreHolder}.dataStore"
                 }
             }
         },
@@ -158,7 +158,7 @@ fluid.defaults("gpii.oauth2.authServer", {
             type: "gpii.oauth2.userService",
             options: {
                 components: {
-                    datastore: "{gpii.oauth2.datastoreHolder}.datastore"
+                    dataStore: "{gpii.oauth2.dataStoreHolder}.dataStore"
                 }
             }
         }

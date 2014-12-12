@@ -14,14 +14,14 @@ fluid.defaults("gpii.oauth2.resourceServer", {
         }
     },
     components: {
-        datastore: {
-            type: "gpii.oauth2.datastoreWithSampleData" // variants here
+        dataStore: {
+            type: "gpii.oauth2.dataStoreWithSampleData" // variants here
         }
     },
     listeners: {
         onCreate: {
             listener: "gpii.oauth2.resourceServer.listenApp",
-            args: ["{that}.expressApp", "{that}.datastore"]
+            args: ["{that}.expressApp", "{that}.dataStore"]
         }
     }
 });
@@ -31,7 +31,7 @@ gpii.oauth2.resourceServer.sendUnauthorized = function (res) {
     res.send("Unauthorized");
 };
 
-gpii.oauth2.resourceServer.listenApp = function (app, datastore) {
+gpii.oauth2.resourceServer.listenApp = function (app, dataStore) {
     app.get("/settings",
         function (req, res) {
             var accessToken = gpii.oauth2.parseBearerAuthorizationHeader(req);
@@ -39,7 +39,7 @@ gpii.oauth2.resourceServer.listenApp = function (app, datastore) {
                 // TODO integrate with Kettle error handling
                 gpii.oauth2.resourceServer.sendUnauthorized(res);
             } else {
-                var auth = datastore.findAuthByAccessToken(accessToken);
+                var auth = dataStore.findAuthByAccessToken(accessToken);
                 if (!auth) {
                     // TODO integrate with Kettle error handling
                     gpii.oauth2.resourceServer.sendUnauthorized(res);

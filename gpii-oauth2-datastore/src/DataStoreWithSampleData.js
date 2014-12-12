@@ -14,8 +14,8 @@ var fluid = require("infusion");
 var util = require("util");
 var config = require("../../config");
 
-fluid.defaults("gpii.oauth2.datastoreWithSampleData", {
-    gradeNames: ["gpii.oauth2.inMemoryDatastore", "autoInit"],
+fluid.defaults("gpii.oauth2.dataStoreWithSampleData", {
+    gradeNames: ["gpii.oauth2.inMemoryDataStore", "autoInit"],
     model: {
         users: [
             { id: 1, username: "alice", password: "a", gpiiToken: "alice_gpii_token" },

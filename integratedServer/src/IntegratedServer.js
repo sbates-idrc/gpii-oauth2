@@ -16,7 +16,7 @@ fluid.defaults("gpii.oauth2.integratedServerOptions", {
         expressApp: "{gpii.oauth2.integratedServer}.expressApp"
     },
     components: {
-        datastore: "{gpii.oauth2.integratedServer}.datastore"
+        dataStore: "{gpii.oauth2.integratedServer}.dataStore"
     }
 });
 
@@ -30,8 +30,8 @@ fluid.defaults("gpii.oauth2.integratedServer", {
         }
     },
     components: {
-        datastore: {
-            type: "gpii.oauth2.datastoreWithSampleData"
+        dataStore: {
+            type: "gpii.oauth2.dataStoreWithSampleData"
         },
         authServer: {
             type: "gpii.oauth2.authServer",

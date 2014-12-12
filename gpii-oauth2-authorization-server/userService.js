@@ -8,24 +8,24 @@ fluid.registerNamespace("gpii.oauth2");
 fluid.defaults("gpii.oauth2.userService", {
     gradeNames: ["fluid.eventedComponent", "autoInit"],
     components: {
-        datastore: {
-            type: "gpii.oauth2.datastore"
+        dataStore: {
+            type: "gpii.oauth2.dataStore"
         }
     },
     invokers: {
         authenticateUser: {
             funcName: "gpii.oauth2.userService.authenticateUser",
-            args: ["{datastore}", "{arguments}.0", "{arguments}.1"]
+            args: ["{dataStore}", "{arguments}.0", "{arguments}.1"]
             //                    username, password
         },
         getUserById: {
-            func: "{datastore}.findUserById"
+            func: "{dataStore}.findUserById"
         }
     }
 });
 
-gpii.oauth2.userService.authenticateUser = function (datastore, username, password) {
-    var user = datastore.findUserByUsername(username);
+gpii.oauth2.userService.authenticateUser = function (dataStore, username, password) {
+    var user = dataStore.findUserByUsername(username);
     // TODO store passwords securely
     if (user && user.password === password) {
         return user;
