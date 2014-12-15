@@ -11,7 +11,7 @@ var ClientPasswordStrategy = require("passport-oauth2-client-password").Strategy
 
 var fluid = require("infusion");
 require("../../gpii-oauth2-datastore");
-require("../../oauth2Utilities");
+require("../../gpii-oauth2-utilities");
 require("./UserService");
 require("./AuthorizationService");
 require("./ClientService");

@@ -4,7 +4,7 @@ var morgan = require("morgan");
 
 var fluid = require("infusion");
 require("../../gpii-oauth2-datastore");
-require("../../oauth2Utilities");
+require("../../gpii-oauth2-utilities");
 require("../../gpii-oauth2-authorization-server");
 require("../../gpii-oauth2-resource-server");
 

@@ -1,5 +1,5 @@
 {
-  "name": "oauth2Utilities",
+  "name": "gpii-oauth2-utilities",
   "version": "0.1.0",
   "dependencies": {
     "express": "~3.4.3"

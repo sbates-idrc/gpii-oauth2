@@ -16,7 +16,7 @@ Install dependencies:
 - `npm install`
 - `cd integratedServer`
 - `npm install`
-- `cd oauth2Utilities`
+- `cd gpii-oauth2-utilities`
 - `npm install`
 
 Start servers:
@@ -44,4 +44,4 @@ Tests
 
 - `<Authorization Server>/tests/all-tests.html` (the server must be running)
 - `gpii-oauth2-datastore/test/html/DataStoreTests.html`
-- `oauth2Utilities/test/html/OAuth2UtilitiesTests.html`
+- `gpii-oauth2-utilities/test/html/OAuth2UtilitiesTests.html`
