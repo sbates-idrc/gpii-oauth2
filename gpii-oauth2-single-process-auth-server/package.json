@@ -1,5 +1,5 @@
 {
-  "name": "integratedServer",
+  "name": "gpii-oauth2-single-process-auth-server",
   "version": "0.1.0",
   "dependencies": {
     "morgan": "^1.4.1"

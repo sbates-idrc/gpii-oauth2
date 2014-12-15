@@ -14,14 +14,14 @@ Install dependencies:
 - `npm install`
 - `cd gpii-oauth2-sample-client-passport`
 - `npm install`
-- `cd integratedServer`
+- `cd gpii-oauth2-single-process-auth-server`
 - `npm install`
 - `cd gpii-oauth2-utilities`
 - `npm install`
 
 Start servers:
 
-- `cd integratedServer`
+- `cd gpii-oauth2-single-process-auth-server`
 - `node app.js`
 - `cd gpii-oauth2-sample-client`
 - `node app.js`

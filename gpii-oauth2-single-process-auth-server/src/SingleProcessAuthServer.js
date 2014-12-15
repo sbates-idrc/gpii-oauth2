@@ -10,17 +10,17 @@ require("../../gpii-oauth2-resource-server");
 
 var gpii = fluid.registerNamespace("gpii");
 
-fluid.defaults("gpii.oauth2.integratedServerOptions", {
+fluid.defaults("gpii.oauth2.singleProcessAuthServerOptions", {
     gradeNames: ["fluid.littleComponent", "autoInit"],
     members: {
-        expressApp: "{gpii.oauth2.integratedServer}.expressApp"
+        expressApp: "{gpii.oauth2.singleProcessAuthServer}.expressApp"
     },
     components: {
-        dataStore: "{gpii.oauth2.integratedServer}.dataStore"
+        dataStore: "{gpii.oauth2.singleProcessAuthServer}.dataStore"
     }
 });
 
-fluid.defaults("gpii.oauth2.integratedServer", {
+fluid.defaults("gpii.oauth2.singleProcessAuthServer", {
     gradeNames: ["fluid.eventedComponent", "autoInit"],
     members: {
         expressApp: {
@@ -37,14 +37,14 @@ fluid.defaults("gpii.oauth2.integratedServer", {
             type: "gpii.oauth2.authServer",
             createOnEvent: "expressReady",
             options: {
-                gradeNames: ["gpii.oauth2.integratedServerOptions"]
+                gradeNames: ["gpii.oauth2.singleProcessAuthServerOptions"]
             }
         },
         resourceServer: {
             type: "gpii.oauth2.resourceServer",
             createOnEvent: "expressReady",
             options: {
-                gradeNames: ["gpii.oauth2.integratedServerOptions"]
+                gradeNames: ["gpii.oauth2.singleProcessAuthServerOptions"]
             }
         }
     },
@@ -53,13 +53,13 @@ fluid.defaults("gpii.oauth2.integratedServer", {
     },
     listeners: {
         onCreate: {
-            listener: "gpii.oauth2.integratedServer.listenApp",
+            listener: "gpii.oauth2.singleProcessAuthServer.listenApp",
             args: ["{that}"]
         }
     }
 });
 
-gpii.oauth2.integratedServer.listenApp = function (that) {
+gpii.oauth2.singleProcessAuthServer.listenApp = function (that) {
     that.expressApp.use(morgan(":method :url", { immediate: true }));
     that.events.expressReady.fire();
 };
