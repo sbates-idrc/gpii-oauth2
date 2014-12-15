@@ -7,7 +7,7 @@ var morgan = require("morgan");
 var querystring = require("querystring");
 var url = require("url");
 var util = require("util");
-var config = require("../config");
+var config = require("../../config");
 
 var clientId = "client_id_1";
 var clientSecret = "client_secret_1";

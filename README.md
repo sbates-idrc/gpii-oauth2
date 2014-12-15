@@ -10,22 +10,22 @@ Install dependencies:
 
 - `cd gpii-oauth2-authorization-server`
 - `npm install`
-- `cd gpii-oauth2-sample-client`
-- `npm install`
-- `cd gpii-oauth2-sample-client-passport`
-- `npm install`
 - `cd gpii-oauth2-single-process-auth-server`
 - `npm install`
 - `cd gpii-oauth2-utilities`
+- `npm install`
+- `cd sample-clients/gpii-oauth2-sample-client`
+- `npm install`
+- `cd sample-clients/gpii-oauth2-sample-client-passport`
 - `npm install`
 
 Start servers:
 
 - `cd gpii-oauth2-single-process-auth-server`
 - `node app.js`
-- `cd gpii-oauth2-sample-client`
+- `cd sample-clients/gpii-oauth2-sample-client`
 - `node app.js`
-- `cd gpii-oauth2-sample-client-passport`
+- `cd sample-clients/gpii-oauth2-sample-client-passport`
 - `node app.js`
 
 Pages:

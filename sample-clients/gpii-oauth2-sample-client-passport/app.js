@@ -6,7 +6,7 @@ var http = require("http");
 var morgan = require("morgan");
 var session = require("express-session");
 var util = require("util");
-var config = require("../config");
+var config = require("../../config");
 var passport = require("passport");
 var OAuth2Strategy = require("passport-oauth").OAuth2Strategy;
 
