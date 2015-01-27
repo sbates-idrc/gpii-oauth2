@@ -1,6 +1,8 @@
 GPII OAuth2
 ===========
 
+**Note: Development of the OAuth 2 security for GPII has moved to GPII/universal.**
+
 Get Infusion and dedupe:
 
 - `npm install`
